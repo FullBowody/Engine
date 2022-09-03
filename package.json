@@ -1,0 +1,28 @@
+{
+  "name": "engine",
+  "version": "1.0.0",
+  "description": "FullBowody's core engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FullBowody/Engine.git"
+  },
+  "keywords": [
+    "VR",
+    "Tracking",
+    "C/C++",
+    "FurWaz"
+  ],
+  "author": "FurWaz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FullBowody/Engine/issues"
+  },
+  "homepage": "https://github.com/FullBowody/Engine#readme",
+  "dependencies": {
+    "node-addon-api": "^5.0.0"
+  }
+}
