@@ -5,7 +5,12 @@
       "cflags!": [ "-fno-exceptions" ],
       "cflags_cc!": [ "-fno-exceptions" ],
       "sources": [
-        "./src/main.cpp"
+        "./src/register.cpp",
+        "./src/json/json11.cpp",
+
+        "./src/extensions/Extension.cpp",
+        "./src/extensions/ExtensionServer.cpp",
+        "./src/extensions/Network_WIN.cpp"
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")"
