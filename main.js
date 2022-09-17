@@ -1,9 +1,18 @@
-const fullbowody = require("./build/Release/fullbowody.node");
+const process = require("process");
+const fullbowody = require("./build/Release/fullbowody");
 
-console.log("Available addon functions :")
-Object.keys(fullbowody).forEach((key) => {
-    console.log("  - "+key);
-});
+fullbowody.extensions_onExtensionUpdate(() => { console.log("extension update"); });
+fullbowody.extensions_start();
 
-console.log("Calling addon function : [ping]");
-console.log(">> "+fullbowody.ping());
+setInterval(() => {
+    console.log(fullbowody.extensions_getExtensions());
+}, 500)
+
+setTimeout(() => {
+    fullbowody.extensions_stop();
+}, 10000);
+
+setTimeout(() => {
+    console.log("<= End =>");
+    process.exit();
+}, 12000);
