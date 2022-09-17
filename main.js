@@ -1,18 +1,16 @@
 const process = require("process");
 const fullbowody = require("./build/Release/fullbowody");
 
-fullbowody.extensions_onExtensionUpdate(() => { console.log("extension update"); });
+console.log("Starting ...");
 fullbowody.extensions_start();
 
-setInterval(() => {
+fullbowody.extensions_onExtensionUpdate(() => {
+    console.log("Extension updated :");
     console.log(fullbowody.extensions_getExtensions());
-}, 500)
+});
 
-setTimeout(() => {
+process.on("SIGINT", () => {
+    console.log("Exiting...");
     fullbowody.extensions_stop();
-}, 10000);
-
-setTimeout(() => {
-    console.log("<= End =>");
     process.exit();
-}, 12000);
+});

@@ -43,7 +43,6 @@ bool ExtensionServer::start()
 
     net->onDataReceived(new TypedArgsCallback<ExtensionServer>(&ExtensionServer::_onPaquet, this));
     bool res = net->start(new VoidCallback([](){
-        std::cout << "Network started on port " << DEFAULT_PORT << std::endl;
         ExtensionServer::getInstance()->state = STATE_STARTED;
     }));
     if (!res)

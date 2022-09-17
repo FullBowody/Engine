@@ -6,7 +6,6 @@ Napi::Value Extensions_Start(const Napi::CallbackInfo& info)
 {
     Napi::Env env = info.Env();
 
-    new ExtensionServer();
     bool res = ExtensionServer::getInstance()->start();
 
     return Napi::Boolean::New(env, res);
@@ -44,7 +43,7 @@ Napi::Value Extensions_OnExtensionUpdate(const Napi::CallbackInfo& info)
     Napi::Function cb = info[0].As<Napi::Function>();
     tsfn = Napi::ThreadSafeFunction::New(env, cb, "ExtensionUpdate", 0, 1);
 
-    ExtensionServer::getInstance()->onExtensionUpdate(new VoidCallback(__ExecuteExtensionUpdateCallback));
+    ExtensionServer::getInstance()->onExtensionUpdate(new VoidCallback(&__ExecuteExtensionUpdateCallback));
 
     return Napi::Boolean::New(env, true);
 }
