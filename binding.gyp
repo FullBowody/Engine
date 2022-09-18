@@ -7,6 +7,7 @@
       "sources": [
         "./src/register.cpp",
         "./src/json/json11.cpp",
+        "./src/common/Promise.cpp",
 
         "./src/extensions/Extension.cpp",
         "./src/extensions/ExtensionServer.cpp",
