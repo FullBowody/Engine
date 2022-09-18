@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <thread>
-#include "../common.hpp"
+#include "../common/common.hpp"
 
 #ifdef _WIN32
     #include <winsock2.h>

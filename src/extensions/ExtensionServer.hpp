@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "../common.hpp"
-#include "../Callback.hpp"
-#include "Extension.hpp"
+#include "../common/common.hpp"
+#include "../common/Callback.hpp"
+#include "./Extension.hpp"
 
 class ExtensionServer
 {

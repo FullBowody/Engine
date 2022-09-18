@@ -21,7 +21,7 @@ private:
     void (T::*callback)();
     T* instance;
 public:
-    TypedCallback(void (T::*_callback)(), T* _instance)
+    TypedCallback(T* _instance, void (T::*_callback)())
     {
         this->callback = _callback;
         this->instance = _instance;
@@ -73,7 +73,7 @@ private:
     void (T::*callback)(void*);
     T* instance;
 public:
-    TypedArgsCallback(void (T::*_callback)(void*), T* _instance)
+    TypedArgsCallback(T* _instance, void (T::*_callback)(void*))
     {
         this->instance = _instance;
         this->callback = _callback;

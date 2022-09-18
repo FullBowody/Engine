@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../common.hpp"
+#include "../common/common.hpp"
 
 const std::string DEFAULT_EXTENSION_NAME = "Unknown Extension";
 const std::string DEFAULT_EXTENSION_IP = "xxx.xxx.xxx.xxx";
