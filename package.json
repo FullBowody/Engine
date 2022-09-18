@@ -1,6 +1,7 @@
 {
   "name": "engine",
   "version": "1.0.0",
+  "type": "module",
   "description": "FullBowody's core engine",
   "main": "index.js",
   "scripts": {
