@@ -1,15 +1,11 @@
 #include "Promise.hpp"
 
-Promise* _current_promise = nullptr;
-
 void Promise::init(ArgsCallback* callback)
 {
-    _current_promise = this;
     callback->call(new PromiseCallback(
-        new VoidArgsCallback([](void* data) { _current_promise->_check_for_resolve(data); }),
-        new VoidArgsCallback([](void* data) { _current_promise->_check_for_reject(data); })
+        new VoidArgsCallback([this](void* data) { this->_check_for_resolve(data); }),
+        new VoidArgsCallback([this](void* data) { this->_check_for_reject(data); })
     ));
-    _current_promise = nullptr;
 }
 
 void Promise::_check_for_resolve(void* data)
@@ -32,7 +28,7 @@ void Promise::_check_for_reject(void* data)
         this->rejectCallback->call(this->rejectData);
 }
 
-Promise* Promise::onResolve(void (*callback)(void*))
+Promise* Promise::onResolve(ArgsFunction callback)
 {
     this->resolveCallback = new VoidArgsCallback(callback);
     this->_check_for_resolve(nullptr);
@@ -46,7 +42,7 @@ template<class T> Promise* Promise::onResolve(T* _instance, void (T::*_callback)
     return this;
 }
 
-Promise* Promise::onReject(void (*callback)(void*))
+Promise* Promise::onReject(ArgsFunction callback)
 {
     this->rejectCallback = new VoidArgsCallback(callback);
     this->_check_for_reject(nullptr);

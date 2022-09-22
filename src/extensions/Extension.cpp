@@ -20,7 +20,7 @@ Extension::Extension(std::string name, std::string key, std::string ip, Port por
 std::string Extension::toJSON()
 {
     json11::Json json = json11::Json::object {
-        { "id", getIp() },
+        { "ip", getIp() },
         { "port", getPort() },
         { "name", getName() }
     };

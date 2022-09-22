@@ -1,4 +1,8 @@
 #pragma once
+#include <functional>
+
+typedef std::function<void(void*)> ArgsFunction;
+typedef std::function<void()> VoidFunction;
 
 /**
  * @brief Parent class, contains the [func] callback template
@@ -39,9 +43,10 @@ public:
 class VoidCallback: public virtual Callback
 {
 private:
-    void (*function)();
+    VoidFunction function;
+
 public:
-    VoidCallback(void (*callback)())
+    VoidCallback(VoidFunction callback)
     {
         this->function = callback;
     }
@@ -91,9 +96,10 @@ public:
 class VoidArgsCallback: public virtual ArgsCallback
 {
 private:
-    void (*function)(void*);
+    ArgsFunction function;
+
 public:
-    VoidArgsCallback(void (*callback)(void*))
+    VoidArgsCallback(ArgsFunction callback)
     {
         this->function = callback;
     }

@@ -1,6 +1,13 @@
 #ifdef _WIN32
 #include "Network.hpp"
-#include <iostream>
+#include <chrono>
+
+std::string getIP(sockaddr_in* addr)
+{
+    char ip[INET_ADDRSTRLEN] = "";
+    inet_ntop(AF_INET, &(addr->sin_addr), ip, INET_ADDRSTRLEN);
+    return std::string(ip);
+}
 
 Network* Network::instance = nullptr;
 
@@ -39,6 +46,7 @@ bool Network::setup(Port port, std::string ip)
 {
     this->port = port;
     this->ip = ip;
+    if (isSetup) return true;
 
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -63,22 +71,34 @@ bool Network::setup(Port port, std::string ip)
         state = STATE_ERROR;
         return false;
     }
+
+    isSetup = true;
     return true;
 }
 
-bool Network::start(VoidCallback* callback)
+Promise* Network::start()
 {
-    if (state == STATE_STARTED) return true;
-    if (state == STATE_STARTING) return true;
-    if (state == STATE_ERROR) return false;
+    if (state != STATE_STOPPED)
+        return this->startPromise;
 
-    startCallback = callback;
+    if (this->startPromise != nullptr)
+        delete this->startPromise;
+
+    this->startPromise = new Promise([this](void* c){
+        PromiseCallback* pc = (PromiseCallback*) c;
+        this->_start_resolve = new VoidArgsCallback([pc](void* c){
+            pc->resolve->call(c);
+        });
+        this->_start_reject = new VoidArgsCallback([pc](void* c){
+            pc->reject->call(c);
+        });
+    });
     state = STATE_STARTING;
 
     memset((char*) &addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
-    if (ip == IP_LOCALHOST)
+    if (ip == IP_LOCALHOST || ip == "")
     {
         addr.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
     } else
@@ -90,24 +110,52 @@ bool Network::start(VoidCallback* callback)
     {
         lastError = "start: bind failed (" + std::to_string(WSAGetLastError()) + ")";
         state = STATE_ERROR;
-        return false;
+        this->_start_reject->call(&lastError);
+        return this->startPromise;
+    }
+
+    // if ip not specified, set the current ip to the ip variable
+    if (ip == IP_LOCALHOST || ip == "")
+    {
+        char hostname[1024] = "";
+        gethostname(hostname, 1024);
+        hostent* host = gethostbyname(hostname);
+        if (host == NULL)
+        {
+            lastError = "start: gethostbyname failed (" + std::to_string(WSAGetLastError()) + ")";
+            state = STATE_ERROR;
+            this->_start_reject->call(&lastError);
+            return this->startPromise;
+        }
+        char buff[INET_ADDRSTRLEN] = "";
+        inet_ntop(AF_INET, *host->h_addr_list, buff, INET_ADDRSTRLEN);
+        this->ip = std::string(buff);
     }
 
     thread = std::thread(&Network::_run, this);
-
-    return true;
+    return this->startPromise;
 }
 
-bool Network::stop(VoidCallback* callback)
+Promise* Network::stop()
 {
-    if (state == STATE_STOPPED) return true;
-    if (state == STATE_STOPPING) return true;
-    if (state == STATE_ERROR) return false;
+    if (state != STATE_STARTED)
+        return this->stopPromise;
 
-    stopCallback = callback;
+    if (this->stopPromise != nullptr)
+        delete this->stopPromise;
+
+    this->stopPromise = new Promise([this](void* c){
+        PromiseCallback* pc = (PromiseCallback*) c;
+        this->_stop_resolve = new VoidArgsCallback([pc](void* c){
+            pc->resolve->call(c);
+        });
+        this->_stop_reject = new VoidArgsCallback([pc](void* c){
+            pc->reject->call(c);
+        });
+    });
     state = STATE_STOPPING;
 
-    return true;
+    return this->stopPromise;
 }
 
 void Network::_run()
@@ -118,22 +166,20 @@ void Network::_run()
     char buffer[BUFFER_LENGTH];
     state = STATE_STARTED;
 
-    if (startCallback != nullptr)
-    {
-        startCallback->call();
-    }
+    if (this->_start_resolve != nullptr)
+        this->_start_resolve->call(nullptr);
 
     while (state == STATE_STARTED)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         memset(buffer, 0, BUFFER_LENGTH);
-        if (recvfrom(sock, buffer, BUFFER_LENGTH, 0, (sockaddr*) &addr, &reqAddrlen) == SOCKET_ERROR)
+        if (recvfrom(sock, buffer, BUFFER_LENGTH, 0, (sockaddr*) &reqAddr, &reqAddrlen) == SOCKET_ERROR)
         {
             int error = WSAGetLastError();
             if (error != WSAEWOULDBLOCK)
             {
                 lastError = "thread: recvfrom failed (" + std::to_string(error) + ")";
                 state = STATE_ERROR;
-                std::cout << lastError << std::endl;
                 break;
             }
         }
@@ -143,11 +189,9 @@ void Network::_run()
         {
             if (dataCallback != nullptr)
             {
-                char buff[INET_ADDRSTRLEN] = "";
-                inet_ntop(AF_INET, &reqAddr.sin_addr, buff, INET_ADDRSTRLEN);
-                // TODO : Find why IP address is not correct 
                 Port port = ntohs(reqAddr.sin_port);
-                NetworkPacket np{data, std::string(buff), port};
+                std::string ip = getIP(&reqAddr);
+                NetworkPacket np{data, ip, port};
                 dataCallback->call((void*)&np);
             }
         }
@@ -156,10 +200,8 @@ void Network::_run()
     if (state != STATE_ERROR)
         state = STATE_STOPPED;
 
-    if (stopCallback != nullptr)
-    {
-        stopCallback->call();
-    }
+    if (this->_stop_resolve != nullptr)
+        this->_stop_resolve->call(nullptr);
 }
 
 void Network::onDataReceived(ArgsCallback* callback)
@@ -167,15 +209,15 @@ void Network::onDataReceived(ArgsCallback* callback)
     dataCallback = callback;
 }
 
-bool Network::sendData(std::string data)
+bool Network::sendData(std::string ip, Port port, std::string data)
 {
     int length = data.length();
     unsigned char* buffer = new unsigned char[length];
     memcpy(buffer, data.c_str(), length);
-    return sendData(buffer, length);
+    return sendData(ip, port, buffer, length);
 }
 
-bool Network::sendData(unsigned char* data, int length)
+bool Network::sendData(std::string ip, Port port, unsigned char* data, int length)
 {
     if (state != STATE_STARTED)
     {
@@ -183,7 +225,13 @@ bool Network::sendData(unsigned char* data, int length)
         return false;
     }
 
-    if (sendto(sock, (char*) data, length, 0, (sockaddr*) &addr, sizeof(addr)) == SOCKET_ERROR)
+    sockaddr_in dest;
+    memset((char*) &dest, 0, sizeof(dest));
+    dest.sin_family = AF_INET;
+    dest.sin_port = htons(port);
+    inet_pton(dest.sin_family, ip.c_str(), &dest.sin_addr.S_un.S_addr);
+
+    if (sendto(sock, (char*) data, length, 0, (sockaddr*) &dest, sizeof(dest)) == SOCKET_ERROR)
     {
         lastError = "sendData: sendto failed (" + std::to_string(WSAGetLastError()) + ")";
         state = STATE_ERROR;
@@ -191,6 +239,16 @@ bool Network::sendData(unsigned char* data, int length)
     }
 
     return true;
+}
+
+std::string Network::getIp()
+{
+    return ip;
+}
+
+Port Network::getPort()
+{
+    return port;
 }
 
 #endif

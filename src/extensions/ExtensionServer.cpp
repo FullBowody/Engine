@@ -1,7 +1,6 @@
-#include <iostream>
+#include "../json/json11.hpp"
 #include "ExtensionServer.hpp"
 #include "Network.hpp"
-#include "../json/json11.hpp"
 
 ExtensionServer* ExtensionServer::instance = nullptr;
 
@@ -30,35 +29,85 @@ ExtensionServer::~ExtensionServer()
     this->stop();
 }
 
-bool ExtensionServer::start()
+Promise* ExtensionServer::start()
 {
+    if (this->state == STATE_STARTED || this->state == STATE_STARTING)
+        return this->startPromise;
+
+    if (this->startPromise != nullptr)
+        delete this->startPromise;
+
     state = STATE_STARTING;
-    Network* net = new Network();
+    this->startPromise = new Promise([](void* c){
+        PromiseCallback* pc = (PromiseCallback*) c;
+        ExtensionServer::getInstance()->_start_resolve = pc->resolve;
+        ExtensionServer::getInstance()->_start_reject = pc->reject;
+    });
+
+    Network* net = Network::getInstance();
     if (!net->setup())
     {
         lastError = net->getLastError();
         state = STATE_ERROR;
-        return false;
+        this->_start_reject->call(&lastError);
+        return this->startPromise;
     }
 
-    net->onDataReceived(new TypedArgsCallback<ExtensionServer>(&ExtensionServer::_onPaquet, this));
-    bool res = net->start(new VoidCallback([](){
-        ExtensionServer::getInstance()->state = STATE_STARTED;
-    }));
-    if (!res)
+    net->onDataReceived(new TypedArgsCallback<ExtensionServer>(this, &ExtensionServer::_onPaquet));
+    Promise* p = net->start();
+    if (p == nullptr)
     {
         state = STATE_ERROR;
         lastError = "start: Failed to start network";
-        return false;
+        this->_start_reject->call(&lastError);
+        return this->startPromise;
     }
-    return true;
+
+    p->onResolve([this](void* c){
+        this->state = STATE_STARTED;
+        this->_start_resolve->call(nullptr);
+    })->onReject([this](void* c){
+        this->state = STATE_ERROR;
+        this->lastError = "start: Failed to start network";
+        this->_start_reject->call(&this->lastError);
+    });
+    return this->startPromise;
 }
 
-bool ExtensionServer::stop()
+Promise* ExtensionServer::stop()
 {
+    if (this->state != STATE_STARTED)
+        return this->stopPromise;
+
+    if (this->stopPromise != nullptr)
+        delete this->stopPromise;
+
+    this->stopPromise = new Promise([](void* c){
+        PromiseCallback* pc = (PromiseCallback*) c;
+        ExtensionServer* e = ExtensionServer::getInstance();
+        e->_stop_resolve = pc->resolve;
+        e->_stop_reject = pc->reject;
+    });
     state = STATE_STOPPING;
-    Network::getInstance()->stop();
-    return true;
+
+    Promise* p = Network::getInstance()->stop();
+    if (p == nullptr)
+    {
+        this->state = STATE_ERROR;
+        this->lastError = "stop: Failed to stop network";
+        this->_stop_reject->call(&this->lastError);
+        return this->stopPromise;
+    }
+
+    p->onResolve([this](void*c){
+        this->state = STATE_STOPPED;
+        this->_stop_resolve->call(nullptr);
+    })->onReject([this](void* c){
+        this->state = STATE_ERROR;
+        this->lastError = "stop: Failed to stop network";
+        this->_stop_reject->call(&this->lastError);
+    });
+    return this->stopPromise;
 }
 
 State ExtensionServer::getState()
@@ -193,4 +242,43 @@ void ExtensionServer::_onPaquet(void* data)
 
         removeExtension(name, key);
     }
+}
+
+void ExtensionServer::_set_state(State state)
+{
+    this->state = state;
+}
+
+std::string ExtensionServer::getIp()
+{
+    if (state != STATE_STARTED)
+        return "";
+    return Network::getInstance()->getIp();
+}
+
+Port ExtensionServer::getPort()
+{
+    if (state != STATE_STARTED)
+        return 0;
+    return Network::getInstance()->getPort();
+}
+
+bool ExtensionServer::sendMessage(Extension* ext, std::string message)
+{
+    if (state != STATE_STARTED)
+    {
+        lastError = "sendMessage: Server is not started";
+        return false;
+    }
+    return Network::getInstance()->sendData(ext->getIp(), ext->getPort(), message);
+}
+
+bool ExtensionServer::sendMessage(Extension* ext, unsigned char* data, int length)
+{
+    if (state != STATE_STARTED)
+    {
+        lastError = "sendMessage: Server is not started";
+        return false;
+    }
+    return Network::getInstance()->sendData(ext->getIp(), ext->getPort(), data, length);
 }

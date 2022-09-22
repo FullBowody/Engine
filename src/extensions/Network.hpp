@@ -2,6 +2,7 @@
 #include <string>
 #include <thread>
 #include "../common/common.hpp"
+#include "../common/Promise.hpp"
 
 #ifdef _WIN32
     #include <winsock2.h>
@@ -28,8 +29,8 @@ private:
     std::string lastError;
     std::thread thread;
 
-    VoidCallback* startCallback = nullptr;
-    VoidCallback* stopCallback = nullptr;
+    Promise* startPromise = nullptr;
+    Promise* stopPromise = nullptr;
     ArgsCallback* dataCallback = nullptr;
 
 #ifdef _WIN32
@@ -40,17 +41,25 @@ private:
 public:
     static Network* getInstance();
 
+    ArgsCallback* _start_resolve = nullptr;
+    ArgsCallback* _start_reject = nullptr;
+    ArgsCallback* _stop_resolve = nullptr;
+    ArgsCallback* _stop_reject = nullptr;
+    bool isSetup = false;
+
     Network();
     ~Network();
     std::string getLastError();
 
     bool setup(Port port = DEFAULT_PORT, std::string ip = IP_LOCALHOST);
-    bool start(VoidCallback* callback = nullptr);
-    bool stop(VoidCallback* callback = nullptr);
+    Promise* start();
+    Promise* stop();
 
     void onDataReceived(ArgsCallback* callback);
-    bool sendData(std::string data);
-    bool sendData(unsigned char* data, int length);
+    bool sendData(std::string ip, Port port, std::string data);
+    bool sendData(std::string ip, Port port, unsigned char* data, int length);
 
+    std::string getIp();
+    Port getPort();
     void _run();
 };

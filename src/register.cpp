@@ -13,6 +13,8 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     registerFunction(exports, env, "extensions_getState", Extensions_GetState);
     registerFunction(exports, env, "extensions_onExtensionUpdate", Extensions_OnExtensionUpdate);
     registerFunction(exports, env, "extensions_getExtensions", Extensions_GetExtensions);
+    registerFunction(exports, env, "extensions_getIp", Extensions_GetIp);
+    registerFunction(exports, env, "extensions_getPort", Extensions_GetPort);
 
     return exports;
 }

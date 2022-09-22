@@ -1,3 +1,4 @@
+#pragma once
 #include "Callback.hpp"
 
 struct PromiseCallback
@@ -26,7 +27,7 @@ private:
     unsigned char rejectCallCount = 0;
 
 public:
-    Promise(void (*callback)(void*))
+    Promise(ArgsFunction callback)
     {
         init(new VoidArgsCallback(callback));
     }
@@ -38,10 +39,10 @@ public:
 
     void init(ArgsCallback* callback);
 
-    Promise* onResolve(void (*callback)(void*));
+    Promise* onResolve(ArgsFunction callback);
     template<class T> Promise* onResolve(T* _instance, void (T::*_callback)());
 
-    Promise* onReject(void (*callback)(void*));
+    Promise* onReject(ArgsFunction callback);
     template<class T> Promise* onReject(T* _instance, void (T::*_callback)());
 
     void _check_for_resolve(void* data);
