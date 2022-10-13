@@ -1,0 +1,1 @@
+cp ./src/bin/ ./build/Release/
