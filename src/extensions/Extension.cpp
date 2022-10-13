@@ -17,12 +17,29 @@ Extension::Extension(std::string name, std::string key, std::string ip, Port por
     this->ip = ip;
 }
 
+std::string Extension::getName()
+{
+    return this->name;
+}
+std::string Extension::getKey()
+{
+    return this->key;
+}
+std::string Extension::getIp()
+{
+    return this->ip;
+}
+Port Extension::getPort()
+{
+    return this->port;
+}
+
 std::string Extension::toJSON()
 {
     json11::Json json = json11::Json::object {
-        { "ip", getIp() },
-        { "port", getPort() },
-        { "name", getName() }
+        { "ip", this->ip },
+        { "port", this->port },
+        { "name", this->name }
     };
     return json.dump();
 }

@@ -18,10 +18,10 @@ public:
     Extension();
     Extension(std::string name, std::string key, std::string ip, Port port);
 
-    std::string getName() { return name; }
-    std::string getKey() { return key; }
-    std::string getIp() { return ip; }
-    Port getPort() { return port; }
+    std::string getName();
+    std::string getKey();
+    std::string getIp();
+    Port getPort();
 
     std::string toJSON();
 };
