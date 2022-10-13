@@ -42,5 +42,8 @@ The compiled addon will be located in the `/build/Release` folder.
 Next, to copy the OpenCV binaries into the addon's folder,
 run the `setBins.bat` script on Windows (or `setBins.sh` on Linux)
 
+## License
+This project is licensed under the GNU GPL-3.0 License - see the [LICENSE](LICENSE) file for details
+
 ---
 Author : [FurWaz](https://github.com/furwaz)
