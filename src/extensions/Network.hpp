@@ -1,8 +1,7 @@
 #pragma once
 #include <string>
-#include <thread>
+#include <vector>
 #include "../common/common.hpp"
-#include "../common/Promise.hpp"
 
 #ifdef _WIN32
     #include <winsock2.h>
@@ -23,43 +22,39 @@ class Network
 private:
     static Network* instance;
 
-    std::string ip;
-    Port port;
-    State state;
-    std::string lastError;
-    std::thread thread;
+    std::string ip = IP_LOCALHOST;
+    Port port = 0;
+    State state = STATE_STOPPED;
+    std::string lastError = "";
+    std::vector<NetworkPacket> paquets;
 
-    Promise* startPromise = nullptr;
-    Promise* stopPromise = nullptr;
-    ArgsCallback* dataCallback = nullptr;
+    float paquet_timelapse = 0.f;
 
 #ifdef _WIN32
     SOCKET sock;
     sockaddr_in addr;
 #endif
 
+    bool _check_for_paquet();
+
 public:
     static Network* getInstance();
 
-    ArgsCallback* _start_resolve = nullptr;
-    ArgsCallback* _start_reject = nullptr;
-    ArgsCallback* _stop_resolve = nullptr;
-    ArgsCallback* _stop_reject = nullptr;
-    bool isSetup = false;
-
     Network();
     ~Network();
-    std::string getLastError();
 
     bool setup(Port port = DEFAULT_PORT, std::string ip = IP_LOCALHOST);
-    Promise* start();
-    Promise* stop();
+    bool start();
+    bool stop();
+    void update(float dt);
 
-    void onDataReceived(ArgsCallback* callback);
     bool sendData(std::string ip, Port port, std::string data);
     bool sendData(std::string ip, Port port, unsigned char* data, int length);
+    bool hasPaquets();
+    NetworkPacket getPaquet();
+    std::vector<NetworkPacket> getPaquets();
 
-    std::string getIp();
     Port getPort();
-    void _run();
+    std::string getIp();
+    std::string getLastError();
 };

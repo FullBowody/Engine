@@ -26,74 +26,55 @@ Network::Network()
     {
         delete Network::instance;
     }
-    state = STATE_STOPPED;
     Network::instance = this;
 }
 
 Network::~Network()
 {
     this->stop();
-    closesocket(sock);
+    closesocket(this->sock);
     WSACleanup();
-}
-
-std::string Network::getLastError()
-{
-    return lastError;
 }
 
 bool Network::setup(Port port, std::string ip)
 {
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_RUNNING) return true;
+
     this->port = port;
     this->ip = ip;
-    if (isSetup) return true;
 
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
     {
-        lastError = "setup: WSAStartup failed (" + std::to_string(WSAGetLastError()) + ")";
-        state = STATE_ERROR;
+        this->lastError = "setup: WSAStartup failed (" + std::to_string(WSAGetLastError()) + ")";
+        this->state = STATE_ERROR;
         return false;
     }
     
-    sock = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sock == INVALID_SOCKET)
+    this->sock = socket(AF_INET, SOCK_DGRAM, 0);
+    if (this->sock == INVALID_SOCKET)
     {
-        lastError = "setup: socket failed (" + std::to_string(WSAGetLastError()) + ")";
-        state = STATE_ERROR;
+        this->lastError = "setup: socket failed (" + std::to_string(WSAGetLastError()) + ")";
+        this->state = STATE_ERROR;
         return false;
     }
 
     u_long iMode = 1; // 1 = non-blocking, 0 = blocking
     if (ioctlsocket(sock, FIONBIO, &iMode) != 0)
     {
-        lastError = "setup: ioctlsocket failed (" + std::to_string(WSAGetLastError()) + ")";
-        state = STATE_ERROR;
+        this->lastError = "setup: ioctlsocket failed (" + std::to_string(WSAGetLastError()) + ")";
+        this->state = STATE_ERROR;
         return false;
     }
 
-    isSetup = true;
     return true;
 }
 
-Promise* Network::start()
+bool Network::start()
 {
-    if (state != STATE_STOPPED)
-        return this->startPromise;
-
-    if (this->startPromise != nullptr)
-        delete this->startPromise;
-
-    this->startPromise = new Promise([this](void* c){
-        PromiseCallback* pc = (PromiseCallback*) c;
-        this->_start_resolve = new VoidArgsCallback([pc](void* c){
-            pc->resolve->call(c);
-        });
-        this->_start_reject = new VoidArgsCallback([pc](void* c){
-            pc->reject->call(c);
-        });
-    });
-    state = STATE_STARTING;
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_RUNNING) return true;
 
     memset((char*) &addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
@@ -110,8 +91,7 @@ Promise* Network::start()
     {
         lastError = "start: bind failed (" + std::to_string(WSAGetLastError()) + ")";
         state = STATE_ERROR;
-        this->_start_reject->call(&lastError);
-        return this->startPromise;
+        return false;
     }
 
     // if ip not specified, set the current ip to the ip variable
@@ -120,93 +100,63 @@ Promise* Network::start()
         char hostname[1024] = "";
         gethostname(hostname, 1024);
         hostent* host = gethostbyname(hostname);
+        // TODO : change from gesthostbyname to getaddrinfo
         if (host == NULL)
         {
             lastError = "start: gethostbyname failed (" + std::to_string(WSAGetLastError()) + ")";
             state = STATE_ERROR;
-            this->_start_reject->call(&lastError);
-            return this->startPromise;
+            return false;
         }
         char buff[INET_ADDRSTRLEN] = "";
         inet_ntop(AF_INET, *host->h_addr_list, buff, INET_ADDRSTRLEN);
         this->ip = std::string(buff);
     }
+    
+    this->state = STATE_RUNNING;
 
-    thread = std::thread(&Network::_run, this);
-    return this->startPromise;
+    return true;
 }
 
-Promise* Network::stop()
+bool Network::stop()
 {
-    if (state != STATE_STARTED)
-        return this->stopPromise;
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_STOPPED) return true;
 
-    if (this->stopPromise != nullptr)
-        delete this->stopPromise;
+    this->state = STATE_STOPPED;
 
-    this->stopPromise = new Promise([this](void* c){
-        PromiseCallback* pc = (PromiseCallback*) c;
-        this->_stop_resolve = new VoidArgsCallback([pc](void* c){
-            pc->resolve->call(c);
-        });
-        this->_stop_reject = new VoidArgsCallback([pc](void* c){
-            pc->reject->call(c);
-        });
-    });
-    state = STATE_STOPPING;
-
-    return this->stopPromise;
+    return true;
 }
 
-void Network::_run()
+bool Network::_check_for_paquet()
 {
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_STOPPED) return true;
+    
     sockaddr_in reqAddr;
     int reqAddrlen = sizeof(reqAddr);
     const int BUFFER_LENGTH = 1024;
     char buffer[BUFFER_LENGTH];
-    state = STATE_STARTED;
 
-    if (this->_start_resolve != nullptr)
-        this->_start_resolve->call(nullptr);
-
-    while (state == STATE_STARTED)
+    if (recvfrom(sock, buffer, BUFFER_LENGTH, 0, (sockaddr*) &reqAddr, &reqAddrlen) == SOCKET_ERROR)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        memset(buffer, 0, BUFFER_LENGTH);
-        if (recvfrom(sock, buffer, BUFFER_LENGTH, 0, (sockaddr*) &reqAddr, &reqAddrlen) == SOCKET_ERROR)
+        int error = WSAGetLastError();
+        if (error != WSAEWOULDBLOCK)
         {
-            int error = WSAGetLastError();
-            if (error != WSAEWOULDBLOCK)
-            {
-                lastError = "thread: recvfrom failed (" + std::to_string(error) + ")";
-                state = STATE_ERROR;
-                break;
-            }
-        }
-
-        std::string data(buffer);
-        if (data.length() > 15)
-        {
-            if (dataCallback != nullptr)
-            {
-                Port port = ntohs(reqAddr.sin_port);
-                std::string ip = getIP(&reqAddr);
-                NetworkPacket np{data, ip, port};
-                dataCallback->call((void*)&np);
-            }
+            this->lastError = "Recvfrom failed (" + std::to_string(error) + ")";
+            this->state = STATE_ERROR;
+            return false;
         }
     }
 
-    if (state != STATE_ERROR)
-        state = STATE_STOPPED;
+    std::string data(buffer);
+    if (data.length() < 10)
+        return false;
+        
+    Port port = ntohs(reqAddr.sin_port);
+    std::string ip = getIP(&reqAddr);
+    this->paquets.push_back(NetworkPacket{data, ip, port});
 
-    if (this->_stop_resolve != nullptr)
-        this->_stop_resolve->call(nullptr);
-}
-
-void Network::onDataReceived(ArgsCallback* callback)
-{
-    dataCallback = callback;
+    return true;
 }
 
 bool Network::sendData(std::string ip, Port port, std::string data)
@@ -219,9 +169,9 @@ bool Network::sendData(std::string ip, Port port, std::string data)
 
 bool Network::sendData(std::string ip, Port port, unsigned char* data, int length)
 {
-    if (state != STATE_STARTED)
+    if (this->state != STATE_RUNNING)
     {
-        lastError = "sendData: Network not started";
+        this->lastError = "sendData: Network not started";
         return false;
     }
 
@@ -233,22 +183,57 @@ bool Network::sendData(std::string ip, Port port, unsigned char* data, int lengt
 
     if (sendto(sock, (char*) data, length, 0, (sockaddr*) &dest, sizeof(dest)) == SOCKET_ERROR)
     {
-        lastError = "sendData: sendto failed (" + std::to_string(WSAGetLastError()) + ")";
-        state = STATE_ERROR;
+        this->lastError = "sendData: sendto failed (" + std::to_string(WSAGetLastError()) + ")";
+        this->state = STATE_ERROR;
         return false;
     }
 
     return true;
 }
 
+void Network::update(float dt) {
+    paquet_timelapse += dt;
+    if (paquet_timelapse > NETWORK_UPDATE_LAPSE)
+    {
+        paquet_timelapse = 0.f;
+        _check_for_paquet();
+    }
+}
+
 std::string Network::getIp()
 {
-    return ip;
+    return this->ip;
 }
 
 Port Network::getPort()
 {
-    return port;
+    return this->port;
+}
+
+std::string Network::getLastError()
+{
+    std::string err = this->lastError;
+    this->lastError = "";
+    return err;
+}
+
+bool Network::hasPaquets()
+{
+    return this->paquets.size() > 0;
+}
+
+NetworkPacket Network::getPaquet()
+{
+    NetworkPacket p = this->paquets[0];
+    this->paquets.erase(this->paquets.begin());
+    return p;
+}
+
+std::vector<NetworkPacket> Network::getPaquets()
+{
+    std::vector<NetworkPacket> p = this->paquets;
+    this->paquets.clear();
+    return p;
 }
 
 #endif
