@@ -1,2 +1,6 @@
 build/
 node_modules/
+
+src/include/
+src/lib/
+src/bin/
