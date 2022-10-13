@@ -7,14 +7,12 @@ class State {
     }
 
     toString() {
-        let val:string = "Unknown";
+        let val:string;
         switch (this.value) {
             case 0: val = "Error"; break;
             case 1: val = "Stopped"; break;
-            case 2: val = "Started"; break;
-            case 3: val = "Starting"; break;
-            case 4: val = "Stopping"; break;
-            default: break;
+            case 2: val = "Running"; break;
+            default: val = "Unknown"; break;
         }
         return val;
     }
@@ -39,42 +37,48 @@ class Extension {
 class ExtensionsServer {
     static start() {
         return new Promise((resolve, reject) => {
-            fullbowody.extensions_start(resolve, reject);
+            if (fullbowody.extensions_start()) resolve(undefined);
+            else reject( fullbowody.extensions_getLastError() );
         });
     }
 
     static stop() {
         return new Promise((resolve, reject) => {
-            fullbowody.extensions_stop(resolve, reject);
+            if (fullbowody.extensions_stop()) resolve(undefined);
+            else reject( fullbowody.extensions_getLastError() );
         });
     }
 
     static getState() {
-        return new State(fullbowody.extensions_getState());
+        return new Promise((resolve, reject) => {
+            resolve(new State(fullbowody.extensions_getState()));
+        });
     }
 
     static getInfos() {
-        return {
-            state: ExtensionsServer.getState().toString(),
-            ip: fullbowody.extensions_getIp(),
-            port: fullbowody.extensions_getPort()
-        }
-    }
-
-    static onExtensionUpdate(callback:Function) {
-        return fullbowody.extensions_onExtensionUpdate(callback);
+        return new Promise((resolve, reject) => {
+            this.getState().then((state:any) => {
+                resolve({
+                    state: state.toString(),
+                    ip: fullbowody.extensions_getIp(),
+                    port: fullbowody.extensions_getPort()
+                });
+            }).catch(reject);
+        });
     }
 
     static getExtensions() {
-        const json = fullbowody.extensions_getExtensions();
-        try {
-            const obj = JSON.parse(json);
-            if (!Array.isArray(obj)) return [];
-            
-            let exts:Extension[] = [];
-            obj.forEach(ext => { exts.push(new Extension(ext)); });
-            return exts;
-        } catch { return [] }
+        return new Promise((resolve, reject) => {
+            const json = fullbowody.extensions_getExtensions();
+            try {
+                const obj = JSON.parse(json);
+                if (!Array.isArray(obj)) return [];
+                
+                let exts:Extension[] = [];
+                obj.forEach(ext => { exts.push(new Extension(ext)); });
+                resolve(exts);
+            } catch { reject( fullbowody.extensions_getLastError() ); }
+        })
     }
 }
 
