@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 #include "../common/common.hpp"
-#include "../common/Promise.hpp"
 #include "./Extension.hpp"
+#include "Network.hpp"
 
 class ExtensionServer
 {
@@ -13,16 +13,8 @@ private:
     std::vector<Extension*> extensions;
     State state = STATE_STOPPED;
     std::string lastError = "";
-
-    Callback* updateCallback = nullptr;
-
-    Promise* stopPromise = nullptr;
-    ArgsCallback* _start_resolve = nullptr;
-    ArgsCallback* _start_reject = nullptr;
-
-    Promise* startPromise = nullptr;
-    ArgsCallback* _stop_resolve = nullptr;
-    ArgsCallback* _stop_reject = nullptr;
+    
+    bool _process_packet(NetworkPacket packet);
 
 public:
     static ExtensionServer* getInstance();
@@ -30,8 +22,8 @@ public:
     ExtensionServer();
     ~ExtensionServer();
 
-    Promise* start();
-    Promise* stop();
+    bool start();
+    bool stop();
     State getState();
     std::string getIp();
     Port getPort();
@@ -39,13 +31,10 @@ public:
 
     std::vector<Extension*> getExtensions();
     Extension* getExtension(std::string name);
-    void onExtensionUpdate(Callback* callback);
+    void update(float dt);
 
     bool addExtension(Extension* ext);
     bool removeExtension(std::string name, std::string key);
     bool sendMessage(Extension* ext, std::string message);
     bool sendMessage(Extension* ext, unsigned char* message, int length);
-    
-    void _onPaquet(void* data);
-    void _set_state(State state);
 };

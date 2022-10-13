@@ -1,6 +1,6 @@
-#include "../json/json11.hpp"
 #include "ExtensionServer.hpp"
-#include "Network.hpp"
+#include "../json/json11.hpp"
+#include <iostream>
 
 ExtensionServer* ExtensionServer::instance = nullptr;
 
@@ -20,7 +20,7 @@ ExtensionServer::ExtensionServer()
         delete ExtensionServer::instance;
     }
 
-    state = STATE_STOPPED;
+    this->state = STATE_STOPPED;
     ExtensionServer::instance = this;
 }
 
@@ -29,118 +29,72 @@ ExtensionServer::~ExtensionServer()
     this->stop();
 }
 
-Promise* ExtensionServer::start()
+bool ExtensionServer::start()
 {
-    if (this->state == STATE_STARTED || this->state == STATE_STARTING)
-        return this->startPromise;
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_RUNNING) return true;
 
-    if (this->startPromise != nullptr)
-        delete this->startPromise;
-
-    state = STATE_STARTING;
-    this->startPromise = new Promise([](void* c){
-        PromiseCallback* pc = (PromiseCallback*) c;
-        ExtensionServer::getInstance()->_start_resolve = pc->resolve;
-        ExtensionServer::getInstance()->_start_reject = pc->reject;
-    });
-
-    Network* net = Network::getInstance();
-    if (!net->setup())
+    if (!Network::getInstance()->setup())
     {
-        lastError = net->getLastError();
-        state = STATE_ERROR;
-        this->_start_reject->call(&lastError);
-        return this->startPromise;
-    }
-
-    net->onDataReceived(new TypedArgsCallback<ExtensionServer>(this, &ExtensionServer::_onPaquet));
-    Promise* p = net->start();
-    if (p == nullptr)
-    {
-        state = STATE_ERROR;
-        lastError = "start: Failed to start network";
-        this->_start_reject->call(&lastError);
-        return this->startPromise;
-    }
-
-    p->onResolve([this](void* c){
-        this->state = STATE_STARTED;
-        this->_start_resolve->call(nullptr);
-    })->onReject([this](void* c){
+        this->lastError = "Failed to start network : " + Network::getInstance()->getLastError();
         this->state = STATE_ERROR;
-        this->lastError = "start: Failed to start network";
-        this->_start_reject->call(&this->lastError);
-    });
-    return this->startPromise;
+        return false;
+    }
+
+    if (!Network::getInstance()->start())
+    {
+        this->state = STATE_ERROR;
+        this->lastError = "Failed to start network : " + Network::getInstance()->getLastError();
+        return false;
+    }
+
+    this->state = STATE_RUNNING;
+    return true;
 }
 
-Promise* ExtensionServer::stop()
+bool ExtensionServer::stop()
 {
-    if (this->state != STATE_STARTED)
-        return this->stopPromise;
+    if (this->state == STATE_ERROR) return false;
+    if (this->state == STATE_STOPPED) return true;
 
-    if (this->stopPromise != nullptr)
-        delete this->stopPromise;
-
-    this->stopPromise = new Promise([](void* c){
-        PromiseCallback* pc = (PromiseCallback*) c;
-        ExtensionServer* e = ExtensionServer::getInstance();
-        e->_stop_resolve = pc->resolve;
-        e->_stop_reject = pc->reject;
-    });
-    state = STATE_STOPPING;
-
-    Promise* p = Network::getInstance()->stop();
-    if (p == nullptr)
+    if (!Network::getInstance()->stop())
     {
         this->state = STATE_ERROR;
         this->lastError = "stop: Failed to stop network";
-        this->_stop_reject->call(&this->lastError);
-        return this->stopPromise;
+        return false;
     }
 
-    p->onResolve([this](void*c){
-        this->state = STATE_STOPPED;
-        this->_stop_resolve->call(nullptr);
-    })->onReject([this](void* c){
-        this->state = STATE_ERROR;
-        this->lastError = "stop: Failed to stop network";
-        this->_stop_reject->call(&this->lastError);
-    });
-    return this->stopPromise;
+    return true;
 }
 
 State ExtensionServer::getState()
 {
-    return state;
+    return this->state;
 }
 
 std::string ExtensionServer::getLastError()
 {
-    return lastError;
+    std::string res = this->lastError;
+    this->lastError = "";
+    return this->lastError;
 }
 
 std::vector<Extension*> ExtensionServer::getExtensions()
 {
-    return extensions;
+    return this->extensions;
 }
 
 Extension* ExtensionServer::getExtension(std::string name)
 {
-    for (Extension* ext : extensions)
+    for (Extension* ext : this->extensions)
     {
         if (ext->getName() == name)
         {
             return ext;
         }
     }
-    lastError = "getExtension: Extension " + name + " not found";
+    this->lastError = "getExtension: Extension " + name + " not found";
     return nullptr;
-}
-
-void ExtensionServer::onExtensionUpdate(Callback* callback)
-{
-    updateCallback = callback;
 }
 
 bool ExtensionServer::addExtension(Extension* ext)
@@ -148,67 +102,58 @@ bool ExtensionServer::addExtension(Extension* ext)
     std::string name = ext->getName();
     if (getExtension(name) != nullptr)
     {
-        lastError = "addExtension: Extension with name " + name + " already exists";
+        this->lastError = "addExtension: Extension with name " + name + " already exists";
         return false;
     }
-    extensions.push_back(ext);
-    if (updateCallback != nullptr)
-        updateCallback->call();
+    this->extensions.push_back(ext);
     return true;
 }
 
 bool ExtensionServer::removeExtension(std::string name, std::string key)
 {
-    for (auto it = extensions.begin(); it != extensions.end(); ++it)
+    for (auto it = this->extensions.begin(); it != this->extensions.end(); ++it)
     {
         if ((*it)->getName() == name)
         {
             if ((*it)->getKey() == key)
             {
-                extensions.erase(it);
-                if (updateCallback != nullptr)
-                    updateCallback->call();
+                this->extensions.erase(it);
                 return true;
             }
             else
             {
-                lastError = "removeExtension: Invalid key";
+                this->lastError = "removeExtension: Invalid key";
                 return false;
             }
         }
     }
-    lastError = "removeExtension: Extension with name " + name + " does not exist";
+    this->lastError = "removeExtension: Extension with name " + name + " does not exist";
     return false;
 }
 
-void ExtensionServer::_onPaquet(void* data)
+bool ExtensionServer::_process_packet(NetworkPacket packet)
 {
-    NetworkPacket packet = *(NetworkPacket*)data;
-
     if (packet.data.rfind("[ON]", 0) == 0) // New addon registering
     {
         std::string str = packet.data.substr(4);
         json11::Json json = json11::Json::parse(str, lastError);
         if (json.is_null())
         {
-            std::string err = "Failed to parse addon registration JSON: " + lastError;
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Failed to parse addon registration JSON: " + this->lastError;
+            return false;
         }
 
         std::string name = json["name"].string_value();
         std::string key = json["key"].string_value();
         if (name == "")
         {
-            lastError = "Invalid addon registration JSON: name is empty";
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Invalid addon registration JSON: name is empty";
+            return false;
         }
         if (key == "")
         {
-            lastError = "Invalid addon registration JSON: key is empty";
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Invalid addon registration JSON: key is empty";
+            return false;
         }
 
         addExtension(new Extension(name, key, packet.ip, packet.port));
@@ -217,68 +162,78 @@ void ExtensionServer::_onPaquet(void* data)
     if (packet.data.rfind("[OFF]", 0) == 0) // Addon shutting down
     {
         std::string str = packet.data.substr(5);
-        json11::Json json = json11::Json::parse(str, lastError);
+        json11::Json json = json11::Json::parse(str, this->lastError);
         if (json.is_null())
         {
-            std::string err = "Failed to parse addon removal JSON: " + lastError;
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Failed to parse addon removal JSON: " + this->lastError;
+            return false;
         }
 
         std::string name = json["name"].string_value();
         std::string key = json["key"].string_value();
         if (name == "")
         {
-            lastError = "Invalid addon removal JSON: name is empty";
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Invalid addon removal JSON: name is empty";
+            return false;
         }
         if (key == "")
         {
-            lastError = "Invalid addon removal JSON: key is empty";
-            // TODO : save error to display it in UI in realtime
-            return;
+            this->lastError = "Invalid addon removal JSON: key is empty";
+            return false;
         }
 
         removeExtension(name, key);
     }
-}
-
-void ExtensionServer::_set_state(State state)
-{
-    this->state = state;
+    return true;
 }
 
 std::string ExtensionServer::getIp()
 {
-    if (state != STATE_STARTED)
-        return "";
+    if (this->state != STATE_RUNNING) return "";
     return Network::getInstance()->getIp();
 }
 
 Port ExtensionServer::getPort()
 {
-    if (state != STATE_STARTED)
-        return 0;
+    if (this->state != STATE_RUNNING) return 0;
     return Network::getInstance()->getPort();
 }
 
 bool ExtensionServer::sendMessage(Extension* ext, std::string message)
 {
-    if (state != STATE_STARTED)
+    if (this->state != STATE_RUNNING)
     {
-        lastError = "sendMessage: Server is not started";
+        this->lastError = "sendMessage: Server is not started";
         return false;
     }
-    return Network::getInstance()->sendData(ext->getIp(), ext->getPort(), message);
+    return Network::getInstance()->sendData(
+        ext->getIp(), ext->getPort(),
+        message
+    );
 }
 
 bool ExtensionServer::sendMessage(Extension* ext, unsigned char* data, int length)
 {
-    if (state != STATE_STARTED)
+    if (this->state != STATE_RUNNING)
     {
-        lastError = "sendMessage: Server is not started";
+        this->lastError = "sendMessage: Server is not started";
         return false;
     }
-    return Network::getInstance()->sendData(ext->getIp(), ext->getPort(), data, length);
+    return Network::getInstance()->sendData(
+        ext->getIp(), ext->getPort(),
+        data, length
+    );
+}
+
+void ExtensionServer::update(float dt) {
+    Network* net = Network::getInstance();
+    net->update(dt);
+    if (net->hasPaquets())
+    {
+        std::vector<NetworkPacket> packets = net->getPaquets();
+        for (NetworkPacket packet : packets)
+        {
+            this->_process_packet(packet);
+        }
+    }
 }
