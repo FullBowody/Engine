@@ -1,0 +1,16 @@
+#include "Engine.hpp"
+#include <iostream>
+#define DLLExport __declspec(dllexport)
+
+extern "C"
+{
+    DLLExport Engine* createEngine()
+    {
+        return new Engine();
+    }
+
+    DLLExport void destroyEngine(Engine* e)
+    {
+        delete e;
+    }
+}
