@@ -15,7 +15,7 @@ public:
         this->hGetProcIDDLL = LoadLibraryA(path.c_str());
         if (!hGetProcIDDLL)
         {
-            std::cerr << "Error: Could not load Engine.dll library!" << std::endl;
+            std::cerr << std::endl << "Error: Could not load Engine.dll library!" << std::endl;
             return;
         }
 
@@ -25,7 +25,7 @@ public:
 
         if (!this->engineCreator || !this->engineDestroyer)
         {
-            std::cerr << "Error: Could not locate EngineLoader::createEngine and EngineLoader::destroyEngine!" << std::endl;
+            std::cerr << std::endl << "Error: Could not locate EngineLoader::createEngine and EngineLoader::destroyEngine!" << std::endl;
             return;
         }
     }
