@@ -1,0 +1,75 @@
+@startuml uwu
+title uwu
+
+
+class Engine
+{
+    + addCamera(): Camera*
+    + removeCamera(Camera*): void
+}
+
+' #############################3
+
+class Camera
+{
+    + getFrame(): Frame*
+    + attachListener<CameraEvent>(Callback<CameraEvent>*)
+    + removeListener<CameraEvent>(Callback<CameraEvent>*)
+}
+
+Engine --> Camera : cameras
+
+class BodyTracker
+{
+    + attachListener<BodyTrackerEvent>(Callback<BodyTrackerEvent>*)
+    + removeListener<BodyTrackerEvent>(Callback<BodyTrackerEvent>*)
+}
+BodyTracker --> Body : body
+
+Camera --> BodyTracker : bodyTracker
+
+class ArucoTracker
+{
+    + attachListener<ArucoTrackerEvent>(Callback<ArucoTrackerEvent>*)
+    + removeListener<ArucoTrackerEvent>(Callback<ArucoTrackerEvent>*)
+}
+
+Camera --> ArucoTracker : arucoTracker
+
+' #############################3
+
+class BodyResolver
+{
+    + attachListener<BodyResolverEvent>(Callback<BodyResolverEvent>*)
+    + removeListener<BodyResolverEvent>(Callback<BodyResolverEvent>*)
+}
+BodyResolver --> Body : body
+
+Engine --> BodyResolver : bodyResolver
+
+class Body<Vec3|Vec2>
+{
+
+}
+
+' #############################3
+
+class ExtensionServer
+{
+    + addExtension(Extension*): void
+    + removeExtension(Extension*): void
+
+    + attachListener<ExtensionServerEvent>(Callback<ExtensionServerEvent>*)
+    + removeListener<ExtensionServerEvent>(Callback<ExtensionServerEvent>*)
+}
+
+Engine --> ExtensionServer : extensionServer
+
+class Extension
+{
+    
+}
+
+ExtensionServer --> Extension : extensions
+
+@enduml

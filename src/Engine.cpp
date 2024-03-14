@@ -3,12 +3,34 @@
 
 Engine::Engine()
 {
-    
+    createCamera();
 }
 
 Engine::~Engine()
 {
     
+}
+
+Camera* Engine::createCamera()
+{
+    Camera* camera = new Camera();
+    cameras.push_back(camera);
+    camera->attachListener(this); // TODO : remove this (for testing only)
+    return camera;
+}
+
+int Engine::destroyCamera(Camera* camera)
+{
+    for (int i = 0; i < cameras.size(); i++)
+    {
+        if (cameras[i] == camera)
+        {
+            cameras.erase(cameras.begin() + i);
+            delete camera;
+            return 0;
+        }
+    }
+    return -1;
 }
 
 int Engine::start()
@@ -18,6 +40,10 @@ int Engine::start()
 
 int Engine::update(float dt)
 {
+    for (auto camera : cameras)
+    {
+        camera->update();
+    }
     return 0;
 }
 
@@ -26,19 +52,7 @@ int Engine::stop()
     return 0;
 }
 
-
-    // #include <torch/torch.h>
-    // #include <torch/script.h>
-
-    // std::string modelPath;
-    // std::cout << "Enter model path: ";
-    // std::cin >> modelPath;
-    // std::cout << "Loading model from " << modelPath << "..." << std::endl;
-    // torch::jit::script::Module module = torch::jit::load(modelPath);
-    // std::cout << "Model loaded successfully!" << std::endl;
-
-    // std::vector<torch::jit::IValue> inputs;
-    // inputs.push_back(torch::ones({1, 192, 192, 3}));
-    // at::Tensor output = module.forward(inputs).toTensor();
-
-    // std::cout << "Output: " << output << std::endl;
+void Engine::onEvent(const CameraFrameEvent& event)  // TODO : remove this (for testing only)
+{
+    std::cout << "New frame event !" << std::endl;
+}
