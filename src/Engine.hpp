@@ -4,5 +4,7 @@ public:
     Engine();
     ~Engine();
 
-    virtual void Run();
+    virtual int start();
+    virtual int update(float dt);
+    virtual int stop();
 };

@@ -1,18 +1,27 @@
-// Path: Engine.cpp
 #include "Engine.hpp"
 #include <iostream>
 
 Engine::Engine()
 {
-    std::cout << "Engine::Engine()" << std::endl;
+    
 }
 
 Engine::~Engine()
 {
-    std::cout << "Engine::~Engine()" << std::endl;
+    
 }
 
-void Engine::Run()
+int Engine::start()
 {
-    std::cout << "Engine::Run()" << std::endl;
+    return 0;
+}
+
+int Engine::update(float dt)
+{
+    return 0;
+}
+
+int Engine::stop()
+{
+    return 0;
 }
