@@ -4,12 +4,11 @@ project(Engine)
 find_package(Torch REQUIRED)
 find_package(OpenCV REQUIRED)
 
-file(GLOB_RECURSE Engine_SRC "src/*.cpp" "src/*.tpp")
-file(GLOB_RECURSE Engine_INC "include/*.hpp")
+file(GLOB_RECURSE Engine_SRC "src/*.cpp")
 
 include_directories(include/public include/private)
 
-add_library(Engine SHARED ${Engine_SRC} ${Engine_INC})
+add_library(Engine SHARED ${Engine_SRC})
 set_property(TARGET Engine PROPERTY CXX_STANDARD 17)
 include_directories(${OpenCV_INCLUDE_DIRS} ${TORCH_INCLUDE_DIRS})
 link_directories(${OpenCV_LIB_DIR} ${TORCH_LIB_DIR})
