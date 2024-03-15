@@ -6,10 +6,18 @@ template <class T=EventData>
 class Event
 {
 protected:
+    T data;
+
     Event(const T& data)
         : data(data)
     {
-        std::cout << "> Storing in event address " << &data << " to " << &this->data << " as " << this << std::endl;
+        
+    }
+
+    Event(const Event& event)
+        : data(event.data)
+    {
+        
     }
 
     ~Event()
@@ -18,5 +26,8 @@ protected:
     }
 
 public:
-    const T& data;
+    const T& getData() const
+    {
+        return data;
+    }
 };

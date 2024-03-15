@@ -1,5 +1,7 @@
 #include "Engine.hpp"
 #include <iostream>
+#include <opencv2/opencv.hpp>
+#include "Debug.hpp"
 
 Engine::Engine()
 {
@@ -52,10 +54,7 @@ int Engine::stop()
     return 0;
 }
 
-void Engine::onEvent(const CameraFrameEvent& event)  // TODO : remove this (for testing only)
+void Engine::onEvent(const CameraFrameEvent& event)
 {
-    std::cout << "Got event of address " << &event << std::endl;
-    std::cout << "Got event data of address " << &(event.data) << std::endl;
-    std::cout << "Got event data frame of address : " << &(event.data.frame) << std::endl;
-    // std::cout << "Frame size : " << event.data.frame.width << "x" << event.data.frame.height << std::endl;
+    displayFrame(event.getData().getFrame());
 }

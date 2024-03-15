@@ -16,17 +16,12 @@ int CaptureWebcam::update(float dt)
     cap >> frame;
     if (frame.empty())
         return 0;
-    
-    std::cout << "Creating frame of size " << frame.cols << "x" << frame.rows << " from " << this <<std::endl;
 
-    Frame f(
+    dispatchEvent(CameraFrameEvent(Frame(
         frame.data,
         frame.cols,
-        frame.rows
-    );
-    CameraFrameEvent ev(f);
-    dispatchEvent(ev);
-
-    std::cout << "Done updating, f = " << &f << " ev = " << &ev << " ev.data = " << &(ev.data) << " ev.data.frame" << &(ev.data.frame) << std::endl;
+        frame.rows,
+        frame.channels()
+    )));
     return 0;
 }

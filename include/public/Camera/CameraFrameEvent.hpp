@@ -10,7 +10,13 @@ public:
     CameraFrameEvent(const Frame& frame)
         : Event<CameraFrameEventData>(CameraFrameEventData(frame))
     {
+        
+    }
 
+    CameraFrameEvent(const CameraFrameEvent& event)
+        : Event<CameraFrameEventData>(event.data)
+    {
+        
     }
     
     ~CameraFrameEvent()

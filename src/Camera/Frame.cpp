@@ -7,20 +7,42 @@ Frame::Frame()
 
 }
 
-Frame::Frame(unsigned char* data, int width, int height)
-    : width(width), height(height)
+Frame::Frame(unsigned char* data, int width, int height, int channels)
+    : width(width), height(height), channels(channels)
 {
-    std::cout << "Frame created at address : " << this << std::endl;
+    this->data = new unsigned char[width * height * channels];
+    memcpy(this->data, data, width * height * channels * sizeof(unsigned char));
 }
 
 Frame::Frame(const Frame& frame)
-    : data(frame.data), width(frame.width), height(frame.height)
+    : width(frame.width), height(frame.height), channels(frame.channels)
 {
-    std::cout << "Copying frame of size " << frame.width << "x" << frame.height << std::endl;
-    std::cout << "Object address : " << this << std::endl;
+    data = new unsigned char[width * height * channels];
+    memcpy(data, frame.data, width * height * channels * sizeof(unsigned char));
 }
 
 Frame::~Frame()
 {
-    
+    if (data != nullptr)
+        delete[] data;
+}
+
+const unsigned char* Frame::getData() const
+{
+    return data;
+}
+
+const int Frame::getWidth() const
+{
+    return width;
+}
+
+const int Frame::getHeight() const
+{
+    return height;
+}
+
+const int Frame::getChannels() const
+{
+    return channels;
 }

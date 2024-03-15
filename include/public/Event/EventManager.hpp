@@ -12,7 +12,6 @@ private:
 protected:
     void dispatchEvent(const T& event)
     {
-        std::cout << "> Dispatching event " << &event << " to " << listeners.size() << " listeners as " << this << std::endl;
         for (auto listener : listeners)
         {
             listener->onEvent(event);
