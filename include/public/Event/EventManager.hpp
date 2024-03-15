@@ -1,7 +1,7 @@
 #pragma once
-#include "Event.hpp"
-#include "EventListener.hpp"
 #include <vector>
+#include "Event/Event.hpp"
+#include "Event/EventListener.hpp"
 
 template <class T=Event>
 class EventManager
@@ -12,6 +12,7 @@ private:
 protected:
     void dispatchEvent(const T& event)
     {
+        std::cout << "> Dispatching event " << &event << " to " << listeners.size() << " listeners as " << this << std::endl;
         for (auto listener : listeners)
         {
             listener->onEvent(event);

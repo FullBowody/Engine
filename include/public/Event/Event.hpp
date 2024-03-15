@@ -1,18 +1,15 @@
 #pragma once
-
 #include <string>
-#include "EventData.hpp"
+#include "Event/EventData.hpp"
 
 template <class T=EventData>
 class Event
 {
 protected:
-    const T& data;
-
     Event(const T& data)
         : data(data)
     {
-
+        std::cout << "> Storing in event address " << &data << " to " << &this->data << " as " << this << std::endl;
     }
 
     ~Event()
@@ -20,8 +17,6 @@ protected:
         
     }
 
-    const T& getData() const
-    {
-        return data;
-    }
+public:
+    const T& data;
 };

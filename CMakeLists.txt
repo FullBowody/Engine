@@ -7,7 +7,7 @@ find_package(OpenCV REQUIRED)
 file(GLOB_RECURSE Engine_SRC "src/*.cpp" "src/*.tpp")
 file(GLOB_RECURSE Engine_INC "include/*.hpp")
 
-include_directories(include)
+include_directories(include/public include/private)
 
 add_library(Engine SHARED ${Engine_SRC} ${Engine_INC})
 set_property(TARGET Engine PROPERTY CXX_STANDARD 17)

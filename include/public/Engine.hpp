@@ -2,9 +2,10 @@
 
 #include <vector>
 #include "Camera/Camera.hpp"
-// #include "Event/EventListener.hpp"
+#include "Event/EventListener.hpp"
+#include "Updatable.hpp"
 
-class Engine: private EventListener<CameraFrameEvent>  // TODO : remove this (for testing only)
+class Engine: public Updatable, private EventListener<CameraFrameEvent>
 {
 private:
     std::vector<Camera*> cameras;
@@ -20,5 +21,5 @@ public:
     virtual int update(float dt);
     virtual int stop();
 
-    void onEvent(const CameraFrameEvent& event);  // TODO : remove this (for testing only)
+    void onEvent(const CameraFrameEvent& event);
 };

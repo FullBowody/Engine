@@ -1,5 +1,6 @@
+#pragma once
 #include "Event/Event.hpp"
-#include "CameraFrameEventData.hpp"
+#include "Camera/CameraFrameEventData.hpp"
 
 class CameraFrameEvent: public Event<CameraFrameEventData>
 {

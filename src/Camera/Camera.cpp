@@ -1,23 +1,24 @@
 #include <iostream> 
 #include "Camera/Camera.hpp"
+#include "Camera/CaptureWebcam.hpp"
 
 Camera::Camera()
 {
-    count = 0;
+    cap = new CaptureWebcam(0);
+    cap->attachListener(this);
 }
 
 Camera::~Camera()
 {
-
+    if (cap != nullptr) delete cap;
 }
 
-void Camera::update()
+int Camera::update(float dt)
 {
-    if (count++ > 100)
-    {
-        Frame frame;
-        CameraFrameEvent event(frame);
-        dispatchEvent(event);
-        count = 0;
-    }
+    return cap->update(dt);
+}
+
+void Camera::onEvent(const CameraFrameEvent& event)
+{
+    dispatchEvent(event);
 }

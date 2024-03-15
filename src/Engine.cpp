@@ -42,7 +42,7 @@ int Engine::update(float dt)
 {
     for (auto camera : cameras)
     {
-        camera->update();
+        camera->update(dt);
     }
     return 0;
 }
@@ -54,5 +54,8 @@ int Engine::stop()
 
 void Engine::onEvent(const CameraFrameEvent& event)  // TODO : remove this (for testing only)
 {
-    std::cout << "New frame event !" << std::endl;
+    std::cout << "Got event of address " << &event << std::endl;
+    std::cout << "Got event data of address " << &(event.data) << std::endl;
+    std::cout << "Got event data frame of address : " << &(event.data.frame) << std::endl;
+    // std::cout << "Frame size : " << event.data.frame.width << "x" << event.data.frame.height << std::endl;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "Event.hpp"
+#include "Event/Event.hpp"
 
 template <class T=Event>
 class EventListener
