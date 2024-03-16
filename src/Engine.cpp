@@ -53,8 +53,3 @@ int Engine::stop()
 {
     return 0;
 }
-
-void Engine::onEvent(const CameraFrameEvent& event)
-{
-    displayFrame(event.getData().getFrame());
-}

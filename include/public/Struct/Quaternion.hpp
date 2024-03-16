@@ -4,6 +4,7 @@ class Quaternion
 {
 public:
     static Quaternion Euler(float x, float y, float z);
+    static Quaternion FromRotationMatrix(float* m);
 
     float x, y, z, w;
 

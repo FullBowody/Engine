@@ -8,13 +8,18 @@
 #include "Updatable.hpp"
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"
+#include "Tracker/BodyTracker.hpp"
+#include "Tracker/ArucoTracker.hpp"
 
 class Camera: public Updatable, public EventManager<CameraFrameEvent>, public EventListener<CameraFrameEvent>
 {
 protected:
-    Capture* cap;
     Vec3f position;
     Quaternion rotation;
+
+    Capture* cap;
+    BodyTracker* bodyTracker;
+    ArucoTracker* arucoTracker;
 
     void setCapture(Capture* cap);
 

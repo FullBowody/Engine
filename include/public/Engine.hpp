@@ -5,7 +5,7 @@
 #include "Event/EventListener.hpp"
 #include "Updatable.hpp"
 
-class Engine: public Updatable, public EventListener<CameraFrameEvent>
+class Engine: public Updatable
 {
 private:
     std::vector<Camera*> cameras;
@@ -20,6 +20,4 @@ public:
     virtual int start();
     virtual int update(float dt);
     virtual int stop();
-
-    void onEvent(const CameraFrameEvent& event);
 };

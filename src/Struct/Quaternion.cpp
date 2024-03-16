@@ -18,6 +18,47 @@ Quaternion Quaternion::Euler(float x, float y, float z)
     );
 }
 
+Quaternion Quaternion::FromRotationMatrix(float* m)
+{
+    float t = m[0] + m[4] + m[8];
+    float s, x, y, z, w;
+
+    if (t > 0)
+    {
+        s = 0.5f / sqrt(t + 1);
+        w = 0.25f / s;
+        x = (m[7] - m[5]) * s;
+        y = (m[2] - m[6]) * s;
+        z = (m[3] - m[1]) * s;
+    }
+    else if (m[0] > m[4] && m[0] > m[8])
+    {
+        s = 2 * sqrt(1 + m[0] - m[4] - m[8]);
+        w = (m[7] - m[5]) / s;
+        x = 0.25f * s;
+        y = (m[1] + m[3]) / s;
+        z = (m[2] + m[6]) / s;
+    }
+    else if (m[4] > m[8])
+    {
+        s = 2 * sqrt(1 + m[4] - m[0] - m[8]);
+        w = (m[2] - m[6]) / s;
+        x = (m[1] + m[3]) / s;
+        y = 0.25f * s;
+        z = (m[5] + m[7]) / s;
+    }
+    else
+    {
+        s = 2 * sqrt(1 + m[8] - m[0] - m[4]);
+        w = (m[3] - m[1]) / s;
+        x = (m[2] + m[6]) / s;
+        y = (m[5] + m[7]) / s;
+        z = 0.25f * s;
+    }
+
+    return Quaternion(x, y, z, w);
+}
+
 Quaternion::Quaternion()
     : x(0), y(0), z(0), w(1) {}
 

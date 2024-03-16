@@ -33,22 +33,26 @@ public:
     ~Body();
 };
 
-Body::Body()
+template<class T>
+Body<T>::Body()
 {
 
 }
 
-Body::Body(T* joints)
+template<class T>
+Body<T>::Body(T* joints)
 {
     memcpy(this->joints, joints, sizeof(T) * NB_JOINTS);
 }
 
-Body::Body(const Body& other)
+template<class T>
+Body<T>::Body(const Body& other)
 {
     memcpy(this->joints, other.joints, sizeof(T) * NB_JOINTS);
 }
 
-Body::~Body()
+template<class T>
+Body<T>::~Body()
 {
 
 }

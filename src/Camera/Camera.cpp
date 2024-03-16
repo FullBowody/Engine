@@ -13,11 +13,15 @@ void Camera::setCapture(Capture* cap)
 Camera::Camera()
 {
     this->cap = nullptr;
+    this->bodyTracker = new BodyTracker();
+    this->attachListener(bodyTracker);
 }
 
 Camera::~Camera()
 {
     if (cap) delete cap;
+    if (bodyTracker) delete bodyTracker;
+    if (arucoTracker) delete arucoTracker;
 }
 
 int Camera::update(float dt)
