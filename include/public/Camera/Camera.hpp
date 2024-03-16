@@ -23,8 +23,8 @@ public:
     ~Camera();
 
     int update(float dt);
-    void readDevice(int device);
-    void readStream(std::string url);
+    virtual void readDevice(int device);
+    virtual void readStream(std::string url);
 
     void onEvent(const CameraFrameEvent& event);
 };
