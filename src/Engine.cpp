@@ -17,7 +17,6 @@ Camera* Engine::createCamera()
 {
     Camera* camera = new Camera();
     cameras.push_back(camera);
-    camera->attachListener(this); // TODO : remove this (for testing only)
     return camera;
 }
 
