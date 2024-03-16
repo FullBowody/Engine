@@ -43,7 +43,8 @@ int Engine::update(float dt)
 {
     for (auto camera : cameras)
     {
-        camera->update(dt);
+        int res = camera->update(dt);
+        if (res) return res; // stop update and return error code
     }
     return 0;
 }

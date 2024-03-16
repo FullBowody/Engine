@@ -5,6 +5,7 @@ class CaptureWebcam: public Capture
 {
 private:
     cv::VideoCapture cap;
+    bool ready;
     
 public:
     CaptureWebcam(int deviceId);

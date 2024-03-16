@@ -23,8 +23,7 @@ Frame::Frame(const Frame& frame)
 
 Frame::~Frame()
 {
-    if (data != nullptr)
-        delete[] data;
+    if (data) delete[] data;
 }
 
 const unsigned char* Frame::getData() const

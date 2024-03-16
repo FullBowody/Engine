@@ -6,6 +6,7 @@ class CaptureStream: public Capture
 {
 private:
     cv::VideoCapture cap;
+    bool ready;
     
 public:
     CaptureStream(std::string url);

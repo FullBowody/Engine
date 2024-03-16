@@ -5,26 +5,25 @@
 
 void Camera::setCapture(Capture* cap)
 {
-    if (this->cap != nullptr) delete this->cap;
+    if (this->cap) delete this->cap;
     this->cap = cap;
     this->cap->attachListener(this);
 }
 
 Camera::Camera()
 {
-    
+    this->cap = nullptr;
 }
 
 Camera::~Camera()
 {
-    if (cap != nullptr) delete cap;
+    if (cap) delete cap;
 }
 
 int Camera::update(float dt)
 {
     int res = 0;
-    if (cap != nullptr)
-        res = cap->update(dt);
+    if (cap) res = cap->update(dt);
     return res;
 }
 

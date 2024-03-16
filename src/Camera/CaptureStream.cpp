@@ -2,7 +2,7 @@
 
 CaptureStream::CaptureStream(std::string url)
 {
-    cap.open(url);
+    ready = cap.open(url);
 }
 
 CaptureStream::~CaptureStream()
@@ -12,6 +12,8 @@ CaptureStream::~CaptureStream()
 
 int CaptureStream::update(float dt)
 {
+    if (!ready) return 1;
+
     cv::Mat frame;
     cap >> frame;
     if (frame.empty())

@@ -2,7 +2,7 @@
 
 CaptureWebcam::CaptureWebcam(int deviceId)
 {
-    cap.open(deviceId);
+    ready = cap.open(deviceId);
 }
 
 CaptureWebcam::~CaptureWebcam()
@@ -12,6 +12,8 @@ CaptureWebcam::~CaptureWebcam()
 
 int CaptureWebcam::update(float dt)
 {
+    if (!ready) return 1;
+
     cv::Mat frame;
     cap >> frame;
     if (frame.empty())
