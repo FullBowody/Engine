@@ -5,7 +5,7 @@
 #include "Event/EventListener.hpp"
 #include "Updatable.hpp"
 
-class Engine: public Updatable, private EventListener<CameraFrameEvent>
+class Engine: public Updatable, public EventListener<CameraFrameEvent>
 {
 private:
     std::vector<Camera*> cameras;
