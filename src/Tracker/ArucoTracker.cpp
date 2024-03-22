@@ -70,5 +70,5 @@ void ArucoTracker::onEvent(const CameraFrameEvent& event)
     cv::Mat rotMat(3, 3, CV_32F);
     cv::Rodrigues(rotation, rotMat);
 
-    this->rotation = Quaternion::FromRotationMatrix(rotMat.data);
+    this->rotation = Quaternion::FromRotationMatrix((float*) rotMat.data);
 }

@@ -3,7 +3,7 @@
 #include "Event/Event.hpp"
 #include "Event/EventListener.hpp"
 
-template <class T=Event>
+template <class T>
 class EventManager
 {
 private:

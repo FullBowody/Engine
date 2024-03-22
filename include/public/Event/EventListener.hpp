@@ -1,7 +1,7 @@
 #pragma once
 #include "Event/Event.hpp"
 
-template <class T=Event>
+template <class T>
 class EventListener
 {
 private:

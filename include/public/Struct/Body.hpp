@@ -1,4 +1,5 @@
 #pragma once
+#include <memory.h>
 #include "Struct/Vec2.hpp"
 #include "Struct/Vec3.hpp"
 

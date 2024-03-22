@@ -1,7 +1,6 @@
 #pragma once
 #include "Event/EventListener.hpp"
 #include "Camera/CameraFrameEvent.hpp"
-#include "Struct/Aruco.hpp"
 #include "Struct/Vec2.hpp"
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"

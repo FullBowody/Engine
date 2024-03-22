@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory.h>
 #include "Camera/Frame.hpp"
 
 Frame::Frame()
