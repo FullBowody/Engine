@@ -41,7 +41,14 @@ void Camera::readStream(std::string url)
     setCapture(new CaptureStream(url));
 }
 
+void Camera::reg(EventListener<CameraFrameEvent>* listener)
+{
+    this->attachListener(listener);
+}
+
 void Camera::onEvent(const CameraFrameEvent& event)
 {
+    std::cout << "Camera received event from capture, dispatching." << std::endl;
+    std::cout << " &f = " << &(event.getData().getFrame()) << std::endl;
     dispatchEvent(event);
 }

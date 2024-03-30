@@ -27,9 +27,10 @@ public:
     Camera();
     ~Camera();
 
-    int update(float dt);
+    virtual int update(float dt);
     virtual void readDevice(int device);
     virtual void readStream(std::string url);
 
-    void onEvent(const CameraFrameEvent& event);
+    virtual void onFrame(EventListener<CameraFrameEvent>* listener);
+    virtual void onEvent(const CameraFrameEvent& event);
 };

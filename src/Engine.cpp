@@ -5,7 +5,7 @@
 
 Engine::Engine()
 {
-    createCamera();
+    
 }
 
 Engine::~Engine()
@@ -51,5 +51,7 @@ int Engine::update(float dt)
 
 int Engine::stop()
 {
+    while (!cameras.empty())
+        destroyCamera(cameras[0]);
     return 0;
 }

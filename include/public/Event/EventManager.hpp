@@ -12,6 +12,7 @@ private:
 protected:
     void dispatchEvent(const T& event)
     {
+        std::cout << "dispatch to " << listeners.size() << " listeners" << std::endl;
         for (auto listener : listeners)
         {
             listener->onEvent(event);
@@ -32,11 +33,14 @@ public:
 
     void attachListener(EventListener<T>* listener)
     {
+        std::cout << "void attachListener(EventListener<T>* listener)" << std::endl;
         listeners.push_back(listener);
+        std::cout << "listeners.size() = " << listeners.size() << std::endl;
     }
 
     void detachListener(const EventListener<T>* listener)
     {
+        std::cout << "void detachListener(const EventListener<T>* listener)" << std::endl;
         for (auto it = listeners.begin(); it != listeners.end(); it++)
         {
             if (*it == listener)

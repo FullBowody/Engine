@@ -16,9 +16,11 @@ int CaptureWebcam::update(float dt)
 
     cv::Mat frame;
     cap >> frame;
+    std::cout << "Frame: " << frame.cols << "x" << frame.rows << " - empty = " << frame.empty() << std::endl;
     if (frame.empty())
         return 0;
 
+    std::cout << "Dispatching event" << std::endl;
     dispatchEvent(CameraFrameEvent(Frame(
         frame.data,
         frame.cols,

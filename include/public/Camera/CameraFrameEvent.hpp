@@ -7,20 +7,8 @@ class CameraFrameEvent: public Event<CameraFrameEventData>
 private:
     
 public:
-    CameraFrameEvent(const Frame& frame)
-        : Event<CameraFrameEventData>(CameraFrameEventData(frame))
-    {
-        
-    }
-
-    CameraFrameEvent(const CameraFrameEvent& event)
-        : Event<CameraFrameEventData>(event.data)
-    {
-        
-    }
+    CameraFrameEvent(const Frame& frame);
+    CameraFrameEvent(const CameraFrameEvent& event);
     
-    ~CameraFrameEvent()
-    {
-
-    }
+    ~CameraFrameEvent();
 };

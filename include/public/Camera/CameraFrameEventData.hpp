@@ -9,25 +9,9 @@ private:
     Frame frame;
 
 public:
-    CameraFrameEventData(const Frame& frame)
-        : frame(frame)
-    {
-        
-    }
+    CameraFrameEventData(const Frame& frame);
+    CameraFrameEventData(const CameraFrameEventData& data);
+    ~CameraFrameEventData();
 
-    CameraFrameEventData(const CameraFrameEventData& data)
-        : frame(data.frame)
-    {
-        
-    }
-
-    ~CameraFrameEventData()
-    {
-
-    }
-
-    const Frame& getFrame() const
-    {
-        return frame;
-    }
+    virtual const Frame& getFrame() const;
 };
