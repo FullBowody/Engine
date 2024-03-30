@@ -12,7 +12,7 @@ private:
 
 public:
     Engine();
-    ~Engine();
+    virtual ~Engine();
 
     virtual Camera* createCamera();
     virtual int destroyCamera(Camera* camera);

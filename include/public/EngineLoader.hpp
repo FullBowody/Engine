@@ -15,8 +15,8 @@ private:
 #else
     void* handle;
 #endif
-    Engine *(*engineCreator)();
-    void (*engineDestroyer)(Engine *);
+    Engine *(*engineCreator)() = nullptr;
+    void (*engineDestroyer)(Engine *) = nullptr;
 
 public:
     EngineLoader(std::string path)
@@ -26,6 +26,7 @@ public:
         if (!hGetProcIDDLL)
         {
             std::cerr << std::endl << "Error: Could not load Engine.dll library!" << std::endl;
+            std::cerr << "Error code: " << GetLastError() << std::endl;
             return;
         }
 
@@ -37,6 +38,7 @@ public:
         if (!this->handle)
         {
             std::cerr << std::endl << "Error: Could not load Engine.so library!" << std::endl;
+            std::cerr << "Error: " << dlerror() << std::endl;
             return;
         }
 
@@ -63,11 +65,23 @@ public:
 
     Engine* createEngine()
     {
+        if (!this->engineCreator)
+        {
+            std::cerr << std::endl << "Error: EngineLoader::createEngine not resolved!" << std::endl;
+            return nullptr;
+        }
+
         return this->engineCreator();
     }
 
     void destroyEngine(Engine* e)
     {
+        if (!this->engineDestroyer)
+        {
+            std::cerr << std::endl << "Error: EngineLoader::destroyEngine not resolved!" << std::endl;
+            return;
+        }
+
         this->engineDestroyer(e);
     }
 };
