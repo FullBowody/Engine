@@ -41,7 +41,7 @@ void Camera::readStream(std::string url)
     setCapture(new CaptureStream(url));
 }
 
-void Camera::reg(EventListener<CameraFrameEvent>* listener)
+void Camera::onFrame(EventListener<CameraFrameEvent>* listener)
 {
     this->attachListener(listener);
 }
