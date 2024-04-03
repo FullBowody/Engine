@@ -29,9 +29,9 @@ void ArucoTracker::onEvent(const CameraFrameEvent& event)
     cv::Mat frame = cv::Mat(f.getHeight(), f.getWidth(), CV_8UC3, (void*)f.getData());
 
     // TODO: those things should be taken from somewhere else (settings?)
-    cv::aruco::Dictionary dict = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
-    cv::aruco::DetectorParameters parameters = cv::aruco::DetectorParameters::DetectorParameters();
-    cv::aruco::GridBoard board = cv::aruco::GridBoard::GridBoard(cv::Size(3, 2), 0.0876, 0.005, dict, 0);
+    cv::Ptr<cv::aruco::Dictionary> dict = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+    cv::aruco::DetectorParameters parameters;
+    cv::Ptr<cv::aruco::GridBoard> board = cv::aruco::GridBoard::create(3, 2, 0.0876, 0.005, dict, 0);
 
     std::vector<int> ids;
     std::vector<std::vector<cv::Point2f>> corners;
@@ -39,7 +39,7 @@ void ArucoTracker::onEvent(const CameraFrameEvent& event)
 
     cv::aruco::detectMarkers(
         frame,
-        &dict,
+        dict,
         corners,
         ids,
         &parameters,
@@ -54,7 +54,7 @@ void ArucoTracker::onEvent(const CameraFrameEvent& event)
     cv::aruco::estimatePoseBoard(
         corners,
         ids,
-        &board,
+        board.staticCast<cv::aruco::Board>(),
         camMatrix,
         distCoeffs,
         rotation,
@@ -71,4 +71,7 @@ void ArucoTracker::onEvent(const CameraFrameEvent& event)
     cv::Rodrigues(rotation, rotMat);
 
     this->rotation = Quaternion::FromRotationMatrix((float*) rotMat.data);
+
+    board.release();
+    dict.release();
 }
