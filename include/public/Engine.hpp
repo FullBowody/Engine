@@ -15,7 +15,8 @@ public:
     ~Engine();
 
     virtual Camera* createCamera();
-    virtual int destroyCamera(Camera* camera);
+    virtual bool destroyCamera(int index);
+    virtual const std::vector<Camera*>& getCameras();
 
     virtual int start();
     virtual int update(float dt);

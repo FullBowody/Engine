@@ -20,18 +20,18 @@ Camera* Engine::createCamera()
     return camera;
 }
 
-int Engine::destroyCamera(Camera* camera)
+bool Engine::destroyCamera(int index)
 {
-    for (int i = 0; i < cameras.size(); i++)
-    {
-        if (cameras[i] == camera)
-        {
-            cameras.erase(cameras.begin() + i);
-            delete camera;
-            return 0;
-        }
-    }
-    return -1;
+    if (index < 0 || index >= cameras.size())
+        return false;
+    delete cameras.at(index);
+    cameras.erase(cameras.begin() + index);
+    return true;
+}
+
+const std::vector<Camera*>& Engine::getCameras()
+{
+    return cameras;
 }
 
 int Engine::start()
@@ -52,6 +52,6 @@ int Engine::update(float dt)
 int Engine::stop()
 {
     while (!cameras.empty())
-        destroyCamera(cameras[0]);
+        destroyCamera(0);
     return 0;
 }

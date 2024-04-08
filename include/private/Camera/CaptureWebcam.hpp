@@ -12,4 +12,5 @@ public:
     ~CaptureWebcam();
 
     int update(float dt);
+    const Frame& getFrame() const;
 };

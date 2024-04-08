@@ -13,4 +13,5 @@ public:
     ~CaptureStream();
 
     int update(float dt);
+    const Frame& getFrame() const;
 };

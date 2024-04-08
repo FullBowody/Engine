@@ -18,4 +18,6 @@ public:
     virtual const int getWidth() const;
     virtual const int getHeight() const;
     virtual const int getChannels() const;
+
+    virtual unsigned char* encodeJPG(int quality = 80, int* size = nullptr) const;
 };

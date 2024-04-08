@@ -16,7 +16,6 @@ target_link_libraries(Engine ${OpenCV_LIBS} ${TORCH_LIBRARIES})
 
 if (MSVC)
     file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
-    list(GET CMAKE_CONFIGURATION_TYPES 0 CMAKE_BUILD_TYPE)
     list(GET OpenCV_INCLUDE_DIRS 0 OpenCV_INSTALL_PREFIX)
     file(GLOB OPENCV_DLLS "${OpenCV_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/*.dll")
     
