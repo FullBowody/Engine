@@ -7,7 +7,7 @@ CaptureStream::CaptureStream(std::string url)
 
 CaptureStream::~CaptureStream()
 {
-    
+    cap.release();
 }
 
 int CaptureStream::update(float dt)
@@ -19,17 +19,11 @@ int CaptureStream::update(float dt)
     if (mat.empty())
         return 0;
 
-    frame = Frame(
+    dispatchEvent(CameraFrameEvent(Frame(
         mat.data,
         mat.cols,
         mat.rows,
         mat.channels()
-    );
-    dispatchEvent(CameraFrameEvent(frame));
+    )));
     return 0;
-}
-
-const Frame& CaptureStream::getFrame() const
-{
-    return frame;
 }

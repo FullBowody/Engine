@@ -14,6 +14,7 @@ Camera::Camera()
 {
     this->cap = nullptr;
     this->bodyTracker = new BodyTracker();
+    this->arucoTracker = nullptr;
     this->attachListener(bodyTracker);
 }
 
@@ -39,11 +40,6 @@ void Camera::readDevice(int device)
 void Camera::readStream(std::string url)
 {
     setCapture(new CaptureStream(url));
-}
-
-const Frame& Camera::getFrame() const
-{
-    return cap->getFrame();
 }
 
 void Camera::onFrame(FrameListener listener)

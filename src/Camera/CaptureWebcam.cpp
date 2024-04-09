@@ -11,7 +11,7 @@ CaptureWebcam::CaptureWebcam(int deviceId)
 
 CaptureWebcam::~CaptureWebcam()
 {
-    
+    cap.release();
 }
 
 int CaptureWebcam::update(float dt)
@@ -23,17 +23,11 @@ int CaptureWebcam::update(float dt)
     if (mat.empty())
         return 0;
 
-    frame = Frame(
+    dispatchEvent(CameraFrameEvent(Frame(
         mat.data,
         mat.cols,
         mat.rows,
         mat.channels()
-    );
-    dispatchEvent(CameraFrameEvent(frame));
+    )));
     return 0;
-}
-
-const Frame& CaptureWebcam::getFrame() const
-{
-    return frame;
 }

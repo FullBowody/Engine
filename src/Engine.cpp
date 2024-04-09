@@ -26,6 +26,7 @@ bool Engine::destroyCamera(int index)
         return false;
     delete cameras.at(index);
     cameras.erase(cameras.begin() + index);
+    cameras.shrink_to_fit();
     return true;
 }
 

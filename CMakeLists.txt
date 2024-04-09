@@ -18,7 +18,10 @@ if (MSVC)
     file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
     list(GET OpenCV_INCLUDE_DIRS 0 OpenCV_INSTALL_PREFIX)
     file(GLOB OPENCV_DLLS "${OpenCV_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/*.dll")
-    
+
+    if (CMAKE_BUILD_TYPE STREQUAL "")
+        message(FATAL_ERROR "CMAKE_BUILD_TYPE not set")
+    endif (CMAKE_BUILD_TYPE STREQUAL "")
     if (TORCH_DLLS STREQUAL "")
         message(FATAL_ERROR "PyTorch DLLs not found, install prefix is [${TORCH_INSTALL_PREFIX}] with prefix path being [${CMAKE_PREFIX_PATH}]")
     endif (TORCH_DLLS STREQUAL "")

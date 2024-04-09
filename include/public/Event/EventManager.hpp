@@ -32,7 +32,8 @@ public:
 
     void attachListener(EventListener<T>* listener)
     {
-        listeners.push_back(listener);
+        if (listener != nullptr)
+            listeners.push_back(listener);
     }
 
     void detachListener(const EventListener<T>* listener)

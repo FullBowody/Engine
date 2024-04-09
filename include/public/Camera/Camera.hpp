@@ -36,8 +36,6 @@ public:
     virtual void readDevice(int device);
     virtual void readStream(std::string url);
 
-    virtual const Frame& getFrame() const;
-
     virtual void onFrame(FrameListener listener);
     virtual void onEvent(const CameraFrameEvent& event);
 };
