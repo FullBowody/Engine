@@ -30,6 +30,21 @@ bool Engine::destroyCamera(int index)
     return true;
 }
 
+bool Engine::destroyCamera(Camera* camera)
+{
+    for (int i = 0; i < cameras.size(); i++)
+    {
+        if (cameras.at(i) == camera)
+        {
+            delete camera;
+            cameras.erase(cameras.begin() + i);
+            cameras.shrink_to_fit();
+            return true;
+        }
+    }
+    return false;
+}
+
 Camera* Engine::getCamera(int index)
 {
     if (index < 0 || index >= cameras.size())
