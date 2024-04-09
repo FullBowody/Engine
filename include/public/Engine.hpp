@@ -16,6 +16,7 @@ public:
 
     virtual Camera* createCamera();
     virtual bool destroyCamera(int index);
+    virtual Camera* getCamera(int index);
     virtual const std::vector<Camera*>& getCameras();
 
     virtual int start();

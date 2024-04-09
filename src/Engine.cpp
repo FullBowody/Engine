@@ -29,6 +29,13 @@ bool Engine::destroyCamera(int index)
     return true;
 }
 
+Camera* Engine::getCamera(int index)
+{
+    if (index < 0 || index >= cameras.size())
+        return nullptr;
+    return cameras.at(index);
+}
+
 const std::vector<Camera*>& Engine::getCameras()
 {
     return cameras;
