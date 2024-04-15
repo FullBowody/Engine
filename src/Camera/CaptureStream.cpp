@@ -3,6 +3,15 @@
 CaptureStream::CaptureStream(std::string url)
 {
     ready = cap.open(url);
+    if (!ready)
+    {
+        std::cerr << "CaptureStream: failed to open " << url << std::endl;
+        return;
+    }
+
+    width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
+    height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+    fps = cap.get(cv::CAP_PROP_FPS);
 }
 
 CaptureStream::~CaptureStream()

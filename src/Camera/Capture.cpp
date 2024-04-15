@@ -10,3 +10,18 @@ Capture::~Capture()
 {
     
 }
+
+int Capture::getWidth() const
+{
+    return width;
+}
+
+int Capture::getHeight() const
+{
+    return height;
+}
+
+int Capture::getFps() const
+{
+    return fps;
+}

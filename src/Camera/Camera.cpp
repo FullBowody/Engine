@@ -42,6 +42,11 @@ void Camera::readStream(std::string url)
     setCapture(new CaptureStream(url));
 }
 
+const Capture& Camera::getCapture() const
+{
+    return *cap;
+}
+
 void Camera::onFrame(FrameListener listener)
 {
     frameListeners.push_back(listener);

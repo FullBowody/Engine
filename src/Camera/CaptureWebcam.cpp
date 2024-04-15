@@ -7,6 +7,15 @@ CaptureWebcam::CaptureWebcam(int deviceId)
 #else
     ready = cap.open(deviceId);
 #endif
+    if (!ready)
+    {
+        std::cerr << "CaptureStream: failed to open " << deviceId << std::endl;
+        return;
+    }
+
+    width = cap.get(cv::CAP_PROP_FRAME_WIDTH);
+    height = cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+    fps = cap.get(cv::CAP_PROP_FPS);
 }
 
 CaptureWebcam::~CaptureWebcam()
