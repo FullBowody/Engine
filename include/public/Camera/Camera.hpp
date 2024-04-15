@@ -36,7 +36,9 @@ public:
     virtual void readDevice(int device);
     virtual void readStream(std::string url);
 
-    virtual const Capture& getCapture() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual int getFps() const;
 
     virtual void onFrame(FrameListener listener);
     virtual void onEvent(const CameraFrameEvent& event);

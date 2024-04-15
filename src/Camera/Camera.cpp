@@ -42,9 +42,22 @@ void Camera::readStream(std::string url)
     setCapture(new CaptureStream(url));
 }
 
-const Capture& Camera::getCapture() const
+int Camera::getWidth() const
 {
-    return *cap;
+    if (!cap) return 0;
+    return cap->getWidth();
+}
+
+int Camera::getHeight() const
+{
+    if (!cap) return 0;
+    return cap->getHeight();
+}
+
+int Camera::getFps() const
+{
+    if (!cap) return 0;
+    return cap->getFps();
 }
 
 void Camera::onFrame(FrameListener listener)
