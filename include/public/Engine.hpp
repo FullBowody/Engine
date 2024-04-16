@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "Camera/Camera.hpp"
-#include "Event/EventListener.hpp"
 #include "Updatable.hpp"
 
 class Engine: public Updatable

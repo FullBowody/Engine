@@ -23,5 +23,5 @@ int Capture::getHeight() const
 
 int Capture::getFps() const
 {
-    return fps;
+    return fps; // TODO : update that with the real fps (at update)
 }

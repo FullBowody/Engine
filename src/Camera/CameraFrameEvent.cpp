@@ -1,13 +1,13 @@
 #include "Camera/CameraFrameEvent.hpp"
 
 CameraFrameEvent::CameraFrameEvent(const Frame& frame)
-    : Event<CameraFrameEventData>(CameraFrameEventData(frame))
+    : frame(frame)
 {
     
 }
 
 CameraFrameEvent::CameraFrameEvent(const CameraFrameEvent& event)
-    : Event<CameraFrameEventData>(event.data)
+    : frame(event.frame)
 {
     
 }
@@ -15,4 +15,9 @@ CameraFrameEvent::CameraFrameEvent(const CameraFrameEvent& event)
 CameraFrameEvent::~CameraFrameEvent()
 {
 
+}
+
+const Frame& CameraFrameEvent::getFrame() const
+{
+    return frame;
 }

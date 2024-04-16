@@ -7,15 +7,18 @@ void Camera::setCapture(Capture* cap)
 {
     if (this->cap) delete this->cap;
     this->cap = cap;
-    this->cap->attachListener(this);
+    this->cap->attachListener([this](const CameraFrameEvent& event) {
+        if (this->bodyTracker) this->bodyTracker->onCameraFrame(event);
+        if (this->arucoTracker) this->arucoTracker->onCameraFrame(event);
+        this->dispatchEvent(event);
+    });
 }
 
 Camera::Camera()
 {
     this->cap = nullptr;
-    this->bodyTracker = new BodyTracker();
+    this->bodyTracker = nullptr;
     this->arucoTracker = nullptr;
-    this->attachListener(bodyTracker);
 }
 
 Camera::~Camera()
@@ -58,16 +61,4 @@ int Camera::getFps() const
 {
     if (!cap) return 0;
     return cap->getFps();
-}
-
-void Camera::onFrame(FrameListener listener)
-{
-    frameListeners.push_back(listener);
-}
-
-void Camera::onEvent(const CameraFrameEvent& event)
-{
-    for (auto listener: frameListeners)
-        listener(event);
-    dispatchEvent(event);
 }

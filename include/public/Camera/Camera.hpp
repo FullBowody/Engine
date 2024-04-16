@@ -1,9 +1,7 @@
 #pragma once
 #include <string>
 #include <functional>
-#include "Event/Event.hpp"
 #include "Event/EventManager.hpp"
-#include "Event/EventListener.hpp"
 #include "Camera/CameraFrameEvent.hpp"
 #include "Camera/Capture.hpp"
 #include "Updatable.hpp"
@@ -12,13 +10,9 @@
 #include "Tracker/BodyTracker.hpp"
 #include "Tracker/ArucoTracker.hpp"
 
-typedef std::function<void(const CameraFrameEvent&)> FrameListener;
-
-class Camera: public Updatable, public EventManager<CameraFrameEvent>, public EventListener<CameraFrameEvent>
+class Camera: public Updatable, public EventManager<CameraFrameEvent>
 {
 protected:
-    std::vector<FrameListener> frameListeners;
-
     Vec3f position;
     Quaternion rotation;
 
@@ -39,7 +33,4 @@ public:
     virtual int getWidth() const;
     virtual int getHeight() const;
     virtual int getFps() const;
-
-    virtual void onFrame(FrameListener listener);
-    virtual void onEvent(const CameraFrameEvent& event);
 };

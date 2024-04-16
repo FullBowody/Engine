@@ -1,9 +1,8 @@
 #pragma once
 #include "Struct/Body.hpp"
-#include "Event/EventListener.hpp"
 #include "Camera/CameraFrameEvent.hpp"
 
-class BodyTracker: public EventListener<CameraFrameEvent>
+class BodyTracker
 {
 private:
     Body2D body;
@@ -12,7 +11,7 @@ public:
     BodyTracker();
     ~BodyTracker();
 
-    void onEvent(const CameraFrameEvent& event);
+    void onCameraFrame(const CameraFrameEvent& event);
 
     const Body2D getTrackedBody() const;
 };

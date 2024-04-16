@@ -23,9 +23,9 @@ const Quaternion ArucoTracker::getTrackedRotation() const
     return this->rotation;
 }
 
-void ArucoTracker::onEvent(const CameraFrameEvent& event)
+void ArucoTracker::onCameraFrame(const CameraFrameEvent& event)
 {
-    const Frame& f = event.getData().getFrame();
+    const Frame& f = event.getFrame();
     cv::Mat frame = cv::Mat(f.getHeight(), f.getWidth(), CV_8UC3, (void*)f.getData());
 
     // TODO: those things should be taken from somewhere else (settings?)

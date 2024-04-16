@@ -10,7 +10,7 @@ BodyTracker::~BodyTracker()
 
 }
 
-void BodyTracker::onEvent(const CameraFrameEvent& event)
+void BodyTracker::onCameraFrame(const CameraFrameEvent& event)
 {
 
 }

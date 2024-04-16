@@ -1,11 +1,10 @@
 #pragma once
-#include "Event/EventListener.hpp"
 #include "Camera/CameraFrameEvent.hpp"
 #include "Struct/Vec2.hpp"
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"
 
-class ArucoTracker: public EventListener<CameraFrameEvent>
+class ArucoTracker
 {
 private:
     Vec3f position;
@@ -18,5 +17,5 @@ public:
     const Vec3f getTrackedPosition() const;
     const Quaternion getTrackedRotation() const;
 
-    void onEvent(const CameraFrameEvent& event);
+    void onCameraFrame(const CameraFrameEvent& event);
 };
