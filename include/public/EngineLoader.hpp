@@ -2,9 +2,15 @@
 #include "Engine.hpp"
 
 #ifdef _WIN32
-#include <windows.h>
+#include <Windows.h>
 #else
 #include <dlfcn.h>
+#endif
+
+#ifdef _WIN32
+const std::string ENGINE_LIB = "./Engine.dll";
+#else
+const std::string ENGINE_LIB = "./libEngine.so";
 #endif
 
 class EngineLoader
@@ -18,11 +24,22 @@ private:
     Engine *(*engineCreator)() = nullptr;
     void (*engineDestroyer)(Engine *) = nullptr;
 
-public:
-    EngineLoader(std::string path)
+    void setLoadPath(std::string path)
     {
 #ifdef _WIN32
-        this->hGetProcIDDLL = LoadLibraryA(path.c_str());
+        // add path to Engine.dll to search
+        SetDllDirectoryA(path.c_str());
+#else
+        // set path to Engine.so
+        this->path = path;
+#endif
+    }
+
+    void loadEngine()
+    {
+#ifdef _WIN32
+        // load Engine.dll
+        this->hGetProcIDDLL = LoadLibraryA(ENGINE_LIB.c_str());
         if (!hGetProcIDDLL)
         {
             std::cerr << std::endl << "Error: Could not load Engine.dll library!" << std::endl;
@@ -34,6 +51,7 @@ public:
         this->engineCreator = (Engine *(*)()) GetProcAddress(hGetProcIDDLL, "createEngine");
         this->engineDestroyer = (void (*)(Engine *)) GetProcAddress(hGetProcIDDLL, "destroyEngine");
 #else
+        this->path = path + "/" + ENGINE_LIB;
         this->handle = dlopen(path.c_str(), RTLD_LAZY);
         if (!this->handle)
         {
@@ -54,13 +72,30 @@ public:
         }
     }
 
-    ~EngineLoader()
+    void unloadEngine()
     {
 #ifdef _WIN32
         FreeLibrary(this->hGetProcIDDLL);
 #else
         dlclose(this->handle);
 #endif
+    }
+
+public:
+    EngineLoader()
+    {
+        loadEngine();
+    }
+
+    EngineLoader(std::string path)
+    {
+        setLoadPath(path);
+        loadEngine();
+    }
+
+    ~EngineLoader()
+    {
+        unloadEngine();
     }
 
     Engine* createEngine()
