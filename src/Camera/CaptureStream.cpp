@@ -1,15 +1,11 @@
-#include "Camera/CaptureWebcam.hpp"
+#include "Camera/CaptureStream.hpp"
 
-CaptureWebcam::CaptureWebcam(int deviceId)
+CaptureStream::CaptureStream(std::string url)
 {
-#ifdef _WIN32
-    ready = cap.open(deviceId, cv::CAP_DSHOW);
-#else
-    ready = cap.open(deviceId);
-#endif
+    ready = cap.open(url);
     if (!ready)
     {
-        std::cerr << "CaptureStream: failed to open " << deviceId << std::endl;
+        std::cerr << "CaptureStream: failed to open " << url << std::endl;
         return;
     }
 
@@ -18,12 +14,12 @@ CaptureWebcam::CaptureWebcam(int deviceId)
     fps = cap.get(cv::CAP_PROP_FPS);
 }
 
-CaptureWebcam::~CaptureWebcam()
+CaptureStream::~CaptureStream()
 {
     cap.release();
 }
 
-int CaptureWebcam::update(float dt)
+int CaptureStream::update(float dt)
 {
     if (!ready) return 1;
 

@@ -7,8 +7,14 @@
 class Capture: public Updatable, public EventManager<CameraFrameEvent>
 {
 protected:
+    int width;
+    int height;
+    int fps;
     Capture();
 
 public:
-    ~Capture();
+    virtual ~Capture();
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual int getFps() const;
 };

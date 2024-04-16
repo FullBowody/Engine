@@ -1,26 +1,16 @@
 #pragma once
-#include "Event/Event.hpp"
-#include "Camera/CameraFrameEventData.hpp"
+#include "Camera/Frame.hpp"
+#include <iostream>
 
-class CameraFrameEvent: public Event<CameraFrameEventData>
+class CameraFrameEvent
 {
 private:
-    
+    Frame frame;
+
 public:
-    CameraFrameEvent(const Frame& frame)
-        : Event<CameraFrameEventData>(CameraFrameEventData(frame))
-    {
-        
-    }
+    CameraFrameEvent(const Frame& frame);
+    CameraFrameEvent(const CameraFrameEvent& data);
+    ~CameraFrameEvent();
 
-    CameraFrameEvent(const CameraFrameEvent& event)
-        : Event<CameraFrameEventData>(event.data)
-    {
-        
-    }
-    
-    ~CameraFrameEvent()
-    {
-
-    }
+    virtual const Frame& getFrame() const;
 };

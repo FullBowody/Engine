@@ -14,8 +14,10 @@ public:
     Frame(const Frame& frame);
     ~Frame();
 
-    const unsigned char* getData() const;
-    const int getWidth() const;
-    const int getHeight() const;
-    const int getChannels() const;
+    virtual const unsigned char* getData() const;
+    virtual const int getWidth() const;
+    virtual const int getHeight() const;
+    virtual const int getChannels() const;
+
+    virtual unsigned char* encodeJPG(int quality = 80, int* size = nullptr) const;
 };

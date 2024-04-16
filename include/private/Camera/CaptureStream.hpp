@@ -1,15 +1,16 @@
+#include <string>
 #include <opencv2/opencv.hpp>
 #include "Camera/Capture.hpp"
 
-class CaptureWebcam: public Capture
+class CaptureStream: public Capture
 {
 private:
     cv::VideoCapture cap;
     bool ready;
     
 public:
-    CaptureWebcam(int deviceId);
-    ~CaptureWebcam();
+    CaptureStream(std::string url);
+    ~CaptureStream();
 
     int update(float dt);
 };

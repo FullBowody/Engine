@@ -15,19 +15,25 @@ link_directories(${OpenCV_LIB_DIR} ${TORCH_LIB_DIR})
 target_link_libraries(Engine ${OpenCV_LIBS} ${TORCH_LIBRARIES})
 
 if (MSVC)
-    file (GLOB Engine_bin "bin/*.dll" "lib/*.dll")
-    add_custom_target(CopyDlls POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${Engine_bin} $<TARGET_FILE_DIR:Engine>
-    )
     file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
+    list(GET OpenCV_INCLUDE_DIRS 0 OpenCV_INSTALL_PREFIX)
+    file(GLOB OPENCV_DLLS "${OpenCV_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/*.dll")
+
+    if (CMAKE_BUILD_TYPE STREQUAL "")
+        message(FATAL_ERROR "CMAKE_BUILD_TYPE not set")
+    endif (CMAKE_BUILD_TYPE STREQUAL "")
+    if (TORCH_DLLS STREQUAL "")
+        message(FATAL_ERROR "PyTorch DLLs not found, install prefix is [${TORCH_INSTALL_PREFIX}] with prefix path being [${CMAKE_PREFIX_PATH}]")
+    endif (TORCH_DLLS STREQUAL "")
+    if (OpenCV_DLLS STREQUAL "")
+        message(FATAL_ERROR "OpenCV DLLs not found, install prefix is [${OpenCV_INSTALL_PREFIX}]")
+    endif (OpenCV_DLLS STREQUAL "")
+
     add_custom_command(TARGET Engine
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${TORCH_DLLS}
         $<TARGET_FILE_DIR:Engine>)
-    list(GET CMAKE_CONFIGURATION_TYPES 0 CMAKE_BUILD_TYPE)
-    list(GET OpenCV_INCLUDE_DIRS 0 OpenCV_INSTALL_PREFIX)
-    file(GLOB OPENCV_DLLS "${OpenCV_INSTALL_PREFIX}/bin/${CMAKE_BUILD_TYPE}/*.dll")
     add_custom_command(TARGET Engine
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different

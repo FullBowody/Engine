@@ -1,21 +1,36 @@
 #pragma once
-#include "Event/Event.hpp"
+#include <string>
+#include <functional>
 #include "Event/EventManager.hpp"
-#include "Event/EventListener.hpp"
 #include "Camera/CameraFrameEvent.hpp"
 #include "Camera/Capture.hpp"
 #include "Updatable.hpp"
+#include "Struct/Vec3.hpp"
+#include "Struct/Quaternion.hpp"
+#include "Tracker/BodyTracker.hpp"
+#include "Tracker/ArucoTracker.hpp"
 
-class Camera: public Updatable, public EventManager<CameraFrameEvent>, public EventListener<CameraFrameEvent>
+class Camera: public Updatable, public EventManager<CameraFrameEvent>
 {
-private:
+protected:
+    Vec3f position;
+    Quaternion rotation;
+
     Capture* cap;
+    BodyTracker* bodyTracker;
+    ArucoTracker* arucoTracker;
+
+    void setCapture(Capture* cap);
 
 public:
     Camera();
     ~Camera();
 
-    int update(float dt);
+    virtual int update(float dt);
+    virtual void readDevice(int device);
+    virtual void readStream(std::string url);
 
-    void onEvent(const CameraFrameEvent& event);
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual int getFps() const;
 };

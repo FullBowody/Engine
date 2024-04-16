@@ -1,21 +1,21 @@
 #pragma once
 #include <vector>
-#include "Event/Event.hpp"
-#include "Event/EventListener.hpp"
+#include <functional>
 
-template <class T=Event>
+template <class T>
+using EventListener = std::function<void(const T&)>;
+
+template <class T>
 class EventManager
 {
 private:
-    std::vector<EventListener<T>*> listeners;
+    std::vector<EventListener<T>> listeners;
 
 protected:
     void dispatchEvent(const T& event)
     {
-        for (auto listener : listeners)
-        {
-            listener->onEvent(event);
-        }
+        for (EventListener<T> listener : listeners)
+            listener(event);
     }
 
 public:
@@ -30,12 +30,13 @@ public:
     }
 
 
-    void attachListener(EventListener<T>* listener)
+    void attachListener(EventListener<T> listener)
     {
-        listeners.push_back(listener);
+        if (listener != nullptr)
+            listeners.push_back(listener);
     }
 
-    void detachListener(const EventListener<T>* listener)
+    void detachListener(EventListener<T> listener)
     {
         for (auto it = listeners.begin(); it != listeners.end(); it++)
         {

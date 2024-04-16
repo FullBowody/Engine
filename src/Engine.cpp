@@ -5,7 +5,7 @@
 
 Engine::Engine()
 {
-    createCamera();
+    
 }
 
 Engine::~Engine()
@@ -17,22 +17,44 @@ Camera* Engine::createCamera()
 {
     Camera* camera = new Camera();
     cameras.push_back(camera);
-    camera->attachListener(this); // TODO : remove this (for testing only)
     return camera;
 }
 
-int Engine::destroyCamera(Camera* camera)
+bool Engine::destroyCamera(int index)
+{
+    if (index < 0 || index >= cameras.size())
+        return false;
+    delete cameras.at(index);
+    cameras.erase(cameras.begin() + index);
+    cameras.shrink_to_fit();
+    return true;
+}
+
+bool Engine::destroyCamera(Camera* camera)
 {
     for (int i = 0; i < cameras.size(); i++)
     {
-        if (cameras[i] == camera)
+        if (cameras.at(i) == camera)
         {
-            cameras.erase(cameras.begin() + i);
             delete camera;
-            return 0;
+            cameras.erase(cameras.begin() + i);
+            cameras.shrink_to_fit();
+            return true;
         }
     }
-    return -1;
+    return false;
+}
+
+Camera* Engine::getCamera(int index)
+{
+    if (index < 0 || index >= cameras.size())
+        return nullptr;
+    return cameras.at(index);
+}
+
+const std::vector<Camera*>& Engine::getCameras()
+{
+    return cameras;
 }
 
 int Engine::start()
@@ -44,17 +66,15 @@ int Engine::update(float dt)
 {
     for (auto camera : cameras)
     {
-        camera->update(dt);
+        int res = camera->update(dt);
+        if (res) return res; // stop update and return error code
     }
     return 0;
 }
 
 int Engine::stop()
 {
+    while (!cameras.empty())
+        destroyCamera(0);
     return 0;
-}
-
-void Engine::onEvent(const CameraFrameEvent& event)
-{
-    displayFrame(event.getData().getFrame());
 }
