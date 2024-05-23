@@ -27,6 +27,12 @@ int CaptureStream::update(float dt)
     cap >> mat;
     if (mat.empty())
         return 0;
+        
+    std::chrono::milliseconds now = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::system_clock::now().time_since_epoch()
+    );
+    fps = 1000.0f / (now - lastFrameTime).count();
+    lastFrameTime = now;
 
     dispatchEvent(CameraFrameEvent(Frame(
         mat.data,
