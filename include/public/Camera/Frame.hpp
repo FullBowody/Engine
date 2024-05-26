@@ -19,5 +19,6 @@ public:
     virtual const int getHeight() const;
     virtual const int getChannels() const;
 
-    virtual unsigned char* encodeJPG(int quality = 80, int* size = nullptr) const;
+    // TODO : Use STB library to encode image instead of OpenCV
+    // virtual unsigned char* encodeJPG(int quality = 80, int* size = nullptr) const;
 };
