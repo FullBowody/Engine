@@ -6,8 +6,9 @@
 #include "Struct/Pose.hpp"
 #include "Struct/Body.hpp"
 #include "Camera/Frame.hpp"
+#include "Param/ParamManager.hpp"
 
-class Camera: public Updatable
+class Camera: public Updatable, public ParamManager
 {
 private:
     int width;
