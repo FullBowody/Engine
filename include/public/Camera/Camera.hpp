@@ -3,19 +3,51 @@
 #include <functional>
 #include "Event/EventManager.hpp"
 #include "Updatable.hpp"
-#include "Struct/Vec3.hpp"
-#include "Struct/Quaternion.hpp"
+#include "Struct/Pose.hpp"
+#include "Struct/Body.hpp"
+#include "Camera/Frame.hpp"
 
 class Camera: public Updatable
 {
+private:
+    int width;
+    int height;
+    bool _shouldTrack;
+    Pose pose;
+    Frame preview;
+    Body2D body;
+
+    EventManager<const Frame&> onPreviewEvent;
+    EventManager<const Pose&> onPoseEvent;
+    EventManager<const Body2D&> onBodyEvent;
+
 protected:
-    Vec3f position;
-    Quaternion rotation;
+    void setPose(const Pose& pose);
+    void setPreview(const Frame& preview);
+    void setBody(const Body2D& body);
+    bool shouldTrack() const;
+
+    virtual int onUpdate(float dt) = 0;
+    virtual int onStartTracking() = 0;
+    virtual int onStopTracking() = 0;
+    virtual int onCalculatePos() = 0;
 
 public:
     Camera();
     ~Camera();
-    virtual int update(float dt);
-    virtual int getWidth() const;
-    virtual int getHeight() const;
+    
+    int update(float dt);
+    int startTracking();
+    int stopTracking();
+    int calculatePos();
+
+    void onPreview(Callback<const Frame&>* listener);
+    void onPose(Callback<const Pose&>* listener);
+    void onBody(Callback<const Body2D&>* listener);
+
+    int getWidth() const;
+    int getHeight() const;
+    const Frame& getPreview() const;
+    const Pose& getPose() const;
+    const Body2D& getBody(float dt_since_updt) const;
 };

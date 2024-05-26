@@ -1,7 +1,5 @@
 #include "Engine.hpp"
 #include <iostream>
-#include <opencv2/opencv.hpp>
-#include "Debug.hpp"
 
 Engine::Engine()
 {
@@ -15,7 +13,7 @@ Engine::~Engine()
 
 Camera* Engine::createCamera()
 {
-    Camera* camera = new Camera();
+    Camera* camera = nullptr; // TODO : Implement plugins for different camera types
     cameras.push_back(camera);
     return camera;
 }
