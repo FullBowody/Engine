@@ -23,9 +23,9 @@ private:
     EventManager<const Body2D&> onBodyEvent;
 
 protected:
-    void setPose(const Pose& pose);
-    void setPreview(const Frame& preview);
-    void setBody(const Body2D& body);
+    void setPose(Pose pose);
+    void setPreview(Frame preview);
+    void setBody(Body2D body);
     bool shouldTrack() const;
 
     virtual int onUpdate(float dt) = 0;

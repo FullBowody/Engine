@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "Plugins/PluginLoader.hpp"
 
 template <class T>

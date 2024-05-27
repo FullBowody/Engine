@@ -11,13 +11,13 @@ Camera::~Camera()
     
 }
 
-void Camera::setPose(const Pose& pose)
+void Camera::setPose(Pose pose)
 {
     this->pose = pose;
     onPoseEvent.dispatchEvent(pose);
 }
 
-void Camera::setPreview(const Frame& preview)
+void Camera::setPreview(Frame preview)
 {
     this->preview = preview;
     this->width = preview.getWidth();
@@ -25,7 +25,7 @@ void Camera::setPreview(const Frame& preview)
     onPreviewEvent.dispatchEvent(preview);
 }
 
-void Camera::setBody(const Body2D& body)
+void Camera::setBody(Body2D body)
 {
     this->body = body;
     onBodyEvent.dispatchEvent(body);
