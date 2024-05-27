@@ -10,6 +10,6 @@ protected:
     virtual int onCalculatePos() = 0;
 
 public:
-    CameraPlugin();
-    ~CameraPlugin();
+    CameraPlugin() {}
+    ~CameraPlugin() {}
 };
