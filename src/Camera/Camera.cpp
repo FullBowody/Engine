@@ -14,7 +14,7 @@ Camera::~Camera()
 void Camera::setPose(Pose pose)
 {
     this->pose = pose;
-    onPoseEvent.dispatchEvent(pose);
+    onPoseEvent.dispatchEvent(this->pose);
 }
 
 void Camera::setPreview(Frame preview)
@@ -22,13 +22,13 @@ void Camera::setPreview(Frame preview)
     this->preview = preview;
     this->width = preview.getWidth();
     this->height = preview.getHeight();
-    onPreviewEvent.dispatchEvent(preview);
+    onPreviewEvent.dispatchEvent(this->preview);
 }
 
 void Camera::setBody(Body2D body)
 {
     this->body = body;
-    onBodyEvent.dispatchEvent(body);
+    onBodyEvent.dispatchEvent(this->body);
 }
 
 bool Camera::shouldTrack() const
