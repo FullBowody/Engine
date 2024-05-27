@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
+#include "utils.hpp"
 
 template <typename T>
-class Vec3
+class DLLExport Vec3
 {
 public:
     T x, y, z;

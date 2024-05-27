@@ -4,7 +4,7 @@
 #include "Struct/Vec3.hpp"
 
 template <class T>
-class Body
+class DLLExport Body
 {    
     static const int NB_JOINTS = 17;
     static const int JOINT_HEAD = 0;

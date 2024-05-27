@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera/Camera.hpp"
 
-class CameraPlugin: public Camera
+class DLLExport CameraPlugin: public Camera
 {
 public:
     CameraPlugin();

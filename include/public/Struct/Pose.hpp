@@ -2,7 +2,7 @@
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"
 
-class Pose
+class DLLExport Pose
 {
 protected:
     Vec3f position;

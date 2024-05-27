@@ -1,6 +1,7 @@
 #pragma once
+#include "utils.hpp"
 
-class Frame
+class DLLExport Frame
 {
 protected:
     unsigned char* data;

@@ -2,7 +2,7 @@
 #include <iostream>
 
 template <typename T>
-class Vec2
+class DLLExport Vec2
 {
 public:
     T x, y;

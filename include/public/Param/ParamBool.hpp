@@ -1,7 +1,7 @@
 #pragma once
 #include "Param/Param.hpp"
 
-class ParamBool: public Param
+class DLLExport ParamBool: public Param
 {
 private:
     bool value;

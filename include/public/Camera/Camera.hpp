@@ -8,7 +8,7 @@
 #include "Camera/Frame.hpp"
 #include "Param/ParamManager.hpp"
 
-class Camera: public Updatable, public ParamManager
+class DLLExport Camera: public Updatable, public ParamManager
 {
 private:
     int width;

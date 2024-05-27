@@ -1,7 +1,7 @@
 #pragma once
 #include "Vec3.hpp"
 
-class Quaternion
+class DLLExport Quaternion
 {
 public:
     static Quaternion Euler(float x, float y, float z);

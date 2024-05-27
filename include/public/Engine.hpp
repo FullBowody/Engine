@@ -3,8 +3,9 @@
 #include <vector>
 #include "Camera/Camera.hpp"
 #include "Updatable.hpp"
+#include "utils.hpp"
 
-class Engine: public Updatable
+class DLLExport Engine: public Updatable
 {
 private:
     std::vector<Camera*> cameras;
@@ -13,13 +14,13 @@ public:
     Engine();
     ~Engine();
 
-    virtual Camera* createCamera();
-    virtual bool destroyCamera(int index);
-    virtual bool destroyCamera(Camera* camera);
-    virtual Camera* getCamera(int index);
-    virtual const std::vector<Camera*>& getCameras();
+    Camera* createCamera();
+    bool destroyCamera(int index);
+    bool destroyCamera(Camera* camera);
+    Camera* getCamera(int index);
+    const std::vector<Camera*>& getCameras();
 
-    virtual int start();
-    virtual int update(float dt);
-    virtual int stop();
+    int start();
+    int update(float dt);
+    int stop();
 };

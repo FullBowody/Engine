@@ -1,7 +1,7 @@
 #pragma once
 #include "Param/Param.hpp"
 
-class ParamFloat: public Param
+class DLLExport ParamFloat: public Param
 {
 private:
     int value;

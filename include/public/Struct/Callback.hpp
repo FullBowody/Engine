@@ -1,8 +1,9 @@
 #pragma once
 #include <functional>
+#include "utils.hpp"
 
 template <class T>
-class Callback
+class DLLExport Callback
 {
 protected:
     Callback() {}
@@ -13,7 +14,7 @@ public:
 };
 
 template <class T, class U>
-class CallbackClass: public Callback<T>
+class DLLExport CallbackClass: public Callback<T>
 {
 private:
     U* obj;
@@ -32,7 +33,7 @@ public:
 };
 
 template <class T>
-class CallbackFunction: public Callback<T>
+class DLLExport CallbackFunction: public Callback<T>
 {
 private:
     std::function<void(const T&)> func;

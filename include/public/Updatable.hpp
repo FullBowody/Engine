@@ -1,6 +1,7 @@
 #pragma once
+#include "utils.hpp"
 
-class Updatable
+class DLLExport Updatable
 {
 public:
     virtual int update(float dt) = 0;
