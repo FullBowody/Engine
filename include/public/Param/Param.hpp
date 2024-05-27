@@ -2,17 +2,17 @@
 #include <string>
 #include "Event/EventManager.hpp"
 
-enum ParamType
-{
-    BOOL,
-    INT,
-    FLOAT,
-    STRING,
-    ENUM
-};
-
 class DLLExport Param
 {
+    enum ParamType
+    {
+        BOOL,
+        INT,
+        FLOAT,
+        STRING,
+        ENUM
+    };
+
 private:
     std::string name;
     ParamType type;
