@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "utils.hpp"
-#include "Plugins/PluginLoader.hpp"
+#include "Plugins/PluginHandle.hpp"
 
 enum class PluginType
 {
@@ -32,16 +32,8 @@ public:
     PluginType getType();
 
     template <typename T>
-    T* createPlugin()
+    PluginHandle<T>* createHandle()
     {
-        PluginLoader<T> loader(this->folder);
-        return loader.createPlugin();
-    }
-
-    template <typename T>
-    void destroyPlugin(T* plugin)
-    {
-        PluginLoader<T> loader(this->folder);
-        loader.destroyPlugin(plugin);
+        return new PluginHandle<T>(this->folder);
     }
 };
