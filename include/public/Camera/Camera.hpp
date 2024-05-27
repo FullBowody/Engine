@@ -35,7 +35,7 @@ protected:
 
 public:
     Camera();
-    ~Camera();
+    virtual ~Camera();
     
     int update(float dt);
     int startTracking();
