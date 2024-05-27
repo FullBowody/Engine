@@ -6,7 +6,7 @@ class DLLExport PluginHandle
 {
 private:
     PluginLoader<T>* loader = nullptr;
-    T* plugin;
+    T* plugin = nullptr;
 
 public:
     PluginHandle(std::string path)
