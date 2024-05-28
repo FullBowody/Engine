@@ -13,7 +13,6 @@ Engine::~Engine()
 
 PluginProvider& Engine::getPluginProvider()
 {
-    std::cout << "Engine::getPluginProvider()" << std::endl;
     return PluginProvider::getInstance();
 }
 

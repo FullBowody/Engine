@@ -19,6 +19,9 @@ void PluginProvider::refreshPlugins()
 {
     this->plugins.clear();
 
+    if (!std::filesystem::exists(this->PLUGINS_FOLDER))
+        std::filesystem::create_directory(this->PLUGINS_FOLDER);
+
     for (const auto& entry : std::filesystem::directory_iterator(this->PLUGINS_FOLDER))
     {
         if (entry.is_directory())
