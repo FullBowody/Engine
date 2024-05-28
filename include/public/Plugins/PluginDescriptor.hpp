@@ -21,15 +21,30 @@ private:
     std::string folder;
 
 public:
-    PluginDescriptor(std::string name, std::string description, std::string author,
-                     std::string version, PluginType type, std::string folder);
-    ~PluginDescriptor();
+    PluginDescriptor(std::string name, std::string description, std::string author, std::string version, PluginType type, std::string folder)
+        : name(name), description(description), author(author), version(version), folder(folder), type(type) {}
+    ~PluginDescriptor() {}
 
-    virtual std::string getName() const;
-    virtual std::string getDescription() const;
-    virtual std::string getAuthor() const;
-    virtual std::string getVersion() const;
-    virtual PluginType getType() const;
+    virtual std::string getName() const
+    {
+        return this->name;
+    }
+    virtual std::string getDescription() const
+    {
+        return this->description;
+    }
+    virtual std::string getAuthor() const
+    {
+        return this->author;
+    }
+    virtual std::string getVersion() const
+    {
+        return this->version;
+    }
+    virtual PluginType getType() const
+    {
+        return this->type;
+    }
 
     template <typename T>
     PluginHandle<T>* createHandle() const
