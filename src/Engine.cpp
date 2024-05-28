@@ -1,5 +1,6 @@
 #include "Engine.hpp"
 #include <iostream>
+#include "Plugins/PluginProvider.hpp"
 
 Engine::Engine()
 {
@@ -11,11 +12,18 @@ Engine::~Engine()
     
 }
 
-Camera* Engine::createCamera()
+Camera* Engine::createCamera(std::string plugin)
 {
-    Camera* camera = nullptr; // TODO : Implement plugins for different camera types
-    cameras.push_back(camera);
-    return camera;
+    PluginDescriptor descriptor = PluginProvider::getInstance().getPlugin(plugin);
+    if (descriptor.getType() != PluginType::CAMERA)
+    {
+        std::cerr << "Invalid plugin name: " << plugin << std::endl;
+        return nullptr;
+    }
+
+    PluginHandle<CameraPlugin>* handle = descriptor.createHandle<CameraPlugin>();
+    cameras.push_back(handle);
+    return handle->getPlugin();
 }
 
 bool Engine::destroyCamera(int index)
@@ -32,7 +40,7 @@ bool Engine::destroyCamera(Camera* camera)
 {
     for (int i = 0; i < cameras.size(); i++)
     {
-        if (cameras.at(i) == camera)
+        if (cameras.at(i)->getPlugin() == camera)
         {
             delete camera;
             cameras.erase(cameras.begin() + i);
@@ -47,12 +55,15 @@ Camera* Engine::getCamera(int index)
 {
     if (index < 0 || index >= cameras.size())
         return nullptr;
-    return cameras.at(index);
+    return cameras.at(index)->getPlugin();
 }
 
-const std::vector<Camera*>& Engine::getCameras()
+std::vector<Camera*> Engine::getCameras()
 {
-    return cameras;
+    std::vector<Camera*> result;
+    for (auto camera : cameras)
+        result.push_back(camera->getPlugin());
+    return result;
 }
 
 int Engine::start()
@@ -64,7 +75,7 @@ int Engine::update(float dt)
 {
     for (auto camera : cameras)
     {
-        int res = camera->update(dt);
+        int res = camera->getPlugin()->update(dt);
         if (res) return res; // stop update and return error code
     }
     return 0;
