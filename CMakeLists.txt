@@ -6,4 +6,5 @@ file(GLOB_RECURSE Engine_SRC "src/*.cpp")
 include_directories(include/public include/private)
 
 add_library(Engine SHARED ${Engine_SRC})
+add_compile_definitions(EXPORT_ENGINE)
 set_property(TARGET Engine PROPERTY CXX_STANDARD 17)
