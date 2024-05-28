@@ -3,7 +3,7 @@
 #include "utils.hpp"
 
 template <typename T>
-class DLLExport Vec3
+class Vec3
 {
 public:
     T x, y, z;
