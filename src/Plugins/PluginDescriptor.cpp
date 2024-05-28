@@ -11,28 +11,28 @@ PluginDescriptor::~PluginDescriptor()
 }
 
 
-std::string PluginDescriptor::getName()
+std::string PluginDescriptor::getName() const
 {
     return this->name;
 }
 
-std::string PluginDescriptor::getDescription()
+std::string PluginDescriptor::getDescription() const
 {
     return this->description;
 }
 
-std::string PluginDescriptor::getAuthor()
+std::string PluginDescriptor::getAuthor() const
 {
     return this->author;
 }
 
-std::string PluginDescriptor::getVersion()
+std::string PluginDescriptor::getVersion() const
 {
     return this->version;
 }
 
 
-PluginType PluginDescriptor::getType()
+PluginType PluginDescriptor::getType() const
 {
     return this->type;
 }
