@@ -16,7 +16,7 @@ public:
 
     ~EventManager()
     {
-
+        std::cout << "EventManager destructor" << std::endl;
     }
     
     void dispatchEvent(const T& event)

@@ -22,7 +22,7 @@ public:
     Param(std::string name, ParamType type)
         : name(name), type(type) {}
 
-    ~Param()
+    virtual ~Param()
     {
 
     }

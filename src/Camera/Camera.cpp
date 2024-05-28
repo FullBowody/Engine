@@ -8,7 +8,10 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-    
+    std::cout << "destructor" << std::endl;
+    if (pose) delete pose;
+    if (preview) delete preview;
+    if (body) delete body;
 }
 
 void Camera::setPose(const Pose& pose)
