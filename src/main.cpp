@@ -2,12 +2,12 @@
 
 extern "C"
 {
-    DLLExport Engine* createEngine()
+    /*DLLExport*/ __declspec(dllexport) Engine* createEngine()
     {
         return new Engine();
     }
 
-    DLLExport void destroyEngine(Engine* e)
+    /*DLLExport*/ __declspec(dllexport) void destroyEngine(Engine* e)
     {
         delete e;
     }
