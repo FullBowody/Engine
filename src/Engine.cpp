@@ -11,7 +11,7 @@ Engine::~Engine()
     
 }
 
-PluginProvider& getPluginProvider()
+PluginProvider& Engine::getPluginProvider()
 {
     return PluginProvider::getInstance();
 }
