@@ -4,6 +4,7 @@
 
 class DLLExport Param
 {
+public:
     enum ParamType
     {
         BOOL,
