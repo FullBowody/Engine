@@ -17,7 +17,9 @@ public:
 
     static PluginProvider& getInstance()
     {
+        std::cout << "PluginProvider::getInstance()" << std::endl;
         if (!instance) instance = new PluginProvider();
+        std::cout << "returning instance" << std::endl;
         return *instance;
     }
 
