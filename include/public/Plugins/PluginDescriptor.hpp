@@ -9,7 +9,7 @@ enum class PluginType
     UNKNOWN
 };
 
-class DLLExport PluginDescriptor
+class PluginDescriptor
 {
 private:
     std::string name;
