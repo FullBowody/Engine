@@ -18,9 +18,9 @@ private:
     Frame* preview = nullptr;
     Body2D* body = nullptr;
 
-    EventManager<const Frame&> onPreviewEvent;
-    EventManager<const Pose&> onPoseEvent;
-    EventManager<const Body2D&> onBodyEvent;
+    EventManager<Frame> onPreviewEvent;
+    EventManager<Pose> onPoseEvent;
+    EventManager<Body2D> onBodyEvent;
 
 protected:
     void setPose(const Pose& pose);
@@ -42,9 +42,9 @@ public:
     int stopTracking();
     int calculatePos();
 
-    void onPreview(Callback<const Frame&>* listener);
-    void onPose(Callback<const Pose&>* listener);
-    void onBody(Callback<const Body2D&>* listener);
+    void onPreview(Callback<Frame>* listener);
+    void onPose(Callback<Pose>* listener);
+    void onBody(Callback<Body2D>* listener);
 
     int getWidth() const;
     int getHeight() const;

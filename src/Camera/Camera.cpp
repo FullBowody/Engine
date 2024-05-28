@@ -58,17 +58,17 @@ int Camera::calculatePos()
     return onCalculatePos();
 }
 
-void Camera::onPreview(Callback<const Frame&>* listener)
+void Camera::onPreview(Callback<Frame>* listener)
 {
     onPreviewEvent.attachListener(listener);
 }
 
-void Camera::onPose(Callback<const Pose&>* listener)
+void Camera::onPose(Callback<Pose>* listener)
 {
     onPoseEvent.attachListener(listener);
 }
 
-void Camera::onBody(Callback<const Body2D&>* listener)
+void Camera::onBody(Callback<Body2D>* listener)
 {
     onBodyEvent.attachListener(listener);
 }
