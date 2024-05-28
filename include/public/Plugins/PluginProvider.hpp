@@ -13,7 +13,7 @@ private:
     std::vector<PluginDescriptor> plugins;
 
 public:
-    virtual ~PluginProvider();
+    ~PluginProvider();
 
     static PluginProvider& getInstance()
     {

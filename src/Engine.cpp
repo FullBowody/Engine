@@ -1,6 +1,5 @@
 #include "Engine.hpp"
 #include <iostream>
-#include "Plugins/PluginProvider.hpp"
 
 Engine::Engine()
 {
@@ -10,6 +9,11 @@ Engine::Engine()
 Engine::~Engine()
 {
     
+}
+
+PluginProvider& getPluginProvider()
+{
+    return PluginProvider::getInstance();
 }
 
 Camera* Engine::createCamera(std::string plugin)

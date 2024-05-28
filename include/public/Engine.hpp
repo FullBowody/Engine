@@ -6,6 +6,7 @@
 #include "utils.hpp"
 #include "Plugins/PluginHandle.hpp"
 #include "Plugins/CameraPlugin.hpp"
+#include "Plugins/PluginProvider.hpp"
 
 class DLLExport Engine: public Updatable
 {
@@ -15,6 +16,8 @@ private:
 public:
     Engine();
     ~Engine();
+
+    virtual PluginProvider& getPluginProvider();
 
     virtual Camera* createCamera(std::string plugin);
     virtual bool destroyCamera(int index);
