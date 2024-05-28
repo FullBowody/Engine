@@ -16,13 +16,13 @@ public:
     Engine();
     ~Engine();
 
-    Camera* createCamera(std::string plugin);
-    bool destroyCamera(int index);
-    bool destroyCamera(Camera* camera);
-    Camera* getCamera(int index);
-    std::vector<Camera*> getCameras();
+    virtual Camera* createCamera(std::string plugin);
+    virtual bool destroyCamera(int index);
+    virtual bool destroyCamera(Camera* camera);
+    virtual Camera* getCamera(int index);
+    virtual std::vector<Camera*> getCameras();
 
-    int start();
-    int update(float dt);
-    int stop();
+    virtual int start();
+    virtual int update(float dt);
+    virtual int stop();
 };

@@ -8,7 +8,7 @@
 #include <dlfcn.h>
 #endif
 
-class DLLExport DLLLoader
+class DLLLoader
 {
 private:
 #ifdef _WIN32

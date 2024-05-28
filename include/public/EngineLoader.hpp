@@ -12,14 +12,15 @@ const std::string ENGINE_LIB = "./libEngine.so";
 class EngineLoader
 {
 private:
+    DLLLoader* loader = nullptr;
     Engine *(*engineCreator)() = nullptr;
     void (*engineDestroyer)(Engine *) = nullptr;
 
     void loadEngine(std::string path)
     {
-        DLLLoader loader(path);
-        this->engineCreator = (Engine *(*)()) loader.resolve("createEngine");
-        this->engineDestroyer = (void (*)(Engine *)) loader.resolve("destroyEngine");
+        this->loader = new DLLLoader(path);
+        this->engineCreator = (Engine *(*)()) loader->resolve("createEngine");
+        this->engineDestroyer = (void (*)(Engine *)) loader->resolve("destroyEngine");
     }
 
 public:
@@ -35,7 +36,7 @@ public:
 
     ~EngineLoader()
     {
-        
+        if (this->loader) delete this->loader;
     }
 
     Engine* createEngine()
