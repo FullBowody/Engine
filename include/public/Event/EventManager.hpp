@@ -17,6 +17,8 @@ public:
     ~EventManager()
     {
         std::cout << "EventManager destructor" << std::endl;
+        for (Callback<T>* listener : listeners)
+            delete listener;
     }
     
     void dispatchEvent(const T& event)

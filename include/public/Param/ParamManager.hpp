@@ -15,6 +15,7 @@ public:
 
     ~ParamManager()
     {
+        std::cout << "ParamManager destructor" << std::endl;
         for (Param* param : params)
             delete &param;
     }
