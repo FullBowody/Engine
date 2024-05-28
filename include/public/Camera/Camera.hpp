@@ -37,18 +37,18 @@ public:
     Camera();
     virtual ~Camera();
     
-    int update(float dt);
-    int startTracking();
-    int stopTracking();
-    int calculatePos();
+    virtual int update(float dt);
+    virtual int startTracking();
+    virtual int stopTracking();
+    virtual int calculatePos();
 
-    void onPreview(Callback<Frame>* listener);
-    void onPose(Callback<Pose>* listener);
-    void onBody(Callback<Body2D>* listener);
+    virtual void onPreview(Callback<Frame>* listener);
+    virtual void onPose(Callback<Pose>* listener);
+    virtual void onBody(Callback<Body2D>* listener);
 
-    int getWidth() const;
-    int getHeight() const;
-    const Frame& getPreview() const;
-    const Pose& getPose() const;
-    const Body2D& getBody(float dt_since_updt) const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual const Frame& getPreview() const;
+    virtual const Pose& getPose() const;
+    virtual const Body2D& getBody(float dt_since_updt) const;
 };
