@@ -38,7 +38,7 @@ void PluginProvider::refreshPlugins()
             std::string description = json["description"];
             std::string author = json["author"];
             std::string version = json["version"];
-            PluginType type = json["type"] == "camera" ? PluginType::CAMERA : PluginType::UNKNOWN;
+            PluginType type = json["type"] == "Camera" ? PluginType::CAMERA : PluginType::UNKNOWN;
 
             PluginDescriptor descriptor(name, description, author, version, type, pluginFolder);
             this->plugins.push_back(descriptor);
