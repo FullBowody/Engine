@@ -23,13 +23,13 @@ private:
 public:
     PluginDescriptor(std::string name, std::string description, std::string author,
                      std::string version, PluginType type, std::string folder);
-    ~PluginDescriptor();
+    virtual ~PluginDescriptor();
 
-    std::string getName();
-    std::string getDescription();
-    std::string getAuthor();
-    std::string getVersion();
-    PluginType getType();
+    virtual std::string getName();
+    virtual std::string getDescription();
+    virtual std::string getAuthor();
+    virtual std::string getVersion();
+    virtual PluginType getType();
 
     template <typename T>
     PluginHandle<T>* createHandle()

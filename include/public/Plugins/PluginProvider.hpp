@@ -13,12 +13,16 @@ private:
     std::vector<PluginDescriptor> plugins;
 
 public:
-    ~PluginProvider();
+    virtual ~PluginProvider();
 
-    static PluginProvider& getInstance();
+    static PluginProvider& getInstance()
+    {
+        if (!instance) instance = new PluginProvider();
+        return *instance;
+    }
 
-    void refreshPlugins();
-    PluginDescriptor getPlugin(std::string name);
-    std::vector<PluginDescriptor> getPlugins();
-    std::vector<PluginDescriptor> getPlugins(PluginType type);
+    virtual void refreshPlugins();
+    virtual PluginDescriptor getPlugin(std::string name);
+    virtual std::vector<PluginDescriptor> getPlugins();
+    virtual std::vector<PluginDescriptor> getPlugins(PluginType type);
 };

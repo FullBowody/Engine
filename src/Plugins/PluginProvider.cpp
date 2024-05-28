@@ -15,12 +15,6 @@ PluginProvider::~PluginProvider()
 {
 }
 
-PluginProvider& PluginProvider::getInstance()
-{
-    if (!instance) instance = new PluginProvider();
-    return *instance;
-}
-
 void PluginProvider::refreshPlugins()
 {
     this->plugins.clear();
