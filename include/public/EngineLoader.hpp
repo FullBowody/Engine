@@ -9,7 +9,7 @@ const std::string ENGINE_LIB = "./Engine.dll";
 const std::string ENGINE_LIB = "./libEngine.so";
 #endif
 
-class DLLExport EngineLoader
+class EngineLoader
 {
 private:
     Engine *(*engineCreator)() = nullptr;
