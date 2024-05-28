@@ -61,6 +61,8 @@ public:
             return;
         }
 
+        std::cout << "this->pluginDestroyer(plugin);" << std::endl;
         this->pluginDestroyer(plugin);
+        std::cout << "this->pluginDestroyer(plugin); [DONE]" << std::endl;
     }
 };

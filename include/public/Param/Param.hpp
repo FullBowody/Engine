@@ -22,11 +22,7 @@ public:
     Param(std::string name, ParamType type)
         : name(name), type(type) {}
 
-    virtual ~Param()
-    {
-        std::cout << "Param::~Param()" << std::endl;
-        std::cout << "Param::~Param() [DONE]" << std::endl;
-    }
+    virtual ~Param() {}
 
     std::string getName() const
     {
