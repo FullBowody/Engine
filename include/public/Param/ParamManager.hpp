@@ -25,7 +25,7 @@ public:
             params.push_back(param);
     }
 
-    Param* getParameter(std::string name) const
+    virtual Param* getParameter(std::string name) const
     {
         for (Param* param : params)
         {
@@ -35,7 +35,7 @@ public:
         return nullptr;
     }
 
-    const std::vector<Param*>& getParameters() const
+    virtual const std::vector<Param*>& getParameters() const
     {
         return params;
     }
