@@ -29,9 +29,7 @@ public:
 
     void operator()(const T& data) override
     {
-        std::cout << "(obj->*func)(data);" << std::endl;
         (obj->*func)(data);
-        std::cout << "(obj->*func)(data); [DONE]" << std::endl;
     }
 };
 
@@ -49,8 +47,6 @@ public:
 
     void operator()(const T& data) override
     {
-        std::cout << "func(data);" << std::endl;
         func(data);
-        std::cout << "func(data); [DONE]" << std::endl;
     }
 };
