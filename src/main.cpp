@@ -1,5 +1,7 @@
-#define BUILDING_DLL
+// #define BUILDING_DLL
 #include "Engine.hpp"
+
+#define DLLExport __declspec(dllexport)
 
 extern "C"
 {
