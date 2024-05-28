@@ -3,10 +3,7 @@
 #include "utils.hpp"
 
 #ifdef _WIN32
-    #ifndef WIN32_INCLUDE
-    #define WIN32_INCLUDE
-    #include <windows.h>
-    #endif
+#include <windows.h>
 #else
 #include <dlfcn.h>
 #endif
