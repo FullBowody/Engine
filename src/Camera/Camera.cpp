@@ -11,24 +11,24 @@ Camera::~Camera()
     
 }
 
-void Camera::setPose(Pose pose)
+void Camera::setPose(const Pose& pose)
 {
-    this->pose = pose;
-    onPoseEvent.dispatchEvent(this->pose);
+    this->pose = new Pose(pose);
+    onPoseEvent.dispatchEvent(*this->pose);
 }
 
-void Camera::setPreview(Frame preview)
+void Camera::setPreview(const Frame& preview)
 {
-    this->preview = preview;
-    this->width = preview.getWidth();
-    this->height = preview.getHeight();
-    onPreviewEvent.dispatchEvent(this->preview);
+    this->preview = new Frame(preview);
+    this->width = this->preview->getWidth();
+    this->height = this->preview->getHeight();
+    onPreviewEvent.dispatchEvent(*this->preview);
 }
 
-void Camera::setBody(Body2D body)
+void Camera::setBody(const Body2D& body)
 {
-    this->body = body;
-    onBodyEvent.dispatchEvent(this->body);
+    this->body = new Body2D(body);
+    onBodyEvent.dispatchEvent(*this->body);
 }
 
 bool Camera::shouldTrack() const
@@ -85,12 +85,12 @@ int Camera::getHeight() const
 
 const Frame& Camera::getPreview() const
 {
-    return preview;
+    return *preview;
 }
 
 const Pose& Camera::getPose() const
 {
-    return pose;
+    return *pose;
 }
 
 const Body2D& Camera::getBody(float dt_since_updt) const
@@ -98,5 +98,5 @@ const Body2D& Camera::getBody(float dt_since_updt) const
     // TODO : add a [oldBody] member to the class
     // and use it to interpolate / predict the body
     // for call behond the last update
-    return body;
+    return *body;
 }

@@ -14,18 +14,18 @@ private:
     int width;
     int height;
     bool _shouldTrack;
-    Pose pose;
-    Frame preview;
-    Body2D body;
+    Pose* pose = nullptr;
+    Frame* preview = nullptr;
+    Body2D* body = nullptr;
 
     EventManager<const Frame&> onPreviewEvent;
     EventManager<const Pose&> onPoseEvent;
     EventManager<const Body2D&> onBodyEvent;
 
 protected:
-    void setPose(Pose pose);
-    void setPreview(Frame preview);
-    void setBody(Body2D body);
+    void setPose(const Pose& pose);
+    void setPreview(const Frame& preview);
+    void setBody(const Body2D& body);
     bool shouldTrack() const;
 
     virtual int onUpdate(float dt) = 0;

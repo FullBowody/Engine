@@ -5,7 +5,6 @@
 Frame::Frame()
     : data(nullptr), width(0), height(0)
 {
-
 }
 
 Frame::Frame(unsigned char* data, int width, int height, int channels)
