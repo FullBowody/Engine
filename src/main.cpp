@@ -1,3 +1,4 @@
+#define BUILDING_DLL
 #include "Engine.hpp"
 
 extern "C"
