@@ -1,16 +1,14 @@
-// #define BUILDING_DLL
+#define BUILDING_DLL
 #include "Engine.hpp"
-
-#define DLLExport __declspec(dllexport)
 
 extern "C"
 {
-    DLLExport Engine* createEngine()
+    __declspec(dllexport) Engine* createEngine()
     {
         return new Engine();
     }
 
-    DLLExport void destroyEngine(Engine* e)
+    __declspec(dllexport) void destroyEngine(Engine* e)
     {
         delete e;
     }
