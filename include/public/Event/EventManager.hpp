@@ -16,15 +16,20 @@ public:
 
     ~EventManager()
     {
-        std::cout << "EventManager destructor" << std::endl;
+        std::cout << "EventManager::~EventManager()" << std::endl;
         for (Callback<T>* listener : listeners)
             delete listener;
+        std::cout << "EventManager::~EventManager() [DONE]" << std::endl;
     }
     
     void dispatchEvent(const T& event)
     {
         for (Callback<T>* listener : listeners)
+        {
+            std::cout << "EventManager::dispatchEvent" << std::endl;
             (*listener)(event);
+            std::cout << "EventManager::dispatchEvent [DONE]" << std::endl;
+        }
     }
 
     void attachListener(Callback<T>* listener)

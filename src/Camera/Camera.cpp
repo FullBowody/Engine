@@ -8,10 +8,11 @@ Camera::Camera()
 
 Camera::~Camera()
 {
-    std::cout << "destructor" << std::endl;
+    std::cout << "Camera::~Camera()" << std::endl;
     if (pose) delete pose;
     if (preview) delete preview;
     if (body) delete body;
+    std::cout << "Camera::~Camera() [DONE]" << std::endl;
 }
 
 void Camera::setPose(const Pose& pose)
@@ -22,10 +23,14 @@ void Camera::setPose(const Pose& pose)
 
 void Camera::setPreview(const Frame& preview)
 {
+    std::cout << "Camera::setPreview" << std::endl;
+    if (this->preview) delete this->preview;
     this->preview = new Frame(preview);
     this->width = this->preview->getWidth();
     this->height = this->preview->getHeight();
+    std::cout << "Camera::setPreview [DISPATCH]" << std::endl;
     onPreviewEvent.dispatchEvent(*this->preview);
+    std::cout << "Camera::setPreview [DONE]" << std::endl;
 }
 
 void Camera::setBody(const Body2D& body)

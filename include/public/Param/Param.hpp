@@ -24,7 +24,8 @@ public:
 
     virtual ~Param()
     {
-
+        std::cout << "Param::~Param()" << std::endl;
+        std::cout << "Param::~Param() [DONE]" << std::endl;
     }
 
     std::string getName() const

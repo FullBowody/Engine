@@ -15,9 +15,10 @@ public:
 
     ~ParamManager()
     {
-        std::cout << "ParamManager destructor" << std::endl;
+        std::cout << "ParamManager::~ParamManager()" << std::endl;
         for (Param* param : params)
-            delete &param;
+            delete param;
+        std::cout << "ParamManager::~ParamManager() [DONE]" << std::endl;
     }
 
     void registerParameter(Param* param)
