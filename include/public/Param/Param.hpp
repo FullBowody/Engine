@@ -23,12 +23,12 @@ public:
 
     virtual ~Param() {}
 
-    std::string getName() const
+    virtual std::string getName() const
     {
         return name;
     }
 
-    ParamType getType() const
+    virtual ParamType getType() const
     {
         return type;
     }
