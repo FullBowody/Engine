@@ -1,6 +1,8 @@
 #include <iostream>
 #include <memory.h>
 #include "Camera/Frame.hpp"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb/stb_image_write.h"
 
 Frame::Frame()
     : data(nullptr), width(0), height(0)
@@ -46,16 +48,19 @@ const int Frame::getChannels() const
     return channels;
 }
 
-// TODO : Use STB library to encode image instead of OpenCV
-// unsigned char* Frame::encodeJPG(int quality, int* size) const
-// {
-//     cv::Mat img(height, width, CV_8UC3, data);
-//     std::vector<uchar> buffer;
-//     std::vector<int> params = {cv::IMWRITE_JPEG_QUALITY, quality};
-//     cv::imencode(".jpg", img, buffer, params);
-
-//     unsigned char* jpg = new unsigned char[buffer.size()];
-//     memcpy(jpg, buffer.data(), buffer.size());
-//     if (size) *size = buffer.size();
-//     return jpg;
-// }
+unsigned char* Frame::encodeJPG(int quality, int* size) const
+{
+    unsigned char* jpg = nullptr;
+    *size = 0;
+    if (channels == 3)
+    {
+        *size = width * height * channels;
+        jpg = new unsigned char[*size];
+        stbi_write_jpg_to_func([](void* context, void* data, int size) {
+            unsigned char* jpg = (unsigned char*)context;
+            memcpy(jpg, data, size);
+            jpg += size;
+        }, jpg, width, height, channels, data, quality);
+    }
+    return jpg;
+}
