@@ -27,7 +27,7 @@ public:
 
     ~CallbackClass() {}
 
-    void operator()(const T& data) override
+    virtual void operator()(const T& data) override
     {
         (obj->*func)(data);
     }
@@ -45,7 +45,7 @@ public:
 
     ~CallbackFunction() {}
 
-    void operator()(const T& data) override
+    virtual void operator()(const T& data) override
     {
         func(data);
     }
