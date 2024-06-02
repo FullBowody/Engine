@@ -52,12 +52,12 @@ unsigned char* Frame::encodeJPG(int quality, int* size) const
 {
     unsigned char* jpg = nullptr;
     *size = 0;
-    if (channels == 3)
+    if (channels == 3) // TODO : Add support for RGBA (cast to 3 channels)
     {
         *size = width * height * channels;
         jpg = new unsigned char[*size];
         stbi_write_jpg_to_func([](void* context, void* data, int size) {
-            unsigned char* jpg = (unsigned char*)context;
+            unsigned char* jpg = (unsigned char*) context;
             memcpy(jpg, data, size);
             jpg += size;
         }, jpg, width, height, channels, data, quality);
