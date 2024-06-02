@@ -31,7 +31,7 @@ public:
 
     EngineLoader(std::string path)
     {
-        loadEngine(path + "/" + ENGINE_LIB);
+        loadEngine(path);
     }
 
     ~EngineLoader()
@@ -42,22 +42,14 @@ public:
     Engine* createEngine()
     {
         if (!this->engineCreator)
-        {
-            std::cerr << std::endl << "Error: EngineLoader::createEngine not resolved!" << std::endl;
             return nullptr;
-        }
-
         return this->engineCreator();
     }
 
     void destroyEngine(Engine* e)
     {
         if (!this->engineDestroyer)
-        {
-            std::cerr << std::endl << "Error: EngineLoader::destroyEngine not resolved!" << std::endl;
             return;
-        }
-
         this->engineDestroyer(e);
     }
 };
