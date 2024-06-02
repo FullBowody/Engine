@@ -4,7 +4,7 @@
 #include "utils.hpp"
 
 template <class T>
-class DLLExport Callback
+class Callback
 {
 protected:
     Callback() {}
@@ -15,7 +15,7 @@ public:
 };
 
 template <class T, class U>
-class DLLExport CallbackClass: public Callback<T>
+class CallbackClass: public Callback<T>
 {
 private:
     U* obj;
@@ -27,14 +27,14 @@ public:
 
     ~CallbackClass() {}
 
-    virtual void operator()(const T& data) override
+    void operator()(const T& data) override
     {
         (obj->*func)(data);
     }
 };
 
 template <class T>
-class DLLExport CallbackFunction: public Callback<T>
+class CallbackFunction: public Callback<T>
 {
 private:
     std::function<void(const T&)> func;
@@ -45,7 +45,7 @@ public:
 
     ~CallbackFunction() {}
 
-    virtual void operator()(const T& data) override
+    void operator()(const T& data) override
     {
         func(data);
     }
