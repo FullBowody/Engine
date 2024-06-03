@@ -7,16 +7,19 @@
 #include "Plugins/PluginHandle.hpp"
 #include "Plugins/CameraPlugin.hpp"
 #include "Plugins/PluginProvider.hpp"
+#include "Struct/Scene.hpp"
 
 class DLLExport Engine: public Updatable
 {
 private:
+    Scene scene;
     std::vector<PluginHandle<CameraPlugin>*> cameras;
 
 public:
     Engine();
     ~Engine();
 
+    virtual Scene& getScene();
     virtual PluginProvider& getPluginProvider();
 
     virtual Camera* createCamera(std::string plugin);

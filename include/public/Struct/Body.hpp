@@ -2,9 +2,10 @@
 #include <memory.h>
 #include "Struct/Vec2.hpp"
 #include "Struct/Vec3.hpp"
+#include "Struct/Nullable.hpp"
 
 template <class T>
-class Body
+class Body: public Nullable
 {    
     static const int NB_JOINTS = 17;
     static const int JOINT_HEAD = 0;

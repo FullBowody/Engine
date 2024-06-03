@@ -2,9 +2,10 @@
 #include <iostream>
 #include <functional>
 #include "utils.hpp"
+#include "Struct/Nullable.hpp"
 
 template <class T>
-class Callback
+class Callback: public Nullable
 {
 protected:
     Callback() {}

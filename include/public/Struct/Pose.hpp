@@ -1,8 +1,9 @@
 #pragma once
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"
+#include "Struct/Nullable.hpp"
 
-class DLLExport Pose
+class DLLExport Pose: public Nullable
 {
 protected:
     Vec3f position;

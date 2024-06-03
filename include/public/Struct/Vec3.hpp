@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
 #include "utils.hpp"
+#include "Struct/Nullable.hpp"
 
 template <typename T>
-class Vec3
+class Vec3: public Nullable
 {
 public:
     T x, y, z;
