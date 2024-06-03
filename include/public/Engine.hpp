@@ -28,6 +28,9 @@ public:
     virtual Camera* getCamera(int index);
     virtual std::vector<Camera*> getCameras();
 
+    virtual int startTracking();
+    virtual int stopTracking();
+
     virtual int start();
     virtual int update(float dt);
     virtual int stop();

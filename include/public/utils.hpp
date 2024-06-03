@@ -7,3 +7,9 @@
 #else
 # define DLLExport
 #endif
+
+#define CHECK_ERRORS(x) \
+{ \
+    auto res = x; \
+    if (res) return res; \
+}

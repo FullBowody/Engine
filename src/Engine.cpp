@@ -1,5 +1,8 @@
 #include "Engine.hpp"
 #include <iostream>
+#include "utils.hpp"
+#include "Processing/FilterValues.hpp"
+#include "Processing/ScenePoseResolver.hpp"
 
 Engine::Engine()
 {
@@ -14,6 +17,11 @@ Engine::~Engine()
 PluginProvider& Engine::getPluginProvider()
 {
     return PluginProvider::getInstance();
+}
+
+Scene& Engine::getScene()
+{
+    return scene;
 }
 
 Camera* Engine::createCamera(std::string plugin)
@@ -70,6 +78,20 @@ std::vector<Camera*> Engine::getCameras()
     return result;
 }
 
+int Engine::startTracking()
+{
+    for (auto camera : cameras)
+        CHECK_ERRORS(camera->getPlugin()->startTracking())
+    return 0;
+}
+
+int Engine::stopTracking()
+{
+    for (auto camera : cameras)
+        CHECK_ERRORS(camera->getPlugin()->stopTracking())
+    return 0;
+}
+
 int Engine::start()
 {
     return 0;
@@ -79,8 +101,14 @@ int Engine::update(float dt)
 {
     for (auto camera : cameras)
     {
-        int res = camera->getPlugin()->update(dt);
-        if (res) return res; // stop update and return error code
+        CHECK_ERRORS(camera->getPlugin()->update(dt))
+        // if (shouldDetectMarkers)
+        {
+            CHECK_ERRORS(camera->getPlugin()->detectMarkers())
+            std::vector<Marker> markers = camera->getPlugin()->getDetectedMarkers();
+            Pose cameraPose = ScenePoseResolver::resolvePose(this->scene, markers);
+            if (!cameraPose.isNull()) camera->getPlugin()->setPose(cameraPose);
+        }
     }
     return 0;
 }
