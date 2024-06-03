@@ -9,6 +9,11 @@ protected:
     Nullable(): null(false) {}
     Nullable(bool null): null(null) {}
 
+    void setNull(bool null)
+    {
+        this->null = null;
+    }
+
 public:
     bool isNull() const
     {
@@ -17,11 +22,11 @@ public:
 };
 
 template <typename T>
-class Null: public Nullable, public T
+class Null: public T
 {
 public:
-    Null(): Nullable(true) {}
-    Null(const T& value): Nullable(false), T(value) {}
-    Null(const Null<T>& null): Nullable(null.isNull()), T(null) {}
+    Null() { setNull(true); }
+    Null(const T& value): T(value) { setNull(true); }
+    Null(const Null<T>& null): T(null) { setNull(null.isNull()); }
     ~Null() {}
 };
