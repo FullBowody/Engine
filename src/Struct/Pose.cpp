@@ -23,12 +23,12 @@ Pose::~Pose()
 
 }
 
-const Vec3f& Pose::getPosition() const
+Vec3f Pose::getPosition() const
 {
     return position;
 }
 
-const Quaternion& Pose::getRotation() const
+Quaternion Pose::getRotation() const
 {
     return rotation;
 }

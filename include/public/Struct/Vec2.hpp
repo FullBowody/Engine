@@ -13,6 +13,10 @@ public:
     Vec2(const Vec2 &other);
     ~Vec2();
 
+    T dot(const Vec2 &other) const { return x * other.x + y * other.y; }
+    T length() const { return sqrt(x * x + y * y); }
+    Vec2 normalize() const { return *this / length(); }
+
     Vec2 &operator=(const Vec2 &other);
     Vec2 operator+(const Vec2 &other) const;
     Vec2 operator-(const Vec2 &other) const;

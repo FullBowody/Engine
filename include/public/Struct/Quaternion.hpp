@@ -17,12 +17,20 @@ public:
     Quaternion normalize() const;
     Quaternion inverse() const;
     Quaternion conjugate() const;
+    float dot(const Quaternion& q) const;
+    float length() const;
     
     Quaternion operator*(const Quaternion& q) const;
     Quaternion operator*(float s) const;
     Quaternion operator+(const Quaternion& q) const;
     Quaternion operator-(const Quaternion& q) const;
     Quaternion operator-() const;
+    Quaternion operator/(float s) const;
+    Quaternion operator*= (const Quaternion& q);
+    Quaternion operator*= (float s);
+    Quaternion operator/= (float s);
+    Quaternion operator+= (const Quaternion& q);
+    Quaternion operator-= (const Quaternion& q);
 
     Vec3f operator*(const Vec3f& v) const;
 };

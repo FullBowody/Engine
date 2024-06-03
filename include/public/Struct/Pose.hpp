@@ -15,6 +15,6 @@ public:
     Pose(const Pose& pose);
     ~Pose();
 
-    const Vec3f& getPosition() const;
-    const Quaternion& getRotation() const;
+    Vec3f getPosition() const;
+    Quaternion getRotation() const;
 };

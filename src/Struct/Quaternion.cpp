@@ -85,6 +85,16 @@ Quaternion Quaternion::conjugate() const
     return Quaternion(-x, -y, -z, w);
 }
 
+float Quaternion::dot(const Quaternion& q) const
+{
+    return x*q.x + y*q.y + z*q.z + w*q.w;
+}
+
+float Quaternion::length() const
+{
+    return sqrt(x*x + y*y + z*z + w*w);
+}
+
 Quaternion Quaternion::operator*(const Quaternion& q) const
 {
     return Quaternion(
@@ -98,6 +108,13 @@ Quaternion Quaternion::operator*(const Quaternion& q) const
 Quaternion Quaternion::operator*(float s) const
 {
     return Quaternion(x*s, y*s, z*s, w*s);
+}
+
+Vec3f Quaternion::operator*(const Vec3f& v) const
+{
+    Quaternion p(v.x, v.y, v.z, 0);
+    Quaternion q = *this * p * conjugate();
+    return Vec3f(q.x, q.y, q.z);
 }
 
 Quaternion Quaternion::operator+(const Quaternion& q) const
@@ -115,9 +132,32 @@ Quaternion Quaternion::operator-() const
     return Quaternion(-x, -y, -z, -w);
 }
 
-Vec3f Quaternion::operator*(const Vec3f& v) const
+Quaternion Quaternion::operator/(float s) const
 {
-    Quaternion p(v.x, v.y, v.z, 0);
-    Quaternion q = *this * p * conjugate();
-    return Vec3f(q.x, q.y, q.z);
+    return Quaternion(x/s, y/s, z/s, w/s);
+}
+
+Quaternion Quaternion::operator*= (const Quaternion& q)
+{
+    return *this = *this * q;
+}
+
+Quaternion Quaternion::operator*= (float s)
+{
+    return *this = *this * s;
+}
+
+Quaternion Quaternion::operator/= (float s)
+{
+    return *this = *this / s;
+}
+
+Quaternion Quaternion::operator+= (const Quaternion& q)
+{
+    return *this = *this + q;
+}
+
+Quaternion Quaternion::operator-= (const Quaternion& q)
+{
+    return *this = *this - q;
 }
