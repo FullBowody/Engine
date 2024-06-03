@@ -46,19 +46,21 @@ int Camera::update(float dt)
 
 int Camera::startTracking()
 {
+    if (_shouldTrack) return 0;
     _shouldTrack = true;
     return onStartTracking();
 }
 
 int Camera::stopTracking()
 {
+    if (!_shouldTrack) return 0;
     _shouldTrack = false;
     return onStopTracking();
 }
 
-int Camera::calculatePos()
+int Camera::detectMarkers()
 {
-    return onCalculatePos();
+    return onDetectMarkers();
 }
 
 void Camera::onPreview(Callback<Frame>* listener)
@@ -101,5 +103,11 @@ const Body2D& Camera::getBody(float dt_since_updt) const
     // TODO : add a [oldBody] member to the class
     // and use it to interpolate / predict the body
     // for call behond the last update
+    // (maybe add a [bool interpolate = false] flag to the function)
     return *body;
+}
+
+const std::vector<Marker>& Camera::getDetectedMarkers() const
+{
+    return markers;
 }
