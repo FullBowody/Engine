@@ -20,7 +20,7 @@ int Scene::loadFromFile(const std::string& filename)
     return 1;
 }
 
-const Marker& Scene::getMarker(int id) const
+Marker Scene::getMarker(int id) const
 {
     for (const Marker& marker : markers)
     {
@@ -37,7 +37,7 @@ const std::vector<Marker>& Scene::getMarkers() const
     return markers;
 }
 
-void Scene::addMarker(const Marker& marker)
+void Scene::addMarker(Marker marker)
 {
     markers.push_back(marker);
 }

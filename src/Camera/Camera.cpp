@@ -34,6 +34,12 @@ void Camera::setBody(const Body2D& body)
     onBodyEvent.dispatchEvent(*this->body);
 }
 
+void Camera::setMarkers(const std::vector<Marker>& markers)
+{
+    this->markers = std::vector<Marker>(markers);
+    // TODO : maybe dispatch an event
+}
+
 bool Camera::shouldTrack() const
 {
     return _shouldTrack;

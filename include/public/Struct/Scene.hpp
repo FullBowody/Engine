@@ -14,8 +14,8 @@ public:
 
     int loadFromFile(const std::string& filename);
 
-    virtual const Marker& getMarker(int id) const;
+    virtual Marker getMarker(int id) const;
     virtual const std::vector<Marker>& getMarkers() const;
-    virtual void addMarker(const Marker& marker);
+    virtual void addMarker(Marker marker);
     virtual void removeMarker(int id);
 };
