@@ -14,7 +14,8 @@ public:
     ~Vec2();
 
     T dot(const Vec2 &other) const { return x * other.x + y * other.y; }
-    T length() const { return sqrt(x * x + y * y); }
+    T length() const { return sqrt(length2()); }
+    T length2() const { return x * x + y * y; }
     Vec2 normalize() const { return *this / length(); }
 
     Vec2 &operator=(const Vec2 &other);

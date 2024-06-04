@@ -98,7 +98,12 @@ public:
 
     float length() const
     {
-        return sqrt(x*x + y*y + z*z + w*w);
+        return sqrt(length2());
+    }
+
+    float length2() const
+    {
+        return x*x + y*y + z*z + w*w;
     }
 
     Vec3f toEuler() const

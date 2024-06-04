@@ -16,7 +16,8 @@ public:
 
     T dot(const Vec3 &other) const { return x * other.x + y * other.y + z * other.z; }
     Vec3 cross(const Vec3 &other) const { return Vec3(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x); }
-    T length() const { return sqrt(x * x + y * y + z * z); }
+    T length() const { return sqrt(length2()); }
+    T length2() const { return x * x + y * y + z * z; }
     Vec3 normalize() const { return *this / length(); }
 
     Vec3 &operator=(const Vec3 &other);
