@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <ostream>
 #include "utils.hpp"
 #include "Plugins/PluginHandle.hpp"
 
@@ -50,5 +51,12 @@ public:
     PluginHandle<T>* createHandle() const
     {
         return new PluginHandle<T>(this->folder);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const PluginDescriptor& descriptor)
+    {
+        // type=" << descriptor.type << ", 
+        os << "Plugin(name=" << descriptor.name << ", version=" << descriptor.version << ")";
+        return os;
     }
 };
