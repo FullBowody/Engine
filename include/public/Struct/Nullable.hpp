@@ -8,6 +8,8 @@ private:
 protected:
     Nullable(): null(false) {}
     Nullable(bool null): null(null) {}
+    Nullable(const Nullable& nullable): null(nullable.null) {}
+    ~Nullable() {}
 
     void setNull(bool null)
     {
@@ -25,8 +27,8 @@ template <typename T>
 class Null: public T
 {
 public:
-    Null() { setNull(true); }
-    Null(const T& value): T(value) { setNull(true); }
-    Null(const Null<T>& null): T(null) { setNull(null.isNull()); }
+    Null(): T() { this->setNull(true); }
+    Null(const T& value): T(value) { this->setNull(true); }
+    Null(const Null<T>& null): T(null) { this->setNull(true); }
     ~Null() {}
 };

@@ -73,7 +73,7 @@ public:
 
     Quaternion() : x(0), y(0), z(0), w(1) {}
     Quaternion(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-    Quaternion(const Quaternion& other) : x(other.x), y(other.y), z(other.z), w(other.w) {}
+    Quaternion(const Quaternion& other) : Nullable(other), x(other.x), y(other.y), z(other.z), w(other.w) {}
     ~Quaternion() {}
 
     Quaternion normalize() const

@@ -17,7 +17,7 @@ Frame::Frame(unsigned char* data, int width, int height, int channels)
 }
 
 Frame::Frame(const Frame& frame)
-    : width(frame.width), height(frame.height), channels(frame.channels)
+    : Nullable(frame), width(frame.width), height(frame.height), channels(frame.channels)
 {
     data = new unsigned char[width * height * channels];
     memcpy(data, frame.data, width * height * channels * sizeof(unsigned char));

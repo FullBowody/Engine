@@ -9,7 +9,7 @@ private:
 
 public:
     Scene();
-    Scene(const Scene& scene);
+    Scene(const Scene& other);
     ~Scene();
 
     int loadFromFile(const std::string& filename);

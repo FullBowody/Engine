@@ -12,7 +12,7 @@ private:
 public:
     Marker(): pose(), id(0) {}
     Marker(const Pose& pose, int id): pose(pose), id(id) {}
-    Marker(const Marker& marker): pose(marker.pose), id(marker.id) {}
+    Marker(const Marker& other): Nullable(other), pose(other.pose), id(other.id) {}
     ~Marker() {}
 
     const Pose& getPose() const { return pose; }

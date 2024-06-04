@@ -49,6 +49,7 @@ Body<T>::Body(T* joints)
 
 template<class T>
 Body<T>::Body(const Body& other)
+    : Nullable(other)
 {
     memcpy(this->joints, other.joints, sizeof(T) * NB_JOINTS);
 }

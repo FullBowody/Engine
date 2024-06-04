@@ -48,7 +48,7 @@ template <typename T>
 Vec3<T>::Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
 
 template <typename T>
-Vec3<T>::Vec3(const Vec3 &other) : x(other.x), y(other.y), z(other.z) {}
+Vec3<T>::Vec3(const Vec3 &other) : Nullable(other), x(other.x), y(other.y), z(other.z) {}
 
 template <typename T>
 Vec3<T>::~Vec3() {}

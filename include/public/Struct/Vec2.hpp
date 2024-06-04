@@ -46,7 +46,7 @@ template <typename T>
 Vec2<T>::Vec2(T x, T y) : x(x), y(y) {}
 
 template <typename T>
-Vec2<T>::Vec2(const Vec2 &other) : x(other.x), y(other.y) {}
+Vec2<T>::Vec2(const Vec2 &other) : Nullable(other), x(other.x), y(other.y) {}
 
 template <typename T>
 Vec2<T>::~Vec2() {}
