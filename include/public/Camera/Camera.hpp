@@ -61,5 +61,5 @@ public:
     virtual const Body2D& getBody(float dt_since_updt) const;
     virtual const std::vector<Marker>& getDetectedMarkers() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const Camera& camera);
+    virtual friend std::ostream& operator<<(std::ostream& os, const Camera& camera);
 };
