@@ -9,12 +9,23 @@ private:
     int id;
 
 public:
-    Marker();
-    Marker(const Pose& pose, int id);
-    Marker(const Marker& marker);
-    ~Marker();
+    Marker(): pose(), id(0) {}
+    Marker(const Pose& pose, int id): pose(pose), id(id) {}
+    Marker(const Marker& marker): pose(marker.pose), id(marker.id) {}
+    ~Marker() {}
 
-    const Pose& getPose() const;
-    void setPose(const Pose& pose);
-    int getId() const;
+    const Pose& getPose() const
+    {
+        return pose;
+    }
+
+    void setPose(const Pose& pose)
+    {
+        this->pose = pose;
+    }
+
+    int getId() const
+    {
+        return id;
+    }
 };
