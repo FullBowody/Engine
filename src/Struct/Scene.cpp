@@ -5,8 +5,8 @@ Scene::Scene()
 {
 }
 
-Scene::Scene(const Scene& scene)
-    : markers(scene.markers)
+Scene::Scene(const Scene& other)
+    : Nullable(other), markers(other.markers)
 {
 }
 
