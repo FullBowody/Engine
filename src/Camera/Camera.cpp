@@ -117,3 +117,9 @@ const std::vector<Marker>& Camera::getDetectedMarkers() const
 {
     return markers;
 }
+
+std::ostream& operator<<(std::ostream& os, const Camera& camera)
+{
+    os << "Camera(width=" << camera.width << ", height=" << camera.height << ", pose=" << printPtr(camera.pose) << ")";
+    return os;
+}
