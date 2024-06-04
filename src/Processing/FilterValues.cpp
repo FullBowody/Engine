@@ -11,7 +11,7 @@ namespace FilterValues
         average /= values.size();
 
         float variance = 0;
-        for (Vec3f v : values) variance += (v - average).length();
+        for (Vec3f v : values) variance += (v - average).length2();
         variance /= values.size();
 
         float standardDeviationBiased = sqrt(variance) * settings.SDThreshold;
@@ -37,7 +37,7 @@ namespace FilterValues
         average /= values.size();
         
         float variance = 0;
-        for (Quaternion q : values) variance += (q - average).length();
+        for (Quaternion q : values) variance += (q - average).length2();
         variance /= values.size();
 
         float standardDeviationBiased = sqrt(variance) * settings.SDThreshold;
