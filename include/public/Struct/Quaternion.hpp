@@ -1,11 +1,12 @@
 #pragma once
+#include <ostream>
 #include <math.h>
 #include "Vec3.hpp"
 
 class Quaternion: public Nullable
 {
 public:
-    static Quaternion Euler(float x, float y, float z)
+    static Quaternion FromEuler(float x, float y, float z)
     {
         float cx = cos(x/2);
         float sx = sin(x/2);
@@ -22,9 +23,9 @@ public:
         );
     }
 
-    static Quaternion Euler(const Vec3f& vec)
+    static Quaternion FromEuler(const Vec3f& vec)
     {
-        return Euler(vec.x, vec.y, vec.z);
+        return FromEuler(vec.x, vec.y, vec.z);
     }
 
     static Quaternion FromRotationMatrix(float* m)
@@ -100,6 +101,13 @@ public:
         return sqrt(x*x + y*y + z*z + w*w);
     }
 
+    Vec3f toEuler() const
+    {
+        float x = atan2(2*(w*x + y*z), 1 - 2*(x*x + y*y));
+        float y = asin(2*(w*y - z*x));
+        float z = atan2(2*(w*z + x*y), 1 - 2*(y*y + z*z));
+        return Vec3f(x, y, z);
+    }
     
     Quaternion operator*(const Quaternion& q) const
     {
@@ -166,5 +174,11 @@ public:
     Quaternion operator-= (const Quaternion& q)
     {
         return *this = *this - q;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const Quaternion& q)
+    {
+        os << q.toEuler();
+        return os;
     }
 };
