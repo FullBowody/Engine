@@ -5,6 +5,7 @@ class DLLExport Quaternion: public Nullable
 {
 public:
     static Quaternion Euler(float x, float y, float z);
+    static Quaternion Euler(const Vec3f& vec);
     static Quaternion FromRotationMatrix(float* m);
 
     float x, y, z, w;

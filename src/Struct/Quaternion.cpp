@@ -18,6 +18,11 @@ Quaternion Quaternion::Euler(float x, float y, float z)
     );
 }
 
+Quaternion Quaternion::Euler(const Vec3f& vec)
+{
+    return Euler(vec.x, vec.y, vec.z);
+}
+
 Quaternion Quaternion::FromRotationMatrix(float* m)
 {
     float t = m[0] + m[4] + m[8];
