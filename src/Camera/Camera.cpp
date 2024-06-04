@@ -3,7 +3,7 @@
 
 Camera::Camera()
 {
-    
+
 }
 
 Camera::~Camera()

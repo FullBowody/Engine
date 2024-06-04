@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <ostream>
 #include <functional>
 #include "Event/EventManager.hpp"
 #include "Updatable.hpp"
@@ -16,9 +17,9 @@ class DLLExport Camera: public Updatable, public ParamManager
     friend Engine;
 
 private:
-    int width;
-    int height;
-    bool _shouldTrack;
+    int width = 0;
+    int height = 0;
+    bool _shouldTrack = false;
     Pose* pose = nullptr;
     Frame* preview = nullptr;
     Body2D* body = nullptr;
@@ -59,4 +60,10 @@ public:
     virtual const Pose& getPose() const;
     virtual const Body2D& getBody(float dt_since_updt) const;
     virtual const std::vector<Marker>& getDetectedMarkers() const;
+
+    friend std::ostream& operator<<(std::ostream& os, const Camera& camera)
+    {
+        os << "Camera(width=" << camera.width << ", height=" << camera.height << ")";
+        return os;
+    }
 };
