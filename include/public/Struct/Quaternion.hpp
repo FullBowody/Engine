@@ -103,10 +103,10 @@ public:
 
     Vec3f toEuler() const
     {
-        float x = atan2(2*(w*x + y*z), 1 - 2*(x*x + y*y));
-        float y = asin(2*(w*y - z*x));
-        float z = atan2(2*(w*z + x*y), 1 - 2*(y*y + z*z));
-        return Vec3f(x, y, z);
+        float ex = atan2(2*(w*x + y*z), 1 - 2*(x*x + y*y));
+        float ey = asin(2*(w*y - z*x));
+        float ez = atan2(2*(w*z + x*y), 1 - 2*(y*y + z*z));
+        return Vec3f(ex, ey, ez);
     }
     
     Quaternion operator*(const Quaternion& q) const
