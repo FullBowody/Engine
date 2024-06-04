@@ -1,5 +1,5 @@
 #pragma once
-#include <iostream>
+#include <ostream>
 #include "utils.hpp"
 #include "Struct/Nullable.hpp"
 
@@ -31,7 +31,7 @@ public:
     Vec3 operator/=(T scalar) { return *this = *this / scalar; }
     friend std::ostream& operator<<(std::ostream& os, const Vec3& dt)
     {
-        os << "(" << dt.x << ", " << dt.y << ", " << dt.z << ")";
+        os << "Vec3(x=" << dt.x << ", y=" << dt.y << ", z=" << dt.z << ")";
         return os;
     }
 };

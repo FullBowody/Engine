@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 #include "Struct/Vec3.hpp"
 #include "Struct/Quaternion.hpp"
 #include "Struct/Nullable.hpp"
@@ -19,4 +20,10 @@ public:
 
     Vec3f getPosition() const { return position; }
     Quaternion getRotation() const { return rotation; }
+
+    friend std::ostream& operator<<(std::ostream& os, const Pose& pose)
+    {
+        os << "Pose(position=" << pose.position << ", rotation=" << pose.rotation << ")";
+        return os;
+    }
 };

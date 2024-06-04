@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 #include "Struct/Pose.hpp"
 #include "Struct/Nullable.hpp"
 
@@ -14,18 +15,13 @@ public:
     Marker(const Marker& marker): pose(marker.pose), id(marker.id) {}
     ~Marker() {}
 
-    const Pose& getPose() const
-    {
-        return pose;
-    }
+    const Pose& getPose() const { return pose; }
+    void setPose(const Pose& pose) { this->pose = pose; }
+    int getId() const { return id; }
 
-    void setPose(const Pose& pose)
+    friend std::ostream& operator<<(std::ostream& os, const Marker& marker)
     {
-        this->pose = pose;
-    }
-
-    int getId() const
-    {
-        return id;
+        os << "Marker(id=" << marker.id << ", pose=" << marker.pose << ")";
+        return os;
     }
 };
