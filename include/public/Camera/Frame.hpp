@@ -1,7 +1,8 @@
 #pragma once
 #include "utils.hpp"
+#include "Struct/Nullable.hpp"
 
-class DLLExport Frame
+class DLLExport Frame: public Nullable
 {
 protected:
     unsigned char* data;
