@@ -7,28 +7,35 @@ Pose ScenePoseResolver::resolvePose(const Scene& scene, const std::vector<Marker
         return Null<Pose>();
 
     std::vector<Marker> validCameraMarkers;
-    for (Marker m : cameraMarkers)
+    for (Marker cameraMarker : cameraMarkers)
     {
-        const Marker& marker = scene.getMarker(m.getId());
-        if (marker.isNull())
-            continue;
-        validCameraMarkers.push_back(marker);
+        const Marker& sceneMarker = scene.getMarker(cameraMarker.getId());
+        if (sceneMarker.isNull()) continue;
+        validCameraMarkers.push_back(cameraMarker);
     }
 
     if (validCameraMarkers.empty())
         return Null<Pose>();
 
+    // TODO : Maybe use multiple markers to get a more accurate pose
     Marker& cameraMarker = validCameraMarkers[0];
     const Marker& sceneMarker = scene.getMarker(cameraMarker.getId());
     
-    // calculate camera pose from markerPose in camera and in scene
-    Quaternion baseMarkerRot = cameraMarker.getPose().getRotation();
-    Quaternion camMarkerRot = sceneMarker.getPose().getRotation();
-    Quaternion camRot = camMarkerRot * baseMarkerRot.inverse(); // camera rotation
-    
-    Vec3f baseMarkerPos = cameraMarker.getPose().getPosition();
-    Vec3f camMarkerPos = sceneMarker.getPose().getPosition();
-    Vec3f camPos = camMarkerPos - camRot * baseMarkerPos; // camera position
-    
-    return Pose(camPos, camRot); // TODO : Verify if this is correct
+    // get marker pos / rot in camera space
+    Quaternion markerRot_cam = cameraMarker.getPose().getRotation();
+    Vec3f markerPos_cam = cameraMarker.getPose().getPosition();
+
+    // retreive camera pos / rot in marker space
+    Quaternion cameraRot_marker = markerRot_cam.conjugate();
+    Vec3f cameraPos_marker = -(cameraRot_marker * markerPos_cam);
+
+    // get marker pos / rot in scene space
+    Quaternion markerRot_scene = sceneMarker.getPose().getRotation();
+    Vec3f markerPos_scene = sceneMarker.getPose().getPosition();
+
+    // retreive camera pos / rot in scene space
+    Quaternion cameraRot_scene = markerRot_scene * cameraRot_marker;
+    Vec3f cameraPos_scene = markerRot_scene * cameraPos_marker + markerPos_scene;
+
+    return Pose(cameraPos_scene, cameraRot_scene); // FIXME : Above calculations seems to be wrong
 }

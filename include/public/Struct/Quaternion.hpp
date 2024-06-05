@@ -37,14 +37,14 @@ public:
         {
             s = 0.5f / sqrt(t + 1);
             w = 0.25f / s;
-            x = (m[7] - m[5]) * s;
-            y = (m[2] - m[6]) * s;
-            z = (m[3] - m[1]) * s;
+            x = (m[5] - m[7]) * s;
+            y = (m[6] - m[2]) * s;
+            z = (m[1] - m[3]) * s;
         }
         else if (m[0] > m[4] && m[0] > m[8])
         {
             s = 2 * sqrt(1 + m[0] - m[4] - m[8]);
-            w = (m[7] - m[5]) / s;
+            w = (m[5] - m[7]) / s;
             x = 0.25f * s;
             y = (m[1] + m[3]) / s;
             z = (m[2] + m[6]) / s;
@@ -52,7 +52,7 @@ public:
         else if (m[4] > m[8])
         {
             s = 2 * sqrt(1 + m[4] - m[0] - m[8]);
-            w = (m[2] - m[6]) / s;
+            w = (m[6] - m[2]) / s;
             x = (m[1] + m[3]) / s;
             y = 0.25f * s;
             z = (m[5] + m[7]) / s;
@@ -76,21 +76,6 @@ public:
     Quaternion(const Quaternion& other) : Nullable(other), x(other.x), y(other.y), z(other.z), w(other.w) {}
     ~Quaternion() {}
 
-    Quaternion normalize() const
-    {
-        return *this * (1.0f / sqrt(x*x + y*y + z*z + w*w));
-    }
-
-    Quaternion inverse() const
-    {
-        return conjugate() * (1.0f / (x*x + y*y + z*z + w*w));
-    }
-
-    Quaternion conjugate() const
-    {
-        return Quaternion(-x, -y, -z, w);
-    }
-
     float dot(const Quaternion& q) const
     {
         return x*q.x + y*q.y + z*q.z + w*q.w;
@@ -104,6 +89,21 @@ public:
     float length2() const
     {
         return x*x + y*y + z*z + w*w;
+    }
+
+    Quaternion normalize() const
+    {
+        return *this / length();
+    }
+
+    Quaternion conjugate() const
+    {
+        return Quaternion(-x, -y, -z, w);
+    }
+
+    Quaternion inverse() const
+    {
+        return conjugate() / length2();
     }
 
     Vec3f toEuler() const
