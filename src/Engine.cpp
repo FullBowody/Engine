@@ -1,6 +1,7 @@
 #include "Engine.hpp"
 #include <iostream>
 #include "utils.hpp"
+#include "path.hpp"
 #include "Processing/FilterValues.hpp"
 #include "Processing/ScenePoseResolver.hpp"
 
@@ -14,14 +15,19 @@ Engine::~Engine()
     
 }
 
-PluginProvider& Engine::getPluginProvider()
+void Engine::setEngineCWD(std::string dirpath)
 {
-    return pluginProvider;
+    pluginProvider.setPluginsFolder(Path::Combine(dirpath, "plugins"));
 }
 
 Scene& Engine::getScene()
 {
     return scene;
+}
+
+PluginProvider& Engine::getPluginProvider()
+{
+    return pluginProvider;
 }
 
 Camera* Engine::createCamera(std::string plugin)

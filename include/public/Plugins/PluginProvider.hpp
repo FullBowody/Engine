@@ -6,14 +6,14 @@
 class DLLExport PluginProvider
 {
 private:
-    static const std::string PLUGINS_FOLDER;
-    
+    std::string pluginsFolder;
     std::vector<PluginDescriptor> plugins;
 
 public:
     PluginProvider();
     ~PluginProvider();
 
+    virtual void setPluginsFolder(std::string folder);
     virtual void refreshPlugins();
     virtual PluginDescriptor getPlugin(std::string name);
     virtual std::vector<PluginDescriptor> getPlugins();

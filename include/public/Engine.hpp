@@ -20,6 +20,7 @@ public:
     Engine();
     ~Engine();
 
+    virtual void setEngineCWD(std::string dirpath);
     virtual Scene& getScene();
     virtual PluginProvider& getPluginProvider();
 

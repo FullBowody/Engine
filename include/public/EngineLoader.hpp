@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Engine.hpp"
 #include "DLLLoader.hpp"
+#include "path.hpp"
 
 #ifdef _WIN32
 const std::string ENGINE_LIB = "./Engine.dll";
@@ -15,10 +16,12 @@ private:
     DLLLoader* loader = nullptr;
     Engine *(*engineCreator)() = nullptr;
     void (*engineDestroyer)(Engine *) = nullptr;
+    std::string DLLPath;
 
     void loadEngine(std::string path)
     {
         this->loader = new DLLLoader(path);
+        this->DLLPath = path;
         this->engineCreator = (Engine *(*)()) loader->resolve("createEngine");
         this->engineDestroyer = (void (*)(Engine *)) loader->resolve("destroyEngine");
     }
@@ -43,7 +46,9 @@ public:
     {
         if (!this->engineCreator)
             return nullptr;
-        return this->engineCreator();
+        Engine* engine = this->engineCreator();
+        engine->setEngineCWD(Path::GetDirectory(DLLPath));
+        return engine;
     }
 
     void destroyEngine(Engine* e)

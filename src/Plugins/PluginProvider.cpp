@@ -4,8 +4,6 @@
 #include "json.hpp"
 #include "Plugins/PluginProvider.hpp"
 
-const std::string PluginProvider::PLUGINS_FOLDER = "plugins";
-
 PluginProvider::PluginProvider()
 {
 }
@@ -14,14 +12,23 @@ PluginProvider::~PluginProvider()
 {
 }
 
+void PluginProvider::setPluginsFolder(std::string folder)
+{
+    this->pluginsFolder = folder;
+    this->plugins.clear();
+}
+
 void PluginProvider::refreshPlugins()
 {
     this->plugins.clear();
 
-    if (!std::filesystem::exists(this->PLUGINS_FOLDER))
-        std::filesystem::create_directory(this->PLUGINS_FOLDER);
+    // get current working directory
+    std::string cwd = std::filesystem::current_path().string();
 
-    for (const auto& entry : std::filesystem::directory_iterator(this->PLUGINS_FOLDER))
+    if (!std::filesystem::exists(this->pluginsFolder))
+        std::filesystem::create_directory(this->pluginsFolder);
+
+    for (const auto& entry : std::filesystem::directory_iterator(this->pluginsFolder))
     {
         if (entry.is_directory())
         {

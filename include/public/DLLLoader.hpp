@@ -25,7 +25,7 @@ private:
         if (separatorIndex == std::string::npos)
         {
             filename = filepath;
-            filefolder = "";
+            filefolder = "";;
         }
         else
         {
