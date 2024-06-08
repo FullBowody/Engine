@@ -46,7 +46,7 @@ const std::vector<Marker*>& Scene::getMarkers() const
 
 Marker* Scene::createMarker(int id, const Pose& pose)
 {
-    Marker* marker = new Marker(pose, id);
+    Marker* marker = new Marker(id, pose);
     markers.push_back(marker);
     return marker;
 }

@@ -11,14 +11,14 @@ private:
 
 public:
     Marker(): pose(), id(0) {}
-    Marker(const Pose& pose, int id): pose(pose), id(id) {}
-    Marker(const Marker& other): Nullable(other), pose(other.pose), id(other.id) {}
+    Marker(int id, const Pose& pose): id(id), pose(pose) {}
+    Marker(const Marker& other): Nullable(other), id(other.id), pose(other.pose) {}
     ~Marker() {}
 
-    const Pose& getPose() const { return pose; }
-    void setPose(const Pose& pose) { this->pose = pose; }
     int getId() const { return id; }
+    const Pose& getPose() const { return pose; }
     void setId(int id) { this->id = id; }
+    void setPose(const Pose& pose) { this->pose = pose; }
 
     friend std::ostream& operator<<(std::ostream& os, const Marker& marker)
     {
