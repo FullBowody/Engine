@@ -14,7 +14,7 @@ public:
 
     int loadFromJSON(const std::string& filename);
 
-    virtual Marker* createMarker(int id, Pose pose);
+    virtual Marker* createMarker(int id, const Pose& pose);
     virtual void destroyMarker(int index);
     virtual Marker* getMarker(int index) const;
     virtual Marker* findMarker(int id) const;

@@ -20,8 +20,8 @@ public:
     void setPosition(const Vec3f& position) { this->position = position; }
     void setRotation(const Quaternion& rotation) { this->rotation = rotation; }
 
-    Vec3f getPosition() const { return position; }
-    Quaternion getRotation() const { return rotation; }
+    const Vec3f& getPosition() const { return position; }
+    const Quaternion& getRotation() const { return rotation; }
 
     friend std::ostream& operator<<(std::ostream& os, const Pose& pose)
     {
