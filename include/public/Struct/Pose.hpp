@@ -17,6 +17,9 @@ public:
     Pose(const Pose& other): Nullable(other), position(other.position), rotation(other.rotation) {}
     ~Pose() {}
 
+    void setPosition(const Vec3f& position) { this->position = position; }
+    void setRotation(const Quaternion& rotation) { this->rotation = rotation; }
+
     Vec3f getPosition() const { return position; }
     Quaternion getRotation() const { return rotation; }
 
