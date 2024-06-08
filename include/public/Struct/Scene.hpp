@@ -5,17 +5,18 @@
 class DLLExport Scene: public Nullable
 {
 private:
-    std::vector<Marker> markers;
+    std::vector<Marker*> markers;
 
 public:
     Scene();
     Scene(const Scene& other);
     ~Scene();
 
-    int loadFromFile(const std::string& filename);
+    int loadFromJSON(const std::string& filename);
 
-    virtual Marker getMarker(int id) const;
-    virtual const std::vector<Marker>& getMarkers() const;
-    virtual void addMarker(Marker marker);
-    virtual void removeMarker(int id);
+    virtual Marker* createMarker(int id, Pose pose);
+    virtual void destroyMarker(int index);
+    virtual Marker* getMarker(int index) const;
+    virtual Marker* findMarker(int id) const;
+    virtual const std::vector<Marker*>& getMarkers() const;
 };

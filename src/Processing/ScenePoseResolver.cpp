@@ -9,8 +9,8 @@ Pose ScenePoseResolver::resolvePose(const Scene& scene, const std::vector<Marker
     std::vector<Marker> validCameraMarkers;
     for (Marker cameraMarker : cameraMarkers)
     {
-        const Marker& sceneMarker = scene.getMarker(cameraMarker.getId());
-        if (sceneMarker.isNull()) continue;
+        Marker* sceneMarker = scene.findMarker(cameraMarker.getId());
+        if (sceneMarker == nullptr) continue;
         validCameraMarkers.push_back(cameraMarker);
     }
 
@@ -19,7 +19,7 @@ Pose ScenePoseResolver::resolvePose(const Scene& scene, const std::vector<Marker
 
     // TODO : Maybe use multiple markers to get a more accurate pose
     Marker& cameraMarker = validCameraMarkers[0];
-    const Marker& sceneMarker = scene.getMarker(cameraMarker.getId());
+    Marker& sceneMarker = *scene.findMarker(cameraMarker.getId());
     
     // get marker pos / rot in camera space
     Quaternion markerRot_cam = cameraMarker.getPose().getRotation();

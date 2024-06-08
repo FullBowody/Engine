@@ -14,42 +14,47 @@ Scene::~Scene()
 {
 }
 
-int Scene::loadFromFile(const std::string& filename)
+int Scene::loadFromJSON(const std::string& filename)
 {
     // TODO : Implement
     return 1;
 }
 
-Marker Scene::getMarker(int id) const
+Marker* Scene::getMarker(int index) const
 {
-    for (const Marker& marker : markers)
+    if (index < 0 || index >= markers.size())
+        return nullptr;
+    return markers.at(index);
+}
+
+Marker* Scene::findMarker(int id) const
+{
+    for (Marker* marker : markers)
     {
-        if (marker.getId() == id)
+        if (marker->getId() == id)
         {
             return marker;
         }
     }
-    return Null<Marker>();
+    return nullptr;
 }
 
-const std::vector<Marker>& Scene::getMarkers() const
+const std::vector<Marker*>& Scene::getMarkers() const
 {
     return markers;
 }
 
-void Scene::addMarker(Marker marker)
+Marker* Scene::createMarker(int id, Pose pose)
 {
+    Marker* marker = new Marker(pose, id);
     markers.push_back(marker);
+    return marker;
 }
 
-void Scene::removeMarker(int id)
+void Scene::destroyMarker(int index)
 {
-    for (auto it = markers.begin(); it != markers.end(); ++it)
-    {
-        if (it->getId() == id)
-        {
-            markers.erase(it);
-            break;
-        }
-    }
+    if (index < 0 || index >= markers.size())
+        return;
+    delete markers.at(index);
+    markers.erase(markers.begin() + index);
 }
