@@ -18,6 +18,7 @@ public:
     const Pose& getPose() const { return pose; }
     void setPose(const Pose& pose) { this->pose = pose; }
     int getId() const { return id; }
+    void setId(int id) { this->id = id; }
 
     friend std::ostream& operator<<(std::ostream& os, const Marker& marker)
     {
