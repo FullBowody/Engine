@@ -14,6 +14,7 @@ class DLLExport Engine: public Updatable
 private:
     Scene scene;
     std::vector<PluginHandle<CameraPlugin>*> cameras;
+    PluginProvider pluginProvider;
 
 public:
     Engine();

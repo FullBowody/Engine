@@ -16,7 +16,7 @@ Engine::~Engine()
 
 PluginProvider& Engine::getPluginProvider()
 {
-    return PluginProvider::getInstance();
+    return pluginProvider;
 }
 
 Scene& Engine::getScene()
@@ -26,7 +26,7 @@ Scene& Engine::getScene()
 
 Camera* Engine::createCamera(std::string plugin)
 {
-    PluginDescriptor descriptor = PluginProvider::getInstance().getPlugin(plugin);
+    PluginDescriptor descriptor = pluginProvider.getPlugin(plugin);
     if (descriptor.getType() != PluginType::CAMERA)
     {
         std::cerr << "Invalid plugin name: " << plugin << std::endl;

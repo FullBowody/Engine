@@ -4,7 +4,6 @@
 #include "json.hpp"
 #include "Plugins/PluginProvider.hpp"
 
-PluginProvider* PluginProvider::instance = nullptr;
 const std::string PluginProvider::PLUGINS_FOLDER = "plugins";
 
 PluginProvider::PluginProvider()
@@ -63,8 +62,7 @@ PluginDescriptor PluginProvider::getPlugin(std::string name)
 std::vector<PluginDescriptor> PluginProvider::getPlugins()
 {
     if (this->plugins.empty()) this->refreshPlugins();
-    
-    return std::vector<PluginDescriptor>(this->plugins);
+    return this->plugins;
 }
 
 std::vector<PluginDescriptor> PluginProvider::getPlugins(PluginType type)
