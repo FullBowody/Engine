@@ -2,6 +2,7 @@
 #include <string>
 #include <ostream>
 #include <functional>
+#include "Identifiable.hpp"
 #include "Event/EventManager.hpp"
 #include "Updatable.hpp"
 #include "Struct/Pose.hpp"
@@ -12,7 +13,7 @@
 
 class Engine;
 
-class DLLExport Camera: public Updatable, public ParamManager
+class DLLExport Camera: public Identifiable, public Updatable, public ParamManager
 {
     friend Engine;
 

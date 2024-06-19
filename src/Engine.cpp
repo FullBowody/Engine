@@ -40,27 +40,18 @@ Camera* Engine::createCamera(std::string plugin)
     }
 
     PluginHandle<CameraPlugin>* handle = descriptor.createHandle<CameraPlugin>();
+    handle->getPlugin()->setId(Identifiable::getNewId());
     cameras.push_back(handle);
     return handle->getPlugin();
 }
 
-bool Engine::destroyCamera(int index)
-{
-    if (index < 0 || index >= cameras.size())
-        return false;
-    delete cameras.at(index);
-    cameras.erase(cameras.begin() + index);
-    cameras.shrink_to_fit();
-    return true;
-}
-
-bool Engine::destroyCamera(Camera* camera)
+bool Engine::destroyCamera(int id)
 {
     for (int i = 0; i < cameras.size(); i++)
     {
-        if (cameras.at(i)->getPlugin() == camera)
+        if (cameras.at(i)->getPlugin()->getId() == id)
         {
-            delete camera;
+            delete cameras.at(i);
             cameras.erase(cameras.begin() + i);
             cameras.shrink_to_fit();
             return true;
@@ -69,11 +60,14 @@ bool Engine::destroyCamera(Camera* camera)
     return false;
 }
 
-Camera* Engine::getCamera(int index)
+Camera* Engine::getCamera(int id)
 {
-    if (index < 0 || index >= cameras.size())
-        return nullptr;
-    return cameras.at(index)->getPlugin();
+    for (auto camera : cameras)
+    {
+        if (camera->getPlugin()->getId() == id)
+            return camera->getPlugin();
+    }
+    return nullptr;
 }
 
 std::vector<Camera*> Engine::getCameras()

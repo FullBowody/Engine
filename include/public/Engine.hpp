@@ -25,9 +25,8 @@ public:
     virtual PluginProvider& getPluginProvider();
 
     virtual Camera* createCamera(std::string plugin);
-    virtual bool destroyCamera(int index);
-    virtual bool destroyCamera(Camera* camera);
-    virtual Camera* getCamera(int index);
+    virtual bool destroyCamera(int id);
+    virtual Camera* getCamera(int id);
     virtual std::vector<Camera*> getCameras();
 
     virtual int startTracking();
