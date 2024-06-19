@@ -11,13 +11,13 @@ private:
     static int ID_COUNTER;
     int id;
 
-    void setId(int id) { this->id = id; }
+    void setId(int id);
 
 protected:
     Identifiable() : id(Identifiable::getNewId()) {}
 
 public:
-    static int getNewId() { return Identifiable::ID_COUNTER++; }
+    static int getNewId();
 
-    int getId() const { return id; }
+    int getId() const;
 };
