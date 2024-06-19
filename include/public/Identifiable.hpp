@@ -11,7 +11,7 @@ private:
     static int ID_COUNTER;
     int id;
 
-    void setId(int id);
+    virtual void setId(int id);
 
 protected:
     Identifiable() : id(Identifiable::getNewId()) {}
@@ -19,5 +19,5 @@ protected:
 public:
     static int getNewId();
 
-    int getId() const;
+    virtual int getId() const;
 };
