@@ -156,29 +156,38 @@ public:
         return Quaternion(x/s, y/s, z/s, w/s);
     }
 
-    Quaternion operator*= (const Quaternion& q)
+    Quaternion operator*=(const Quaternion& q)
     {
         return *this = *this * q;
     }
 
-    Quaternion operator*= (float s)
+    Quaternion operator*=(float s)
     {
         return *this = *this * s;
     }
 
-    Quaternion operator/= (float s)
+    Quaternion operator/=(float s)
     {
         return *this = *this / s;
     }
 
-    Quaternion operator+= (const Quaternion& q)
+    Quaternion operator+=(const Quaternion& q)
     {
         return *this = *this + q;
     }
 
-    Quaternion operator-= (const Quaternion& q)
+    Quaternion operator-=(const Quaternion& q)
     {
         return *this = *this - q;
+    }
+
+    Quaternion operator=(const Quaternion& q)
+    {
+        x = q.x;
+        y = q.y;
+        z = q.z;
+        w = q.w;
+        return *this;
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Quaternion& q)

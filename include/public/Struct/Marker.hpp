@@ -6,11 +6,11 @@
 class Marker: public Nullable
 {
 private:
-    Pose pose;
     int id;
+    Pose pose;
 
 public:
-    Marker(): pose(), id(0) {}
+    Marker(): id(0), pose() {}
     Marker(int id, const Pose& pose): id(id), pose(pose) {}
     Marker(const Marker& other): Nullable(other), id(other.id), pose(other.pose) {}
     ~Marker() {}

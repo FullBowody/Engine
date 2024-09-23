@@ -23,6 +23,13 @@ public:
     const Vec3f& getPosition() const { return position; }
     const Quaternion& getRotation() const { return rotation; }
 
+    Pose operator=(const Pose& pose)
+    {
+        position = pose.position;
+        rotation = pose.rotation;
+        return *this;
+    }
+
     friend std::ostream& operator<<(std::ostream& os, const Pose& pose)
     {
         os << "Pose(position=" << pose.position << ", rotation=" << pose.rotation << ")";

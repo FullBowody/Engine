@@ -18,14 +18,14 @@ private:
     std::string author;
     std::string version;
     PluginType type;
-    
+
     std::string folder;
 
 public:
     PluginDescriptor(std::string name, std::string description, std::string author, std::string version, PluginType type, std::string folder)
-        : name(name), description(description), author(author), version(version), folder(folder), type(type) {}
+        : name(name), description(description), author(author), version(version), type(type), folder(folder) {}
     PluginDescriptor(const PluginDescriptor& other)
-        : name(other.name), description(other.description), author(other.author), version(other.version), folder(other.folder), type(other.type) {}
+        : name(other.name), description(other.description), author(other.author), version(other.version), type(other.type), folder(other.folder) {}
     ~PluginDescriptor() {}
 
     virtual std::string getName() const

@@ -16,10 +16,10 @@ public:
     Frame(const Frame& frame);
     ~Frame();
 
-    virtual const unsigned char* getData() const;
-    virtual const int getWidth() const;
-    virtual const int getHeight() const;
-    virtual const int getChannels() const;
+    virtual unsigned char* getData() const;
+    virtual int getWidth() const;
+    virtual int getHeight() const;
+    virtual int getChannels() const;
 
     virtual unsigned char* encodeJPG(int quality = 80, int* size = nullptr) const;
 };
