@@ -26,7 +26,7 @@ public:
         : name(name), description(description), author(author), version(version), type(type), folder(folder) {}
     PluginDescriptor(const PluginDescriptor& other)
         : name(other.name), description(other.description), author(other.author), version(other.version), type(other.type), folder(other.folder) {}
-    ~PluginDescriptor() {}
+    virtual ~PluginDescriptor() {}
 
     virtual std::string getName() const
     {
