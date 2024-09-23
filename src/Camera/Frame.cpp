@@ -28,22 +28,22 @@ Frame::~Frame()
     if (data) delete[] data;
 }
 
-const unsigned char* Frame::getData() const
+unsigned char* Frame::getData() const
 {
     return data;
 }
 
-const int Frame::getWidth() const
+int Frame::getWidth() const
 {
     return width;
 }
 
-const int Frame::getHeight() const
+int Frame::getHeight() const
 {
     return height;
 }
 
-const int Frame::getChannels() const
+int Frame::getChannels() const
 {
     return channels;
 }
