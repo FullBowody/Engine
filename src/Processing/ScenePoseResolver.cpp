@@ -1,4 +1,3 @@
-#pragma once
 #include "Processing/ScenePoseResolver.hpp"
 
 Pose ScenePoseResolver::resolvePose(const Scene& scene, const std::vector<Marker>& cameraMarkers)

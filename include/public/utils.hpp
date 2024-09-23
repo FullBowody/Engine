@@ -8,7 +8,11 @@
         # define DLLExport __declspec(dllimport)
     #endif
 #else
-# define DLLExport
+    #ifdef EXPORT_ENGINE
+        # define DLLExport __attribute__((visibility("default")))
+    #else
+        # define DLLExport
+    #endif
 #endif
 
 #define CHECK_ERRORS(x) \

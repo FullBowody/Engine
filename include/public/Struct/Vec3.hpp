@@ -1,5 +1,6 @@
 #pragma once
 #include <ostream>
+#include <cmath>
 #include "utils.hpp"
 #include "Struct/Nullable.hpp"
 

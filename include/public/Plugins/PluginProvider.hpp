@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "utils.hpp"
-#include "plugins/PluginDescriptor.hpp"
+#include "Plugins/PluginDescriptor.hpp"
 
 class DLLExport PluginProvider
 {
