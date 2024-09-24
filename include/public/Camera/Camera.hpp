@@ -2,7 +2,7 @@
 #include <string>
 #include <ostream>
 #include <functional>
-#include "Identifiable.hpp"
+#include "Struct/Identifiable.hpp"
 #include "Event/EventManager.hpp"
 #include "Updatable.hpp"
 #include "Struct/Pose.hpp"

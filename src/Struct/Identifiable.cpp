@@ -1,4 +1,4 @@
-#include "Identifiable.hpp"
+#include "Struct/Identifiable.hpp"
 
 int Identifiable::ID_COUNTER = 0;
 
