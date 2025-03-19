@@ -2,69 +2,30 @@
 #include <string>
 #include <ostream>
 #include <functional>
-#include "Struct/Identifiable.hpp"
-#include "Event/EventManager.hpp"
+#include "Structs/Identifiable.hpp"
 #include "Updatable.hpp"
-#include "Struct/Pose.hpp"
-#include "Struct/Body.hpp"
-#include "Camera/Frame.hpp"
-#include "Param/ParamManager.hpp"
-#include "Struct/Marker.hpp"
+#include "Structs/FBError.hpp"
+#include "Camera/Capture.hpp"
 
-class Engine;
-
-class DLLExport Camera: public Identifiable, public Updatable, public ParamManager
+class DLLExport Camera: public Identifiable, public Updatable
 {
-    friend Engine;
-
 private:
-    int width = 0;
-    int height = 0;
-    bool _shouldTrack = false;
-    Pose* pose = nullptr;
-    Frame* preview = nullptr;
-    Body2D* body = nullptr;
-    std::vector<Marker> markers;
-
-    EventManager<Frame> onPreviewEvent;
-    EventManager<Pose> onPoseEvent;
-    EventManager<Body2D> onBodyEvent;
-
-protected:
-    void setPose(const Pose& pose);
-    void setPreview(const Frame& preview);
-    void setBody(const Body2D& body);
-    void setMarkers(const std::vector<Marker>& markers);
-    bool shouldTrack() const;
-
-    virtual int onUpdate(float dt) = 0;
-    virtual int onStartTracking() = 0;
-    virtual int onStopTracking() = 0;
-    virtual int onDetectMarkers() = 0;
+    std::string m_name;
+    Capture* m_capture;
 
 public:
     Camera();
+    Camera(const Capture* capture);
+    Camera(const Camera& camera);
     virtual ~Camera();
+
+    Camera& operator=(const Camera& other);
+    bool operator==(const Camera& other) const;
+    bool operator!=(const Camera& other) const;
+    friend std::ostream& operator<<(std::ostream& os, const Camera& camera);
+
+    virtual const Capture* getCapture() const;
+    virtual void setCapture(Capture* capture);
     
-    virtual int update(float dt);
-    virtual int startTracking();
-    virtual int stopTracking();
-    virtual int detectMarkers();
-
-    virtual void onPreview(Callback<Frame>* listener);
-    virtual void onPose(Callback<Pose>* listener);
-    virtual void onBody(Callback<Body2D>* listener);
-
-    virtual int getWidth() const;
-    virtual int getHeight() const;
-    virtual const Frame& getPreview() const;
-    virtual const Pose& getPose() const;
-    virtual const Body2D& getBody(float dt_since_updt) const;
-    virtual const std::vector<Marker>& getDetectedMarkers() const;
-
-    friend std::ostream& operator<<(std::ostream& os, const Camera& camera)
-    {
-        os << "Camera(width=" << camera.width << ", height=" << camera.height << ", pose=" << printPtr(camera.pose) << ")";
-        return os;
-    }
+    virtual FBError onUpdate(float dt);
 };

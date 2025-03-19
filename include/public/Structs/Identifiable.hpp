@@ -1,21 +1,17 @@
 #pragma once
 #include "utils.hpp"
 
-class Engine;
-
 typedef unsigned long long UUID;
 
 class DLLExport Identifiable
 {
-    friend Engine;
-
 private:
-    UUID uuid;
+    UUID m_uuid;
 
     virtual void setUUID(UUID uuid);
 
 protected:
-    Identifiable() : uuid(Identifiable::getNewUUID()) {}
+    Identifiable() : m_uuid(Identifiable::getNewUUID()) {}
 
 public:
     virtual ~Identifiable() {}

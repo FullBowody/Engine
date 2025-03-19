@@ -1,119 +1,64 @@
-#include <iostream> 
 #include "Camera/Camera.hpp"
 
 Camera::Camera()
 {
-
+    m_capture = nullptr;
 }
 
-Camera::~Camera()
+Camera::Camera(Capture* capture)
 {
-    if (pose) delete pose;
-    if (preview) delete preview;
-    if (body) delete body;
+    m_capture = capture;
 }
 
-void Camera::setPose(const Pose& pose)
+Camera::Camera(const Camera& camera)
 {
-    this->pose = new Pose(pose);
-    onPoseEvent.dispatchEvent(*this->pose);
+    // Copy constructor
+    m_capture = camera.m_capture;
 }
 
-void Camera::setPreview(const Frame& preview)
+virtual Camera::~Camera()
 {
-    if (this->preview) delete this->preview;
-    this->preview = new Frame(preview);
-    this->width = this->preview->getWidth();
-    this->height = this->preview->getHeight();
-    onPreviewEvent.dispatchEvent(*this->preview);
+    // Destructor
+    delete m_capture;
 }
 
-void Camera::setBody(const Body2D& body)
+Camera& Camera::operator=(const Camera& other)
 {
-    this->body = new Body2D(body);
-    onBodyEvent.dispatchEvent(*this->body);
+    return *this;
 }
 
-void Camera::setMarkers(const std::vector<Marker>& markers)
+bool Camera::operator==(const Camera& other) const
 {
-    this->markers = std::vector<Marker>(markers);
-    // TODO : maybe dispatch an event
+    return Identifiable::operator==(other) && m_capture == other.m_capture;
 }
 
-bool Camera::shouldTrack() const
+bool Camera::operator!=(const Camera& other) const
 {
-    return _shouldTrack;
+    return Identifiable::operator!=(other) || m_capture != other.m_capture;
 }
 
-int Camera::update(float dt)
+friend std::ostream& Camera::operator<<(std::ostream& os, const Camera& camera)
 {
-    return onUpdate(dt);
+    os << "Camera(" << camera.m_name << ", capture=" << camera.m_capture << ")";
+    return os;
 }
 
-int Camera::startTracking()
+virtual const Capture* Camera::getCapture() const
 {
-    if (_shouldTrack) return 0;
-    _shouldTrack = true;
-    return onStartTracking();
+    return m_capture;
 }
 
-int Camera::stopTracking()
+virtual void Camera::setCapture(Capture* capture)
 {
-    if (!_shouldTrack) return 0;
-    _shouldTrack = false;
-    return onStopTracking();
+    if (m_capture != nullptr)
+    {
+        delete m_capture;
+    }
+    m_capture = capture;
 }
 
-int Camera::detectMarkers()
+virtual FBError Camera::onUpdate(float dt)
 {
-    return onDetectMarkers();
-}
-
-void Camera::onPreview(Callback<Frame>* listener)
-{
-    onPreviewEvent.attachListener(listener);
-}
-
-void Camera::onPose(Callback<Pose>* listener)
-{
-    onPoseEvent.attachListener(listener);
-}
-
-void Camera::onBody(Callback<Body2D>* listener)
-{
-    onBodyEvent.attachListener(listener);
-}
-
-int Camera::getWidth() const
-{
-    return width;
-}
-
-int Camera::getHeight() const
-{
-    return height;
-}
-
-const Frame& Camera::getPreview() const
-{
-    return *preview;
-}
-
-const Pose& Camera::getPose() const
-{
-    return *pose;
-}
-
-const Body2D& Camera::getBody(float dt_since_updt) const
-{
-    // TODO : add a [oldBody] member to the class
-    // and use it to interpolate / predict the body
-    // for call behond the last update
-    // (maybe add a [bool interpolate = false] flag to the function)
-    return *body;
-}
-
-const std::vector<Marker>& Camera::getDetectedMarkers() const
-{
-    return markers;
+    // TODO : Implement
+    return FBError::OK;
 }

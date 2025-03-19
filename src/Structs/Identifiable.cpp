@@ -1,9 +1,9 @@
-#include "Struct/Identifiable.hpp"
+#include "Structs/Identifiable.hpp"
 #include <random>
 
 void Identifiable::setUUID(UUID uuid)
 {
-    this->uuid = uuid;
+    this->m_uuid = uuid;
 }
 
 UUID Identifiable::getNewUUID()
@@ -16,15 +16,15 @@ UUID Identifiable::getNewUUID()
 
 const UUID Identifiable::getUUID() const
 {
-    return this->uuid;
+    return this->m_uuid;
 }
 
 bool Identifiable::operator==(const Identifiable& other) const
 {
-    return this->uuid == other.uuid;
+    return this->m_uuid == other.m_uuid;
 }
 
 bool Identifiable::operator!=(const Identifiable& other) const
 {
-    return this->uuid != other.uuid;
+    return this->m_uuid != other.m_uuid;
 }
