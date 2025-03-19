@@ -3,21 +3,26 @@
 
 class Engine;
 
+typedef unsigned long long UUID;
+
 class DLLExport Identifiable
 {
     friend Engine;
 
 private:
-    static int ID_COUNTER;
-    int id;
+    UUID uuid;
 
-    virtual void setId(int id);
+    virtual void setUUID(UUID uuid);
 
 protected:
-    Identifiable() : id(Identifiable::getNewId()) {}
+    Identifiable() : uuid(Identifiable::getNewUUID()) {}
 
 public:
-    static int getNewId();
+    virtual ~Identifiable() {}
 
-    virtual int getId() const;
+    static UUID getNewUUID();
+    virtual const UUID getUUID() const;
+
+    virtual bool operator==(const Identifiable& other) const;
+    virtual bool operator!=(const Identifiable& other) const;
 };

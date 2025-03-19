@@ -1,18 +1,30 @@
 #include "Struct/Identifiable.hpp"
+#include <random>
 
-int Identifiable::ID_COUNTER = 0;
-
-void Identifiable::setId(int id)
+void Identifiable::setUUID(UUID uuid)
 {
-    this->id = id;
+    this->uuid = uuid;
 }
 
-int Identifiable::getNewId()
+UUID Identifiable::getNewUUID()
 {
-    return Identifiable::ID_COUNTER++;
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<UUID> dis(0, std::numeric_limits<UUID>::max());
+    return dis(gen);
 }
 
-int Identifiable::getId() const
+const UUID Identifiable::getUUID() const
 {
-    return id;
+    return this->uuid;
+}
+
+bool Identifiable::operator==(const Identifiable& other) const
+{
+    return this->uuid == other.uuid;
+}
+
+bool Identifiable::operator!=(const Identifiable& other) const
+{
+    return this->uuid != other.uuid;
 }
