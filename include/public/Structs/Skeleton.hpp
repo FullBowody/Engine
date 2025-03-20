@@ -5,6 +5,7 @@
 
 class DLLExport Skeleton
 {
+public:
     static const int JOINT_HIP = 0;
     static const int JOINT_SPINE = 1;
     static const int JOINT_CHEST = 2;
@@ -26,7 +27,6 @@ class DLLExport Skeleton
     static const int JOINT_ANKLE_R = 18;
     static const int NB_JOINTS = 19;
 
-public:
     std::vector<Transform> m_joints;
 
     Skeleton();

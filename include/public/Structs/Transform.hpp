@@ -6,6 +6,23 @@
 #include "utils.hpp"
 
 class DLLExport Transform {
+private:
+    std::string m_name;
+    glm::vec3 m_position;
+    glm::quat m_rotation;
+    Transform* m_parent;
+    std::vector<Transform&> m_children;
+    bool m_outdated;
+
+    glm::vec3 m_global_position;
+    glm::quat m_global_rotation;
+
+    void calculateGlobalPositionRotation();
+
+    void markOutdatedRecursive();
+    void addChild(Transform& child);
+    void removeChild(Transform& child);
+
 public:
     Transform();
     Transform(const std::string& name);
@@ -23,19 +40,8 @@ public:
     glm::quat getLocalRotation() const;
 
     glm::vec3 getGlobalPosition();
-    glm::vec3 getGlobalPosition(const Transform& root);
+    glm::vec3 getGlobalPosition(Transform& root);
 
     glm::quat getGlobalRotation();
-    glm::quat getGlobalRotation(const Transform& root);
-
-private:
-    std::string m_name;
-    glm::vec3 m_position;
-    glm::quat m_rotation;
-    Transform* m_parent;
-    std::vector<Transform&> m_children;
-    bool m_outdated;
-
-    glm::vec3 m_global_position;
-    glm::quat m_global_rotation;
+    glm::quat getGlobalRotation(Transform& root);
 };
