@@ -5,11 +5,11 @@
 #include "Structs/CaptureInfo.hpp"
 #include "Structs/CaptureSkeleton.hpp"
 
-std::string& Capture::getType() const {
+const std::string& Capture::getType() const {
     return m_type;
 }
 
-Transform& Capture::getTransform() const {
+const Transform& Capture::getTransform() const {
     return m_transform;
 }
 
@@ -21,18 +21,18 @@ int Capture::getHeight() const {
     return m_height;
 }
 
-CaptureInfo& Capture::getInfos() const {
+const CaptureInfo& Capture::getInfos() const {
     return m_infos;
 }
 
-Image& Capture::getImage() const {
+const Image& Capture::getImage() const {
     return m_image;
 }
 
-CaptureSkeleton& Capture::getSkeleton() const {
+const CaptureSkeleton& Capture::getSkeleton() const {
     return m_skeleton;
 }
 
-Transform& Capture::calibrate() {
+const Transform& Capture::calibrate() {
     return onCalibrate();
 }

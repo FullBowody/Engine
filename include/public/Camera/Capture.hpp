@@ -15,16 +15,17 @@ private:
     Transform m_transform;
     Image m_image;
     CaptureInfo m_infos;
+    CaptureSkeleton m_skeleton;
 
     virtual Transform& onCalibrate() = 0;
 
 public:
-    std::string& getType() const;
-    Transform& getTransform() const;
+    const std::string& getType() const;
+    const Transform& getTransform() const;
     int getWidth() const;
     int getHeight() const;
-    CaptureInfo& getInfos() const;
-    Image& getImage() const;
-    CaptureSkeleton& getSkeleton() const;
-    Transform& calibrate();
+    const CaptureInfo& getInfos() const;
+    const Image& getImage() const;
+    const CaptureSkeleton& getSkeleton() const;
+    const Transform& calibrate();
 };
