@@ -5,13 +5,14 @@
 #include <glm/gtc/quaternion.hpp>
 #include "utils.hpp"
 
-class DLLExport Transform {
+class DLLExport Transform
+{
 private:
     std::string m_name;
     glm::vec3 m_position;
     glm::quat m_rotation;
-    Transform* m_parent;
-    std::vector<Transform&> m_children;
+    std::shared_ptr<Transform> m_parent;
+    std::vector<Transform*> m_children;
     bool m_outdated;
 
     glm::vec3 m_global_position;
@@ -20,18 +21,21 @@ private:
     void calculateGlobalPositionRotation();
 
     void markOutdatedRecursive();
-    void addChild(Transform& child);
-    void removeChild(Transform& child);
+    void addChild(Transform* child);
+    void removeChild(Transform* child);
 
 public:
     Transform();
     Transform(const std::string& name);
     Transform(const std::string& name, const glm::vec3& position, const glm::quat& rotation);
-    Transform(const Transform& other);
     ~Transform();
 
-    void setParent(Transform* parent);
-    Transform* getParent() const;
+    friend std::ostream& operator<<(std::ostream& os, const Transform& transform);
+
+    void setParent(std::shared_ptr<Transform> parent);
+    std::shared_ptr<Transform> getParent() const;
+
+    std::vector<std::weak_ptr<Transform>> getChildren() const;
 
     void setLocalPosition(const glm::vec3& position);
     glm::vec3 getLocalPosition() const;

@@ -3,7 +3,7 @@ project(Engine)
 
 add_subdirectory(dependencies/glm)
 
-file(GLOB_RECURSE Engine_SRC "src/*.cpp")
+file(GLOB_RECURSE Engine_SRC "src/private/*.cpp" "src/public/*.cpp")
 
 include_directories(include/public include/private)
 include_directories(dependencies/glm)

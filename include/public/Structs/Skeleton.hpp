@@ -1,9 +1,11 @@
 #pragma once
-#include <vector>
-#include "Structs/Transform.hpp"
+#include <array>
+#include <optional>
+#include "Structs/Joint.hpp"
+#include "Identifiable.hpp"
 #include "utils.hpp"
 
-class DLLExport Skeleton
+class DLLExport Skeleton : public Identifiable
 {
 public:
     static const int JOINT_HIP = 0;
@@ -27,22 +29,18 @@ public:
     static const int JOINT_ANKLE_R = 18;
     static const int NB_JOINTS = 19;
 
-    std::vector<Transform> m_joints;
+private:
+    std::array<Joint, NB_JOINTS> m_joints;
 
+public:
     Skeleton();
-    Skeleton(const std::vector<Transform>& joints);
-    Skeleton(const Skeleton& other);
     ~Skeleton();
 
-    Skeleton& operator=(const Skeleton& other);
-    bool operator==(const Skeleton& other) const;
-    bool operator!=(const Skeleton& other) const;
     friend std::ostream& operator<<(std::ostream& os, const Skeleton& skeleton);
 
-    const std::vector<Transform>& getJoints() const;
-    const Transform& getJoint(int joint) const;
-    const size_t getNbJoints() const;
+    const std::array<Joint, NB_JOINTS>& getJoints() const;
+    const Joint& getJoint(int id) const;
+    const size_t getJointCount() const;
 
-    void setJoint(int joint, const Transform& transform);
-    void setJoints(const std::vector<Transform>& joints);
+    void setJoint(int id, const Joint& joint);
 };

@@ -4,25 +4,12 @@
 
 class DLLExport Updatable
 {
+protected:
+    virtual FBError onUpdate(float dt) = 0;\
+    
 public:
     Updatable() = default;
-    virtual FBError update(float dt);
-
     virtual ~Updatable() = default;
-
-protected:
-    virtual FBError onUpdate(float dt) = 0;
+    
+    virtual FBError update(float dt);
 };
-
-Updatable::Updatable()
-{
-}
-
-Updatable::~Updatable()
-{
-}
-
-FBError Updatable::update(float dt)
-{
-    return onUpdate(dt);
-}

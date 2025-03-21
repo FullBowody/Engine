@@ -1,14 +1,16 @@
 #pragma once
-
 #include <string>
-#include "Structs/Transform.hpp"
+#include "Updatable.hpp"
 #include "Camera/Image.hpp"
+#include "Params/ParamManager.hpp"
+#include "Structs/Transform.hpp"
 #include "Structs/CaptureInfo.hpp"
 #include "Structs/CaptureSkeleton.hpp"
+#include "Structs/FBError.hpp"
 
-class Capture
+class Capture : public Updatable, public ParamManager
 {
-private:
+protected:
     int m_width;
     int m_height;
     std::string m_type;
@@ -18,8 +20,17 @@ private:
     CaptureSkeleton m_skeleton;
 
     virtual Transform& onCalibrate() = 0;
+    virtual FBError onStartTracking() = 0;
+    virtual FBError onStopTracking() = 0;
+    virtual FBError onStartPreview() = 0;
+    virtual FBError onStopPreview() = 0;
+
+    Capture();
+    Capture(const std::string& type);
 
 public:
+    virtual ~Capture() = default;
+
     const std::string& getType() const;
     const Transform& getTransform() const;
     int getWidth() const;
@@ -28,4 +39,10 @@ public:
     const Image& getImage() const;
     const CaptureSkeleton& getSkeleton() const;
     const Transform& calibrate();
+
+    virtual FBError startTracking();
+    virtual FBError stopTracking();
+
+    virtual FBError startPreview();
+    virtual FBError stopPreview();
 };

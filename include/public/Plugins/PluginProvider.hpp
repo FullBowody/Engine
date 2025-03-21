@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 #include "utils.hpp"
-#include "Plugins/PluginDescriptor.hpp"
+#include "Plugins/PluginDescription.hpp"
 
 class DLLExport PluginProvider
 {
 private:
     std::string pluginsFolder;
-    std::vector<PluginDescriptor> plugins;
+    std::vector<PluginDescription> plugins;
 
 public:
     PluginProvider();
@@ -15,7 +15,7 @@ public:
 
     virtual void setPluginsFolder(std::string folder);
     virtual void refreshPlugins();
-    virtual PluginDescriptor getPlugin(std::string name);
-    virtual std::vector<PluginDescriptor> getPlugins();
-    virtual std::vector<PluginDescriptor> getPlugins(PluginType type);
+    virtual PluginDescription getPlugin(std::string name);
+    virtual std::vector<PluginDescription> getPlugins();
+    virtual std::vector<PluginDescription> getPlugins(PluginType type);
 };
