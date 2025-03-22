@@ -22,7 +22,6 @@ protected:
     CaptureInfo infos;
     CaptureSkeleton skeleton;
 
-    virtual Transform& onCalibrate() = 0;
     virtual FBError onStartTracking() = 0;
     virtual FBError onStopTracking() = 0;
     virtual FBError onStartPreview() = 0;
@@ -42,7 +41,6 @@ public:
     virtual const CaptureInfo& getInfos() const;
     virtual const Image& getImage() const;
     virtual const CaptureSkeleton& getSkeleton() const;
-    virtual const Transform& calibrate();
     
     virtual FBError estimatePoseFromScene(Scene scene, std::function<FBError()> callback);
 
