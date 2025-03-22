@@ -20,13 +20,3 @@
     auto res = x; \
     if (res) return res; \
 }
-
-template <typename T>
-std::string printPtr(T* ptr)
-{
-    if (ptr == nullptr)
-        return "null";
-    std::ostringstream oss;
-    oss << *ptr;
-    return oss.str();
-}

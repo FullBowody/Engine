@@ -99,7 +99,7 @@ FBError Engine::startTracking()
 
     for (auto& camera : cameras)
     {
-        if (camera->getCapture())
+        if (!camera->getCapture())
         {
             std::cerr << "Camera " << camera->getName() << " has no capture device" << std::endl;
             return FBError::NO_CAPTURE_DEVICE;

@@ -13,7 +13,7 @@ set_property(TARGET EngineInterface PROPERTY CXX_STANDARD 17)
 
 # Engine library
 
-file(GLOB_RECURSE Engine_SRC "src/private/*.cpp")
+file(GLOB_RECURSE Engine_SRC "src/private/*.cpp" "src/public/*.cpp")
 
 add_library(Engine SHARED ${Engine_SRC})
 target_link_libraries(Engine EngineInterface)

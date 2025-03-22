@@ -62,5 +62,9 @@ unsigned char* Image::encodeJPG(int quality, int* size) const
             jpg += size;
         }, jpg, width, height, channels, data, quality);
     }
+    else
+    {
+        std::cerr << "Cannot encode image with " << channels << " channels to JPG, should be 3" << std::endl;
+    }
     return jpg;
 }

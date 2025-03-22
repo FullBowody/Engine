@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <fstream>
 #include "EngineLoader.hpp"
 #include "Plugins/PluginHandle.hpp"
 #include "Camera/Capture.hpp"
@@ -50,6 +51,7 @@ int main(int argc, char const *argv[])
         }
         else
         {
+            LOG("Capture plugin created, using it ...");
             camera.lock()->useCapturePlugin(capturePlugin);
         }
     }
@@ -66,7 +68,29 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
+    LOG("Updating Engine ...");
     engine->update(0.1);
+    
+    LOG("Updating Engine ...");
+    engine->update(0.1);
+    
+    LOG("Updating Engine ...");
+    engine->update(0.1);
+
+    LOG("Dumping camera image on disk ...");
+    int size;
+    unsigned char* data = camera.lock()->getCapture()->getImage().encodeJPG(80, &size);
+    if (size == 0)
+    {
+        ERR("Failed to encode image!");
+    }
+    else
+    {
+        std::ofstream file("camera.jpg", std::ios::out | std::ios::binary);
+        file.write((const char*)data, size);
+        file.close();
+        delete[] data;
+    }
     
     LOG("Destroying Engine ...");
     loader.destroyEngine(engine);

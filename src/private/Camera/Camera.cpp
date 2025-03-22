@@ -1,4 +1,6 @@
+#include <iostream>
 #include "Camera/Camera.hpp"
+#include "utils.hpp"
 
 Camera::Camera()
 {
@@ -38,10 +40,10 @@ Capture* Camera::getCapture() const
 
 void Camera::useCapturePlugin(PluginHandle<Capture>* capturePlugin)
 {
-    capturePlugin = capturePlugin;
+    this->capturePlugin = capturePlugin;
 }
 
-FBError Camera::estimatePoseFromScene(Scene scene, std::function<FBError()> callback)
+FBError Camera::estimatePoseFromScene(Scene scene, std::function<void(FBError)> callback)
 {
     if (!capturePlugin)
     {
