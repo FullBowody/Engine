@@ -11,7 +11,7 @@ enum class PluginType
     UNKNOWN
 };
 
-class PluginDescription
+class ENGINE_API PluginDescription
 {
 private:
     PluginType type;
@@ -33,27 +33,31 @@ public:
     {
         return this->name;
     }
+    
     virtual std::string getDescription() const
     {
         return this->description;
     }
+
     virtual std::string getAuthor() const
     {
         return this->author;
     }
+
     virtual std::string getVersion() const
     {
         return this->version;
     }
+
     virtual PluginType getType() const
     {
         return this->type;
     }
 
     template <typename T>
-    std::shared_ptr<PluginHandle<T>> createHandle() const
+    PluginHandle<T>* createHandle() const
     {
-        return std::make_shared<PluginHandle<T>>(this->folder);
+        return new PluginHandle<T>(this->folder);
     }
 
     friend std::ostream& operator<<(std::ostream& os, const PluginDescription& description)

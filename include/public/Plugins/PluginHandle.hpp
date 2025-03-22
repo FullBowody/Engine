@@ -1,9 +1,10 @@
 #pragma once
 #include <iostream>
+#include "utils.hpp"
 #include "Plugins/PluginLoader.hpp"
 
 template <class T>
-class DLLExport PluginHandle
+class PluginHandle
 {
 private:
     PluginLoader<T>* loader = nullptr;
@@ -11,8 +12,8 @@ private:
 
 public:
     PluginHandle(std::string path)
+        : loader(new PluginLoader<T>(path))
     {
-        this->loader = new PluginLoader<T>(path);
     }
 
     ~PluginHandle()

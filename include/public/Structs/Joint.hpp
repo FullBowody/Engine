@@ -1,17 +1,18 @@
 #pragma once
 #include "Structs/Transform.hpp"
+#include "utils.hpp"
 
-class DLLExport Joint
+class ENGINE_API Joint
 {
 private:
-    Transform m_transform;
+    Transform transform;
 
 public:
     Joint();
-    ~Joint();
+    virtual ~Joint();
 
     friend std::ostream& operator<<(std::ostream& os, const Joint& skeleton);
 
-    const Transform& getTransform() const;
-    void setTransform(const Transform& transform);
+    virtual const Transform& getTransform() const;
+    virtual void setTransform(const Transform& transform);
 };

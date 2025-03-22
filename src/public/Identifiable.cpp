@@ -2,7 +2,7 @@
 
 void Identifiable::setID(ID id)
 {
-    this->m_id = id;
+    this->id = id;
 }
 
 ID Identifiable::getNewID()
@@ -15,15 +15,15 @@ ID Identifiable::getNewID()
 
 const ID Identifiable::getID() const
 {
-    return this->m_id;
+    return id;
 }
 
 bool Identifiable::operator==(const Identifiable& other) const
 {
-    return this->m_id == other.m_id;
+    return id == other.id;
 }
 
 bool Identifiable::operator!=(const Identifiable& other) const
 {
-    return this->m_id != other.m_id;
+    return id != other.id;
 }

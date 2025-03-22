@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include "utils.hpp"
 #include "DLLLoader.hpp"
 
 #ifdef _WIN32
@@ -10,7 +9,7 @@ const std::string PLUGIN_LIB = "./plugin.so";
 #endif
 
 template <class T>
-class DLLExport PluginLoader
+class PluginLoader
 {
 private:
     DLLLoader* loader = nullptr;

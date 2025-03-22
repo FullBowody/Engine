@@ -4,7 +4,7 @@
 #include "utils.hpp"
 #include "Structs/FBError.hpp"
 
-class DLLExport Serializable
+class ENGINE_API Serializable
 {
 protected:
     virtual std::shared_ptr<nlohmann::json> onSerialize() const = 0;

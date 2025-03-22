@@ -3,20 +3,21 @@
 #include <vector>
 #include <memory>
 #include "Camera/Camera.hpp"
+#include "Camera/Capture.hpp"
 #include "Structs/Skeleton.hpp"
 #include "Structs/Marker.hpp"
+#include "Structs/Scene.hpp"
 #include "Updatable.hpp"
 #include "utils.hpp"
-#include "Plugins/PluginHandle.hpp"
-#include "Plugins/CameraPlugin.hpp"
 #include "Plugins/PluginProvider.hpp"
+#include "Plugins/PluginHandle.hpp"
 
-class DLLExport Engine: public Updatable
+class ENGINE_API Engine: public Updatable
 {
 protected:
-    std::vector<std::shared_ptr<Marker>> markers;
     std::vector<std::shared_ptr<Camera>> cameras;
     std::shared_ptr<Skeleton> skeleton;
+    Scene scene;
     PluginProvider pluginProvider;
     
     virtual FBError onUpdate(float dt);

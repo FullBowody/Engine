@@ -5,7 +5,7 @@
 #include "Identifiable.hpp"
 #include "utils.hpp"
 
-class DLLExport Skeleton : public Identifiable
+class ENGINE_API Skeleton : public Identifiable
 {
 public:
     static const int JOINT_HIP = 0;
@@ -30,17 +30,17 @@ public:
     static const int NB_JOINTS = 19;
 
 private:
-    std::array<Joint, NB_JOINTS> m_joints;
+    std::array<Joint, NB_JOINTS> joints;
 
 public:
     Skeleton();
-    ~Skeleton();
+    virtual ~Skeleton();
 
     friend std::ostream& operator<<(std::ostream& os, const Skeleton& skeleton);
 
-    const std::array<Joint, NB_JOINTS>& getJoints() const;
-    const Joint& getJoint(int id) const;
-    const size_t getJointCount() const;
+    virtual const std::array<Joint, NB_JOINTS>& getJoints() const;
+    virtual const Joint& getJoint(int id) const;
+    virtual const size_t getJointCount() const;
 
-    void setJoint(int id, const Joint& joint);
+    virtual void setJoint(int id, const Joint& joint);
 };

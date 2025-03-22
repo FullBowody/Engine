@@ -3,19 +3,19 @@
 #include <glm/glm.hpp>
 
 CaptureJoint::CaptureJoint()
-    : m_position(glm::vec3(0.0f)), m_confidence(0.0f)
+    : position(glm::vec3(0.0f)), confidence(0.0f)
 {
 
 }
 
 CaptureJoint::CaptureJoint(const glm::vec3& position, float confidence)
-    : m_position(position), m_confidence(confidence)
+    : position(position), confidence(confidence)
 {
 
 }
 
 CaptureJoint::CaptureJoint(const CaptureJoint& joint)
-    : m_position(joint.m_position), m_confidence(joint.m_confidence)
+    : position(joint.position), confidence(joint.confidence)
 {
 
 }
@@ -27,15 +27,15 @@ CaptureJoint::~CaptureJoint()
 
 CaptureJoint& CaptureJoint::operator=(const CaptureJoint& other)
 {
-    m_position = other.m_position;
-    m_confidence = other.m_confidence;
+    position = other.position;
+    confidence = other.confidence;
 
     return *this;
 }
 
 bool CaptureJoint::operator==(const CaptureJoint& other) const
 {
-    return m_position == other.m_position && m_confidence == other.m_confidence;
+    return position == other.position && confidence == other.confidence;
 }
 
 bool CaptureJoint::operator!=(const CaptureJoint& other) const
@@ -45,27 +45,27 @@ bool CaptureJoint::operator!=(const CaptureJoint& other) const
 
 std::ostream& operator<<(std::ostream& os, const CaptureJoint& joint)
 {
-    os << "CaptureJoint(position=(x=" << joint.m_position.x << ", y=" << joint.m_position.y << ", z="
-       << joint.m_position.z << "), rotation=" << joint.m_confidence << ")";
+    os << "CaptureJoint(position=(x=" << joint.position.x << ", y=" << joint.position.y << ", z="
+       << joint.position.z << "), rotation=" << joint.confidence << ")";
     return os;
 }
 
 void CaptureJoint::setPosition(const glm::vec3& position)
 {
-    m_position = position;
+    this->position = position;
 }
 
 void CaptureJoint::setConfidence(float confidence)
 {
-    m_confidence = confidence;
+    confidence = confidence;
 }
 
 glm::vec3 CaptureJoint::getPosition() const
 {
-    return m_position;
+    return position;
 }
 
 float CaptureJoint::getConfidence() const
 {
-    return m_confidence;
+    return confidence;
 }

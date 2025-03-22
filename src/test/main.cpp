@@ -1,6 +1,8 @@
 #include <iostream>
 #include <thread>
 #include "EngineLoader.hpp"
+#include "Plugins/PluginHandle.hpp"
+#include "Camera/Capture.hpp"
 
 #define LOG(x) std::cout <<  "[LOG] " << x << std::endl
 #define ERR(x) std::cout << "[ERR] " << x << std::endl
@@ -19,14 +21,16 @@ int main(int argc, char const *argv[])
     EngineLoader loader;
     LOG("Creating Engine ...");
     Engine* engine = loader.createEngine();
-    if (engine == nullptr) {
+    if (engine == nullptr)
+    {
         ERR("Failed to create Engine!");
         return 1;
     }
 
     auto& plugins = engine->getPluginProvider().getPlugins();
     LOG("Plugins (" << plugins.size() << "):");
-    for (auto& plugin : plugins) {
+    for (auto& plugin : plugins)
+    {
         LOG("  - [" + str(plugin.getType()) + "] " + plugin.getName() + " (" + plugin.getVersion() + ") - by " + plugin.getAuthor());
     }
 
@@ -36,20 +40,28 @@ int main(int argc, char const *argv[])
     std::weak_ptr<Camera> camera = engine->createCamera();
     camera.lock()->setName("testCam");
     
-    if (plugins.size() > 0 && plugins[0].getType() == PluginType::CAPTURE) {
+    if (plugins.size() > 0 && plugins[0].getType() == PluginType::CAPTURE)
+    {
         LOG("Setting camera capture to " + plugins[0].getName() + " ...");
-        // PluginCapture* capturePlugin = dynamic_cast<PluginCapture*>(plugins[0].getPlugin());
-        // camera.lock()->useCapture(capturePlugin);
-    } else {
-        ERR("No capture plugin found!");
-        return 1;
+        PluginHandle<Capture>* capturePlugin = plugins[0].createHandle<Capture>();
+        if (capturePlugin->getPlugin() == nullptr)
+        {
+            ERR("Failed to create Capture plugin!");
+        }
+        else
+        {
+            camera.lock()->useCapturePlugin(capturePlugin);
+        }
     }
-
-    camera.lock()->setCapture(nullptr);
+    else
+    {
+        ERR("No capture plugin found!");
+    }
 
     LOG("Starting tracking ...");
     FBError err = engine->startTracking();
-    if (err) {
+    if (err)
+    {
         ERR("Failed to start tracking!");
         return 1;
     }

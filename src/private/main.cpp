@@ -2,12 +2,12 @@
 
 extern "C"
 {
-    DLLExport Engine* createEngine()
+    ENGINE_API Engine* createEngine()
     {
         return new Engine();
     }
 
-    DLLExport void destroyEngine(Engine* e)
+    ENGINE_API void destroyEngine(Engine* e)
     {
         delete e;
     }

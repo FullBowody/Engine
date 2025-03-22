@@ -2,7 +2,7 @@
 #include "utils.hpp"
 #include "Structs/FBError.hpp"
 
-class DLLExport Updatable
+class ENGINE_API Updatable
 {
 protected:
     virtual FBError onUpdate(float dt) = 0;\

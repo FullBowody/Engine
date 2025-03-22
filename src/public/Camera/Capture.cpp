@@ -1,53 +1,58 @@
 #include "Camera/Capture.hpp"
 
 Capture::Capture()
-    : m_width(0), m_height(0), m_type("")
+    : width(0), height(0), type("")
 {
 }
 
 Capture::Capture(const std::string& type)
-    : m_width(0), m_height(0), m_type(type)
+    : width(0), height(0), type(type)
 {
 }
 
 const std::string& Capture::getType() const
 {
-    return m_type;
+    return type;
 }
 
 const Transform& Capture::getTransform() const
 {
-    return m_transform;
+    return transform;
 }
 
 int Capture::getWidth() const
 {
-    return m_width;
+    return width;
 }
 
 int Capture::getHeight() const
 {
-    return m_height;
+    return height;
 }
 
 const CaptureInfo& Capture::getInfos() const
 {
-    return m_infos;
+    return infos;
 }
 
 const Image& Capture::getImage() const
 {
-    return m_image;
+    return image;
 }
 
 const CaptureSkeleton& Capture::getSkeleton() const
 {
-    return m_skeleton;
+    return skeleton;
 }
 
 const Transform& Capture::calibrate()
 {
     return onCalibrate();
+}
+
+FBError Capture::estimatePoseFromScene(Scene scene, std::function<FBError()> callback)
+{
+    return onEstimatePoseFromScene(scene, callback);
 }
 
 FBError Capture::startTracking()

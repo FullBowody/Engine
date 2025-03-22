@@ -1,7 +1,7 @@
 #pragma once
 #include "Params/Param.hpp"
 
-class DLLExport ParamString: public Param
+class ENGINE_API ParamString: public Param
 {
 private:
     std::string value;

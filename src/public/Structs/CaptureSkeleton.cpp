@@ -16,20 +16,20 @@ std::ostream& operator<<(std::ostream& os, const CaptureSkeleton& skeleton)
 
 void CaptureSkeleton::setJoint(int id, const CaptureJoint& joint)
 {
-    if (id >= 0 && id < m_joints.size())
+    if (id >= 0 && id < joints.size())
     {
-        m_joints[id] = joint;
+        joints[id] = joint;
     }
 }
 
 const std::array<CaptureJoint, Skeleton::NB_JOINTS>& CaptureSkeleton::getJoints() const
 {
-    return m_joints;
+    return joints;
 }
 
 const CaptureJoint& CaptureSkeleton::getJoint(int id) const
 {
-    return m_joints.at(id);
+    return joints.at(id);
 }
 
 const size_t CaptureSkeleton::getJointCount() const

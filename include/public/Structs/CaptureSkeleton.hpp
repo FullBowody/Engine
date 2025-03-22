@@ -5,10 +5,10 @@
 #include "Structs/Skeleton.hpp"
 #include "utils.hpp"
 
-class DLLExport CaptureSkeleton
+class ENGINE_API CaptureSkeleton
 {
 private:
-    std::array<CaptureJoint, Skeleton::NB_JOINTS> m_joints;
+    std::array<CaptureJoint, Skeleton::NB_JOINTS> joints;
 
 public:
     CaptureSkeleton();

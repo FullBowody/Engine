@@ -5,18 +5,18 @@
 #include <glm/gtc/quaternion.hpp>
 #include "utils.hpp"
 
-class DLLExport Transform
+class ENGINE_API Transform
 {
 private:
-    std::string m_name;
-    glm::vec3 m_position;
-    glm::quat m_rotation;
-    std::shared_ptr<Transform> m_parent;
-    std::vector<Transform*> m_children;
-    bool m_outdated;
+    std::string name;
+    glm::vec3 position;
+    glm::quat rotation;
+    std::shared_ptr<Transform> parent;
+    std::vector<Transform*> children;
+    bool outdated;
 
-    glm::vec3 m_global_position;
-    glm::quat m_global_rotation;
+    glm::vec3 global_position;
+    glm::quat global_rotation;
 
     void calculateGlobalPositionRotation();
 

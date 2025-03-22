@@ -25,6 +25,11 @@ int Marker::getId() const
     return id;
 }
 
+void Marker::setId(int id)
+{
+    this->id = id;
+}
+
 const Transform& Marker::getTransform() const
 {
     return transform;

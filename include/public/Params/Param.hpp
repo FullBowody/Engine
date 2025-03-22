@@ -11,7 +11,7 @@ enum class ParamType
     ENUM
 };
 
-class DLLExport Param
+class ENGINE_API Param
 {
 private:
     std::string name;

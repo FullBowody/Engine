@@ -3,7 +3,7 @@
 #include "utils.hpp"
 #include "Plugins/PluginDescription.hpp"
 
-class DLLExport PluginProvider
+class ENGINE_API PluginProvider
 {
 private:
     std::string pluginsFolder;

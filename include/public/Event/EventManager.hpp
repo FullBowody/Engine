@@ -3,7 +3,7 @@
 #include "Structs/Callback.hpp"
 
 template <class T>
-class DLLExport EventManager
+class ENGINE_API EventManager
 {
 private:
     std::vector<Callback<T>*> listeners;

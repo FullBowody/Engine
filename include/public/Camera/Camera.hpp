@@ -5,17 +5,19 @@
 #include "Identifiable.hpp"
 #include "Updatable.hpp"
 #include "Structs/FBError.hpp"
+#include "Structs/Scene.hpp"
 #include "Camera/Capture.hpp"
+#include "Plugins/PluginHandle.hpp"
 
-class DLLExport Camera: public Identifiable, public Updatable
+class ENGINE_API Camera: public Identifiable, public Updatable
 {
 private:
-    std::string m_name;
-    std::shared_ptr<Capture> m_capture;
+    std::string name;
+    PluginHandle<Capture>* capturePlugin;
 
 public:
     Camera();
-    Camera(std::shared_ptr<Capture> capture);
+    Camera(PluginHandle<Capture>* capturePlugin);
     virtual ~Camera();
 
     friend std::ostream& operator<<(std::ostream& os, const Camera& camera);
@@ -23,8 +25,10 @@ public:
     virtual const std::string& getName() const;
     virtual void setName(const std::string& name);
 
-    virtual std::weak_ptr<Capture> getCapture() const;
-    virtual void setCapture(std::shared_ptr<Capture> capture);
+    virtual Capture* getCapture() const;
+    virtual void useCapturePlugin(PluginHandle<Capture>* capturePlugin);
+    
+    virtual FBError estimatePoseFromScene(Scene scene, std::function<FBError()> callback);
 
     virtual FBError startTracking();
     virtual FBError stopTracking();

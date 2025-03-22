@@ -2,7 +2,7 @@
 #include <vector>
 #include "Params/Param.hpp"
 
-class DLLExport ParamManager
+class ENGINE_API ParamManager
 {
 private:
     std::vector<Param*> params;

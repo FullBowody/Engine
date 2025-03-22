@@ -1,7 +1,7 @@
 #pragma once
 #include "utils.hpp"
 
-class DLLExport Image
+class ENGINE_API Image
 {
 protected:
     unsigned char* data;
@@ -13,7 +13,7 @@ public:
     Image();
     Image(unsigned char* data, int width, int height, int channels);
     Image(const Image& frame);
-    ~Image();
+    virtual ~Image();
 
     virtual unsigned char* getData() const;
     virtual int getWidth() const;

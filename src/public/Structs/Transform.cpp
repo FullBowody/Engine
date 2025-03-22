@@ -2,23 +2,23 @@
 
 void Transform::calculateGlobalPositionRotation()
 {
-    if (!m_parent)
+    if (!parent)
     {
-        m_global_position = m_position;
-        m_global_rotation = m_rotation;
+        global_position = position;
+        global_rotation = rotation;
     }
     else
     {
-        m_global_position = m_parent->getGlobalPosition() + m_parent->getGlobalRotation() * m_position;
-        m_global_rotation = m_parent->getGlobalRotation() * m_rotation;
+        global_position = parent->getGlobalPosition() + parent->getGlobalRotation() * position;
+        global_rotation = parent->getGlobalRotation() * rotation;
     }
-    m_outdated = false;
+    outdated = false;
 }
 
 void Transform::markOutdatedRecursive()
 {
-    m_outdated = true;
-    for (auto& child : m_children)
+    outdated = true;
+    for (auto& child : children)
     {
         child->markOutdatedRecursive();
     }
@@ -26,12 +26,12 @@ void Transform::markOutdatedRecursive()
 
 void Transform::addChild(Transform* child)
 {
-    m_children.push_back(child);
+    children.push_back(child);
 }
 
 void Transform::removeChild(Transform* child)
 {
-    m_children.erase(std::remove(m_children.begin(), m_children.end(), child), m_children.end());
+    children.erase(std::remove(children.begin(), children.end(), child), children.end());
 }
 
 Transform::Transform()
@@ -39,78 +39,78 @@ Transform::Transform()
 }
 
 Transform::Transform(const std::string& name)
-    : m_name(name)
+    : name(name)
 {
 }
 
 Transform::Transform(const std::string& name, const glm::vec3& position, const glm::quat& rotation)
-    : m_name(name), m_position(position), m_rotation(rotation), m_outdated(true)
+    : name(name), position(position), rotation(rotation), outdated(true)
 {
 }
 
 Transform::~Transform()
 {
-    if (m_parent)
+    if (parent)
     {
-        m_parent->removeChild(this);
+        parent->removeChild(this);
     }
 }
 
 std::ostream& operator<<(std::ostream& os, const Transform& transform)
 {
-    os << "Transform(" << transform.m_name << ")";
+    os << "Transform(" << transform.name << ")";
     return os;
 }
 
 void Transform::setParent(std::shared_ptr<Transform> parent)
 {
-    if (m_parent)
+    if (parent)
     {
-        m_parent->removeChild(this);
+        parent->removeChild(this);
     }
-    m_parent = parent;
-    if (m_parent)
+    parent = parent;
+    if (parent)
     {
-        m_parent->addChild(this);
+        parent->addChild(this);
     }
     markOutdatedRecursive();
 }
 
 std::shared_ptr<Transform> Transform::getParent() const
 {
-    return m_parent;
+    return parent;
 }
 
 void Transform::setLocalPosition(const glm::vec3& position)
 {
-    m_position = position;
+    this->position = position;
     markOutdatedRecursive();
 }
 
 glm::vec3 Transform::getLocalPosition() const
 {
-    return m_position;
+    return position;
 }
 
 void Transform::setLocalRotation(const glm::quat& rotation)
 {
-    m_rotation = rotation;
+    this->rotation = rotation;
     markOutdatedRecursive();
 }
 
 glm::quat Transform::getLocalRotation() const
 {
-    return m_rotation;
+    return rotation;
 }
 
 glm::vec3 Transform::getGlobalPosition()
 {
-    if (m_outdated)
+    if (outdated)
     {
         calculateGlobalPositionRotation();
     }
 
-    return m_global_position;
+    return global_position;
 }
 
 glm::vec3 Transform::getGlobalPosition(Transform& root)
@@ -126,12 +126,12 @@ glm::vec3 Transform::getGlobalPosition(Transform& root)
 
 glm::quat Transform::getGlobalRotation()
 {
-    if (m_outdated)
+    if (outdated)
     {
         calculateGlobalPositionRotation();
     }
 
-    return m_global_rotation;
+    return global_rotation;
 }
 
 glm::quat Transform::getGlobalRotation(Transform& root)

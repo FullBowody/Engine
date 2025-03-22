@@ -16,10 +16,10 @@ std::ostream& operator<<(std::ostream& os, const Joint& joint)
 
 const Transform& Joint::getTransform() const
 {
-    return m_transform;
+    return transform;
 }
 
 void Joint::setTransform(const Transform& transform)
 {
-    m_transform = transform;
+    this->transform = transform;
 }

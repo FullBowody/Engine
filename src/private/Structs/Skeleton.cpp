@@ -18,12 +18,12 @@ std::ostream& operator<<(std::ostream& os, const Skeleton& skeleton)
 
 const std::array<Joint, Skeleton::NB_JOINTS>& Skeleton::getJoints() const
 {
-    return m_joints;
+    return joints;
 }
 
 const Joint& Skeleton::getJoint(int id) const
 {
-    return m_joints.at(id);
+    return joints.at(id);
 }
 
 const size_t Skeleton::getJointCount() const
@@ -33,5 +33,5 @@ const size_t Skeleton::getJointCount() const
 
 void Skeleton::setJoint(int id, const Joint& joint)
 {
-    m_joints[id] = joint;
+    joints[id] = joint;
 }

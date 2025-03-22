@@ -1,7 +1,7 @@
 #pragma once
 #include "utils.hpp"
 
-class DLLExport FBError
+class ENGINE_API FBError
 {
 private:
     int code;
@@ -18,9 +18,9 @@ public:
     FBError();
     FBError(int c);
 
-    operator int() const;
+    virtual operator int() const;
     
-    bool operator==(const FBError& other) const;
-    bool operator!=(const FBError& other) const;
+    virtual bool operator==(const FBError& other) const;
+    virtual bool operator!=(const FBError& other) const;
     friend std::ostream& operator<<(std::ostream& os, const FBError& e);
 };

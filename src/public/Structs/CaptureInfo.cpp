@@ -2,13 +2,13 @@
 #include <ostream>
 
 CaptureInfo::CaptureInfo()
-    : m_width(0), m_height(0), m_focal_length(0.0f), m_distortion(0.0f)
+    : width(0), height(0), focal_length(0.0f), distortion(0.0f)
 {
 
 }
 
 CaptureInfo::CaptureInfo(int width, int height, float focal_length, float distortion)
-    : m_width(width), m_height(height), m_focal_length(focal_length), m_distortion(distortion)
+    : width(width), height(height), focal_length(focal_length), distortion(distortion)
 {
 
 }
@@ -20,26 +20,26 @@ CaptureInfo::~CaptureInfo()
 
 std::ostream& operator<<(std::ostream& os, const CaptureInfo& infos)
 {
-    os << "CaptureInfo(width=" << infos.m_width << ", height=" << infos.m_height << ", focal_length=" << infos.m_focal_length << ", distortion=" << infos.m_distortion << ")";
+    os << "CaptureInfo(width=" << infos.width << ", height=" << infos.height << ", focal_length=" << infos.focal_length << ", distortion=" << infos.distortion << ")";
     return os;
 }
 
 int CaptureInfo::getWidth() const
 {
-    return m_width;
+    return width;
 }
 
 int CaptureInfo::getHeight() const
 {
-    return m_height;
+    return height;
 }
 
 float CaptureInfo::getFocalLength() const
 {
-    return m_focal_length;
+    return focal_length;
 }
 
 float CaptureInfo::getDistortion() const
 {
-    return m_distortion;
+    return distortion;
 }

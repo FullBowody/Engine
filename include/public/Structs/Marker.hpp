@@ -1,7 +1,8 @@
 #pragma once
 #include "Structs/Transform.hpp"
+#include "utils.hpp"
 
-class Marker
+class ENGINE_API Marker
 {
 private:
     int id;
@@ -13,7 +14,8 @@ public:
     Marker(int id, Transform transform);
     virtual ~Marker();
 
-    int getId() const;
-    const Transform& getTransform() const;
-    void setTransform(const Transform& transform);
+    virtual int getId() const;
+    virtual void setId(int id);
+    virtual const Transform& getTransform() const;
+    virtual void setTransform(const Transform& transform);
 };

@@ -4,15 +4,15 @@
 
 typedef unsigned long long ID;
 
-class DLLExport Identifiable
+class ENGINE_API Identifiable
 {
 private:
-    ID m_id;
+    ID id;
 
     virtual void setID(ID id);
 
 protected:
-    Identifiable() : m_id(Identifiable::getNewID()) {}
+    Identifiable() : id(Identifiable::getNewID()) {}
 
 public:
     virtual ~Identifiable() {}

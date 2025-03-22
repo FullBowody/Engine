@@ -3,15 +3,15 @@
 
 #if (defined WIN32 || defined _WIN32 || defined WINCE)
     #ifdef EXPORT_ENGINE
-        # define DLLExport __declspec(dllexport)
+        # define ENGINE_API __declspec(dllexport)
     #else
-        # define DLLExport __declspec(dllimport)
+        # define ENGINE_API __declspec(dllimport)
     #endif
 #else
     #ifdef EXPORT_ENGINE
-        # define DLLExport __attribute__((visibility("default")))
+        # define ENGINE_API __attribute__((visibility("default")))
     #else
-        # define DLLExport
+        # define ENGINE_API
     #endif
 #endif
 

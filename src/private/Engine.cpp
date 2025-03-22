@@ -53,30 +53,29 @@ const std::vector<std::shared_ptr<Camera>>& Engine::getCameras()
 
 std::weak_ptr<Marker> Engine::createMarker()
 {
-    markers.push_back(std::make_shared<Marker>());
-    return markers.back();
+    std::shared_ptr<Marker> marker = std::make_shared<Marker>();
+    scene.addMarker(marker);
+    return marker;
 }
 
 std::weak_ptr<Marker> Engine::getMarker(int index)
 {
-    return markers[index];
+    return scene.getMarker(index);
 }
 
 void Engine::destroyMarker(int index)
 {
-    markers.erase(markers.begin() + index);
+    scene.destroyMarker(index);
 }
 
 void Engine::destroyMarker(const Marker& marker)
 {
-    markers.erase(std::remove_if(markers.begin(), markers.end(), [&marker](const std::shared_ptr<Marker>& mark) {
-        return mark.get() == &marker;
-    }), markers.end());
+    scene.destroyMarker(marker);
 }
 
 const std::vector<std::shared_ptr<Marker>>& Engine::getMarkers()
 {
-    return markers;
+    return scene.getMarkers();
 }
 
 std::weak_ptr<Skeleton> Engine::getSkeleton()
@@ -86,7 +85,7 @@ std::weak_ptr<Skeleton> Engine::getSkeleton()
 
 FBError Engine::startTracking()
 {
-    if (markers.size() == 0)
+    if (scene.getMarkerCount() == 0)
     {
         std::cerr << "No markers to start tracking" << std::endl;
         return FBError::NO_MARKER;
@@ -100,7 +99,7 @@ FBError Engine::startTracking()
 
     for (auto& camera : cameras)
     {
-        if (camera->getCapture().expired())
+        if (camera->getCapture())
         {
             std::cerr << "Camera " << camera->getName() << " has no capture device" << std::endl;
             return FBError::NO_CAPTURE_DEVICE;

@@ -2,12 +2,12 @@
 
 Camera::Camera()
 {
-    m_capture = nullptr;
+    capturePlugin = nullptr;
 }
 
-Camera::Camera(std::shared_ptr<Capture> capture)
+Camera::Camera(PluginHandle<Capture>* capturePlugin)
 {
-    m_capture = capture;
+    capturePlugin = capturePlugin;
 }
 
 Camera::~Camera()
@@ -22,73 +22,85 @@ std::ostream& operator<<(std::ostream& os, const Camera& camera)
 
 const std::string& Camera::getName() const
 {
-    return m_name;
+    return name;
 }
 
 void Camera::setName(const std::string& name)
 {
-    m_name = name;
+    this->name = name;
 }
 
-std::weak_ptr<Capture> Camera::getCapture() const
+Capture* Camera::getCapture() const
 {
-    return m_capture;
+    if (!capturePlugin) return nullptr;
+    return capturePlugin->getPlugin();
 }
 
-void Camera::setCapture(std::shared_ptr<Capture> capture)
+void Camera::useCapturePlugin(PluginHandle<Capture>* capturePlugin)
 {
-    m_capture = capture;
+    capturePlugin = capturePlugin;
+}
+
+FBError Camera::estimatePoseFromScene(Scene scene, std::function<FBError()> callback)
+{
+    if (!capturePlugin)
+    {
+        std::cerr << "No capture device to estimate pose from scene" << std::endl;
+        return FBError::NO_CAPTURE_DEVICE;
+    }
+
+    return capturePlugin->getPlugin()->estimatePoseFromScene(scene, callback);
 }
 
 FBError Camera::startTracking()
 {
-    if (!m_capture)
+    if (!capturePlugin)
     {
         std::cerr << "No capture device to start tracking" << std::endl;
         return FBError::NO_CAPTURE_DEVICE;
     }
 
-    return m_capture->startTracking();
+    return capturePlugin->getPlugin()->startTracking();
 }
 
 FBError Camera::stopTracking()
 {
-    if (!m_capture)
+    if (!capturePlugin)
     {
         std::cerr << "No capture device to stop tracking" << std::endl;
         return FBError::NO_CAPTURE_DEVICE;
     }
 
-    return m_capture->stopTracking();
+    return capturePlugin->getPlugin()->stopTracking();
 }
 
 FBError Camera::startPreview()
 {
-    if (!m_capture)
+    if (!capturePlugin)
     {
         std::cerr << "No capture device to start preview" << std::endl;
         return FBError::NO_CAPTURE_DEVICE;
     }
 
-    return m_capture->startPreview();
+    return capturePlugin->getPlugin()->startPreview();
 }
 
 FBError Camera::stopPreview()
 {
-    if (!m_capture)
+    if (!capturePlugin)
     {
         std::cerr << "No capture device to stop preview" << std::endl;
         return FBError::NO_CAPTURE_DEVICE;
     }
 
-    return m_capture->stopPreview();
+    return capturePlugin->getPlugin()->stopPreview();
 }
 
 FBError Camera::onUpdate(float dt)
 {
-    if (m_capture != nullptr)
+    if (capturePlugin)
     {
-        CHECK_ERRORS(m_capture->update(dt));
+        CHECK_ERRORS(capturePlugin->getPlugin()->update(dt));
     }
 
     return FBError::OK;

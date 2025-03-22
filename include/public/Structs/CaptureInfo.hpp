@@ -2,13 +2,13 @@
 #include <ostream>
 #include "utils.hpp"
 
-class DLLExport CaptureInfo
+class ENGINE_API CaptureInfo
 {
 private:
-    int m_width;
-    int m_height;
-    float m_focal_length;
-    float m_distortion;
+    int width;
+    int height;
+    float focal_length;
+    float distortion;
 
 public:
     CaptureInfo();

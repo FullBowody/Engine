@@ -3,11 +3,11 @@
 #include <glm/glm.hpp>
 #include "utils.hpp"
 
-class DLLExport CaptureJoint
+class ENGINE_API CaptureJoint
 {
 private:
-    glm::vec3 m_position;
-    float m_confidence;
+    glm::vec3 position;
+    float confidence;
 
 public:
     CaptureJoint();
