@@ -26,7 +26,7 @@ protected:
     virtual FBError onStopTracking() = 0;
     virtual FBError onStartPreview() = 0;
     virtual FBError onStopPreview() = 0;
-    virtual FBError onEstimatePoseFromScene(Scene scene, std::function<FBError()> callback) = 0;
+    virtual FBError onEstimatePoseFromScene(Scene scene, std::function<void(FBError)> callback) = 0;
 
     Capture();
     Capture(const std::string& type);
@@ -42,7 +42,7 @@ public:
     virtual const Image& getImage() const;
     virtual const CaptureSkeleton& getSkeleton() const;
     
-    virtual FBError estimatePoseFromScene(Scene scene, std::function<FBError()> callback);
+    virtual FBError estimatePoseFromScene(Scene scene, std::function<void(FBError)> callback);
 
     virtual FBError startTracking();
     virtual FBError stopTracking();
