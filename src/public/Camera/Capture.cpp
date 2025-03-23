@@ -1,12 +1,12 @@
 #include "Camera/Capture.hpp"
 
 Capture::Capture()
-    : width(0), height(0), type("")
+    : width(0), height(0), type(""), image(Image()), skeleton(CaptureSkeleton())
 {
 }
 
 Capture::Capture(const std::string& type)
-    : width(0), height(0), type(type)
+    : width(0), height(0), type(type), image(Image()), skeleton(CaptureSkeleton())
 {
 }
 

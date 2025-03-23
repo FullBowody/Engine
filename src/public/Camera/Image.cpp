@@ -6,7 +6,7 @@
 #include "stb/stb_image_write.h"
 
 Image::Image()
-    : data(nullptr), width(0), height(0)
+    : data(nullptr), width(0), height(0), channels(0)
 {
 }
 
