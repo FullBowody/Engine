@@ -71,10 +71,17 @@ int main(int argc, char const *argv[])
     }
 
     LOG("Launching camera scene detection ...");
-    FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](FBError err){
-        if (err) std::cout << "Error during scene detection: " << err << std::endl;
-        else std::cout << "Scene detection completed!" << std::endl;
-    });
+    {
+        FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](const FBError& err){
+            if (err) std::cout << "Error during scene detection: " << err << std::endl;
+            else std::cout << "Scene detection completed!" << std::endl;
+        });
+        if (err)
+        {
+            ERR("Failed to launch scene detection!");
+            return 1;
+        }
+    }
 
     LOG("Starting tracking ...");
     FBError err = engine->startTracking();

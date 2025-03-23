@@ -28,7 +28,7 @@ public:
     virtual Capture* getCapture() const;
     virtual void useCapturePlugin(PluginHandle<Capture>* capturePlugin);
     
-    virtual FBError estimatePoseFromScene(Scene scene, std::function<void(FBError)> callback);
+    virtual FBError estimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback);
 
     virtual FBError startTracking();
     virtual FBError stopTracking();

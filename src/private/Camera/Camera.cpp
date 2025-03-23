@@ -43,7 +43,7 @@ void Camera::useCapturePlugin(PluginHandle<Capture>* capturePlugin)
     this->capturePlugin = capturePlugin;
 }
 
-FBError Camera::estimatePoseFromScene(Scene scene, std::function<void(FBError)> callback)
+FBError Camera::estimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback)
 {
     if (!capturePlugin)
     {

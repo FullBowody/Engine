@@ -45,7 +45,7 @@ const CaptureSkeleton& Capture::getSkeleton() const
     return skeleton;
 }
 
-FBError Capture::estimatePoseFromScene(Scene scene, std::function<void(FBError)> callback)
+FBError Capture::estimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback)
 {
     return onEstimatePoseFromScene(scene, callback);
 }
