@@ -15,6 +15,8 @@ public:
     Image(const Image& frame);
     virtual ~Image();
 
+    Image& operator=(const Image& other);
+
     virtual unsigned char* getData() const;
     virtual int getWidth() const;
     virtual int getHeight() const;

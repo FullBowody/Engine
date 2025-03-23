@@ -4,6 +4,8 @@
 #include "EngineLoader.hpp"
 #include "Plugins/PluginHandle.hpp"
 #include "Camera/Capture.hpp"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb/stb_image_write.h"
 
 #define LOG(x) std::cout <<  "[LOG] " << x << std::endl
 #define ERR(x) std::cout << "[ERR] " << x << std::endl
@@ -53,6 +55,14 @@ int main(int argc, char const *argv[])
         {
             LOG("Capture plugin created, using it ...");
             camera.lock()->useCapturePlugin(capturePlugin);
+            camera.lock()->startPreview();
+
+            LOG("Capture parameters:");
+            for (auto& param : capturePlugin->getPlugin()->getParameters())
+            {
+                LOG(" - " << param->getName());
+            }
+            capturePlugin->getPlugin()->getParameter("index")->setValue(0);
         }
     }
     else
@@ -67,15 +77,14 @@ int main(int argc, char const *argv[])
         ERR("Failed to start tracking!");
         return 1;
     }
-
-    LOG("Updating Engine ...");
-    engine->update(0.1);
     
-    LOG("Updating Engine ...");
-    engine->update(0.1);
-    
-    LOG("Updating Engine ...");
-    engine->update(0.1);
+    for (size_t i = 0; i < 10; i++)
+    {
+        std::cout << "Update " << i << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        engine->update(0.1);
+    }
+        
 
     LOG("Dumping camera image on disk ...");
     int size;
@@ -86,8 +95,8 @@ int main(int argc, char const *argv[])
     }
     else
     {
-        std::ofstream file("camera.jpg", std::ios::out | std::ios::binary);
-        file.write((const char*)data, size);
+        std::ofstream file("camera.jpg", std::ios::binary);
+        file.write((char*) data, size);
         file.close();
         delete[] data;
     }
