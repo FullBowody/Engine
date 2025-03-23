@@ -35,6 +35,7 @@ public:
     virtual void setValue(bool value);
     virtual void setValue(int value);
     virtual void setValue(float value);
+    virtual void setValue(char* str);
     virtual void setValue(std::string value);
 
     // if not overriden, should not be called

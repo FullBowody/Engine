@@ -63,6 +63,7 @@ int main(int argc, char const *argv[])
                 LOG(" - " << param->getName());
             }
             capturePlugin->getPlugin()->getParameter("index")->setValue(0);
+            capturePlugin->getPlugin()->getParameter("model")->setValue(std::string("thunder"));
         }
     }
     else
@@ -73,7 +74,7 @@ int main(int argc, char const *argv[])
     LOG("Launching camera scene detection ...");
     {
         FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](const FBError& err){
-            if (err) std::cout << "Error during scene detection: " << err << std::endl;
+            if (err) std::cout << "Error during scene detection" << std::endl;
             else std::cout << "Scene detection completed!" << std::endl;
         });
         if (err)
@@ -91,11 +92,11 @@ int main(int argc, char const *argv[])
         return 1;
     }
     
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 100; i++)
     {
         std::cout << "Update " << i << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        engine->update(0.1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+        engine->update(0.03f);
     }
         
 

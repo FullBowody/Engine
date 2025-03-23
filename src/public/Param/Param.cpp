@@ -1,6 +1,6 @@
 #include "Params/Param.hpp"
 
-#define CHECK_NO_ENTRY() exit(1)
+#define CHECK_NO_ENTRY() { std::cerr << "Reached CHECK_NO_ENTRY at line " << __LINE__ << " in " << __FILE__ << std::endl; exit(1); }
 
 Param::Param(std::string name, ParamType type)
     : name(name), type(type) {}
@@ -28,6 +28,7 @@ std::string Param::asString() const { CHECK_NO_ENTRY(); }
 void Param::setValue(bool value) { CHECK_NO_ENTRY(); }
 void Param::setValue(int value) { CHECK_NO_ENTRY(); }
 void Param::setValue(float value) { CHECK_NO_ENTRY(); }
+void Param::setValue(char* str) { setValue(std::string(str)); }
 void Param::setValue(std::string value) { CHECK_NO_ENTRY(); }
 
 // if not overriden, should not be called
