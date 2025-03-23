@@ -20,6 +20,8 @@ std::string str(PluginType type) {
 
 int main(int argc, char const *argv[])
 {
+    std::cout << "Hello!" << std::endl;
+
     LOG("Creating EngineLoader ...");
     EngineLoader loader;
     LOG("Creating Engine ...");
@@ -38,7 +40,7 @@ int main(int argc, char const *argv[])
     }
 
     std::weak_ptr<Marker> marker = engine->createMarker();
-    marker.lock()->setId(0);
+    marker.lock()->setId(1);
 
     std::weak_ptr<Camera> camera = engine->createCamera();
     camera.lock()->setName("testCam");
@@ -62,7 +64,9 @@ int main(int argc, char const *argv[])
             {
                 LOG(" - " << param->getName());
             }
+            LOG("Setting capture [index] parameter ...");
             capturePlugin->getPlugin()->getParameter("index")->setValue(0);
+            LOG("Setting capture [model] parameter ...");
             capturePlugin->getPlugin()->getParameter("model")->setValue("thunder");
         }
     }
@@ -74,8 +78,8 @@ int main(int argc, char const *argv[])
     LOG("Launching camera scene detection ...");
     {
         FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](const FBError& err){
-            if (err) std::cout << "Error during scene detection" << std::endl;
-            else std::cout << "Scene detection completed!" << std::endl;
+            if (err) ERR("Error during scene detection");
+            else LOG("Scene detection completed!");
         });
         if (err)
         {
@@ -92,13 +96,12 @@ int main(int argc, char const *argv[])
         return 1;
     }
     
-    for (size_t i = 0; i < 100; i++)
+    for (size_t i = 0; i < 2; i++)
     {
-        std::cout << "Update " << i << std::endl;
+        LOG("Update " << i);
         std::this_thread::sleep_for(std::chrono::milliseconds(30));
         engine->update(0.03f);
     }
-        
 
     LOG("Dumping camera image on disk ...");
     int size;
