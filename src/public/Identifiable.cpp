@@ -1,4 +1,6 @@
 #include "Identifiable.hpp"
+#include <numeric>
+#include <random>
 
 void Identifiable::setID(ID id)
 {
@@ -9,7 +11,7 @@ ID Identifiable::getNewID()
 {
     std::random_device rd;
     std::mt19937_64 gen(rd());
-    std::uniform_int_distribution<ID> dis(0, std::numeric_limits<ID>::max());
+    std::uniform_int_distribution<ID> dis(1, std::numeric_limits<ID>::max());
     return dis(gen);
 }
 

@@ -1,8 +1,7 @@
 #pragma once
-#include <random>
 #include "utils.hpp"
 
-typedef unsigned long long ID;
+using ID = unsigned long long;
 
 class ENGINE_API Identifiable
 {

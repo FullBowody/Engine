@@ -32,90 +32,10 @@ int main(int argc, char const *argv[])
         return 1;
     }
 
-    auto& plugins = engine->getPluginProvider().getPlugins();
-    LOG("Plugins (" << plugins.size() << "):");
-    for (auto& plugin : plugins)
+    LOG("Waiting for listener server to stop ...");
+    while (engine->getListenerServer().getState() != ListenerServer::STOPPED)
     {
-        LOG("  - [" + str(plugin.getType()) + "] " + plugin.getName() + " (" + plugin.getVersion() + ") - by " + plugin.getAuthor());
-    }
-
-    std::weak_ptr<Marker> marker = engine->createMarker();
-    marker.lock()->setId(1);
-
-    std::weak_ptr<Camera> camera = engine->createCamera();
-    camera.lock()->setName("testCam");
-    
-    if (plugins.size() > 0 && plugins[0].getType() == PluginType::CAPTURE)
-    {
-        LOG("Setting camera capture to " + plugins[0].getName() + " ...");
-        PluginHandle<Capture>* capturePlugin = plugins[0].createHandle<Capture>();
-        if (capturePlugin->getPlugin() == nullptr)
-        {
-            ERR("Failed to create Capture plugin!");
-        }
-        else
-        {
-            LOG("Capture plugin created, using it ...");
-            camera.lock()->useCapturePlugin(capturePlugin);
-            camera.lock()->startPreview();
-
-            LOG("Capture parameters:");
-            for (auto& param : capturePlugin->getPlugin()->getParameters())
-            {
-                LOG(" - " << param->getName());
-            }
-            LOG("Setting capture [index] parameter ...");
-            capturePlugin->getPlugin()->getParameter("index")->setValue(0);
-            LOG("Setting capture [model] parameter ...");
-            capturePlugin->getPlugin()->getParameter("model")->setValue("thunder");
-        }
-    }
-    else
-    {
-        ERR("No capture plugin found!");
-    }
-
-    LOG("Launching camera scene detection ...");
-    {
-        FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](const FBError& err){
-            if (err) ERR("Error during scene detection");
-            else LOG("Scene detection completed!");
-        });
-        if (err)
-        {
-            ERR("Failed to launch scene detection!");
-            return 1;
-        }
-    }
-
-    LOG("Starting tracking ...");
-    FBError err = engine->startTracking();
-    if (err)
-    {
-        ERR("Failed to start tracking!");
-        return 1;
-    }
-    
-    for (size_t i = 0; i < 2; i++)
-    {
-        LOG("Update " << i);
-        std::this_thread::sleep_for(std::chrono::milliseconds(30));
-        engine->update(0.03f);
-    }
-
-    LOG("Dumping camera image on disk ...");
-    int size;
-    unsigned char* data = camera.lock()->getCapture()->getImage().encodeJPG(80, &size);
-    if (size == 0)
-    {
-        ERR("Failed to encode image!");
-    }
-    else
-    {
-        std::ofstream file("camera.jpg", std::ios::binary);
-        file.write((char*) data, size);
-        file.close();
-        delete[] data;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     
     LOG("Destroying Engine ...");
