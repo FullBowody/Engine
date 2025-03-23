@@ -70,6 +70,12 @@ int main(int argc, char const *argv[])
         ERR("No capture plugin found!");
     }
 
+    LOG("Launching camera scene detection ...");
+    FBError err = camera.lock()->estimatePoseFromScene(engine->getScene(), [](FBError err){
+        if (err) std::cout << "Error during scene detection: " << err << std::endl;
+        else std::cout << "Scene detection completed!" << std::endl;
+    });
+
     LOG("Starting tracking ...");
     FBError err = engine->startTracking();
     if (err)

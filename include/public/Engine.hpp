@@ -40,6 +40,7 @@ public:
     virtual void destroyMarker(int index);
     virtual void destroyMarker(const Marker& marker);
     virtual const std::vector<std::shared_ptr<Marker>>& getMarkers();
+    virtual const Scene& getScene();
 
     virtual std::weak_ptr<Skeleton> getSkeleton();
 

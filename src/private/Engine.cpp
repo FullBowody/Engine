@@ -78,6 +78,11 @@ const std::vector<std::shared_ptr<Marker>>& Engine::getMarkers()
     return scene.getMarkers();
 }
 
+const Scene& Engine::getScene()
+{
+    return scene;
+}
+
 std::weak_ptr<Skeleton> Engine::getSkeleton()
 {
     return skeleton;
