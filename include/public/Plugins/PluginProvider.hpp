@@ -15,7 +15,7 @@ public:
 
     virtual void setPluginsFolder(std::string folder);
     virtual void refreshPlugins();
-    virtual PluginDescription getPlugin(std::string name);
-    virtual std::vector<PluginDescription> getPlugins();
+    virtual std::optional<PluginDescription> getPlugin(std::string name);
+    virtual const std::vector<PluginDescription>& getPlugins();
     virtual std::vector<PluginDescription> getPlugins(PluginType type);
 };

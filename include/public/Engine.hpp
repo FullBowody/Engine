@@ -11,6 +11,7 @@
 #include "utils.hpp"
 #include "Plugins/PluginProvider.hpp"
 #include "Plugins/PluginHandle.hpp"
+#include "ListenerServer.hpp"
 
 class ENGINE_API Engine: public Updatable
 {
@@ -19,6 +20,7 @@ protected:
     std::shared_ptr<Skeleton> skeleton;
     Scene scene;
     PluginProvider pluginProvider;
+    ListenerServer listenerServer;
     
     virtual FBError onUpdate(float dt);
 
@@ -28,6 +30,7 @@ public:
 
     virtual void setEngineCWD(std::string dirpath);
     virtual PluginProvider& getPluginProvider();
+    virtual ListenerServer& getListenerServer();
 
     virtual std::weak_ptr<Camera> createCamera();
     virtual std::weak_ptr<Camera> getCamera(int index);

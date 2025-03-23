@@ -23,6 +23,7 @@ private:
     std::string folder;
 
 public:
+    PluginDescription() {}
     PluginDescription(std::string name, std::string description, std::string author, std::string version, PluginType type, std::string folder)
         : name(name), description(description), author(author), version(version), type(type), folder(folder) {}
     PluginDescription(const PluginDescription& other)

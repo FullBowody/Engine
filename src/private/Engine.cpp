@@ -18,6 +18,11 @@ PluginProvider& Engine::getPluginProvider()
     return pluginProvider;
 }
 
+ListenerServer& Engine::getListenerServer()
+{
+    return listenerServer;
+}
+
 void Engine::setEngineCWD(std::string dirpath)
 {
     pluginProvider.setPluginsFolder(Path::Combine(dirpath, "plugins"));
@@ -113,7 +118,7 @@ FBError Engine::startTracking()
 
     for (auto& camera : cameras)
     {
-        FBError& err = camera->startTracking();
+        FBError err = camera->startTracking();
         if (err)
         {
             std::cerr << "Failed to start tracking for camera " << camera->getName() << std::endl;

@@ -52,21 +52,21 @@ void PluginProvider::refreshPlugins()
     }
 }
 
-PluginDescription PluginProvider::getPlugin(std::string name)
+std::optional<PluginDescription> PluginProvider::getPlugin(std::string name)
 {
     if (this->plugins.empty()) this->refreshPlugins();
 
-    for (auto plugin : this->plugins)
+    for (auto& plugin : this->plugins)
     {
         if (plugin.getName() == name)
         {
             return plugin;
         }
     }
-    return PluginDescription("", "", "", "", PluginType::UNKNOWN, "");
+    return std::nullopt;
 }
 
-std::vector<PluginDescription> PluginProvider::getPlugins()
+const std::vector<PluginDescription>& PluginProvider::getPlugins()
 {
     if (this->plugins.empty()) this->refreshPlugins();
     return this->plugins;
