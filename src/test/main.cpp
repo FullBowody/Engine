@@ -63,7 +63,7 @@ int main(int argc, char const *argv[])
                 LOG(" - " << param->getName());
             }
             capturePlugin->getPlugin()->getParameter("index")->setValue(0);
-            capturePlugin->getPlugin()->getParameter("model")->setValue(std::string("thunder"));
+            capturePlugin->getPlugin()->getParameter("model")->setValue("thunder");
         }
     }
     else

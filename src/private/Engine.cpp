@@ -113,7 +113,12 @@ FBError Engine::startTracking()
 
     for (auto& camera : cameras)
     {
-        camera->startTracking();
+        FBError& err = camera->startTracking();
+        if (err)
+        {
+            std::cerr << "Failed to start tracking for camera " << camera->getName() << std::endl;
+            return err;
+        }
     }
 
     return FBError::OK;
