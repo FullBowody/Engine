@@ -62,17 +62,33 @@ std::ostream& operator<<(std::ostream& os, const Transform& transform)
     return os;
 }
 
-void Transform::setParent(std::shared_ptr<Transform> parent)
+void Transform::setParent(std::shared_ptr<Transform> parent, bool keepGlobalPosition)
 {
-    if (parent)
+    glm::vec3 old_global_pos = getGlobalPosition();
+    glm::quat old_global_rot = getGlobalRotation();
+
+    glm::vec3 parent_global_pos = parent->getGlobalPosition();
+    glm::quat parent_global_rot = parent->getGlobalRotation();
+
+    if (this->parent)
     {
-        parent->removeChild(this);
+        this->parent->removeChild(this);
     }
-    parent = parent;
+    this->parent = parent;
     if (parent)
     {
         parent->addChild(this);
     }
+
+    glm::vec3 new_local_pos = glm::inverse(parent_global_rot) * (old_global_pos - parent_global_pos);
+    glm::quat new_local_rot = glm::inverse(parent_global_rot) * old_global_rot;
+    
+    if (keepGlobalPosition)
+    {
+        position = new_local_pos;
+        rotation = new_local_rot;
+    }
+
     markOutdatedRecursive();
 }
 
@@ -143,4 +159,30 @@ glm::quat Transform::getGlobalRotation(Transform& root)
     glm::quat own_rotation = getGlobalRotation();
 
     return glm::inverse(root_rotation) * own_rotation;
+}
+
+Transform Transform::getGlobalTransform()
+{
+    return Transform(
+        this->name + "_global",
+        getGlobalPosition(),
+        getGlobalRotation()
+    );
+}
+
+Transform Transform::getGlobalTransform(Transform& root)
+{
+    return Transform(
+        this->name + "_global",
+        getGlobalPosition(root),
+        getGlobalRotation(root)
+    );
+}
+
+Transform Transform::getInverse() const
+{
+    Transform inverse_transform;
+    inverse_transform.rotation = glm::inverse(rotation);
+    inverse_transform.position = -(inverse_transform.rotation * position);
+    return inverse_transform;
 }

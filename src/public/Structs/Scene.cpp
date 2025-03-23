@@ -1,6 +1,6 @@
 #include "Structs/Scene.hpp"
 
-std::weak_ptr<Marker> Scene::getMarker(int index)
+std::weak_ptr<Marker> Scene::getMarker(int index) const
 {
     return markers.at(index);
 }
@@ -22,7 +22,7 @@ void Scene::addMarker(std::shared_ptr<Marker> marker)
     markers.push_back(marker);
 }
 
-const std::vector<std::shared_ptr<Marker>>& Scene::getMarkers()
+const std::vector<std::shared_ptr<Marker>>& Scene::getMarkers() const
 {
     return markers;
 }

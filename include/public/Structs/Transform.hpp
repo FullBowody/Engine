@@ -32,7 +32,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Transform& transform);
 
-    void setParent(std::shared_ptr<Transform> parent);
+    void setParent(std::shared_ptr<Transform> parent, bool keepGlobalPosition = true);
     std::shared_ptr<Transform> getParent() const;
 
     std::vector<std::weak_ptr<Transform>> getChildren() const;
@@ -48,4 +48,9 @@ public:
 
     glm::quat getGlobalRotation();
     glm::quat getGlobalRotation(Transform& root);
+
+    Transform getGlobalTransform();
+    Transform getGlobalTransform(Transform& root);
+
+    Transform getInverse() const;
 };
