@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Params/Param.hpp"
 
 #define CHECK_NO_ENTRY() { std::cerr << "Reached CHECK_NO_ENTRY at line " << __LINE__ << " in " << __FILE__ << std::endl; exit(1); }
@@ -32,7 +33,7 @@ void Param::setValue(char* str) { setValue(std::string(str)); }
 void Param::setValue(std::string value) { CHECK_NO_ENTRY(); }
 
 // if not overriden, should not be called
-void Param::onValue(Callback<bool>* listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(Callback<int>* listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(Callback<float>* listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(Callback<std::string>* listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(bool)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(int)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(float)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(std::string)> listener) { CHECK_NO_ENTRY(); }

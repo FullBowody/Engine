@@ -1,3 +1,5 @@
+#pragma once
+#include <string>
 #include <filesystem>
 
 namespace Path
@@ -15,7 +17,7 @@ namespace Path
             return std::filesystem::path(fileorfolder).parent_path().string();
         }
     }
-
+    
     std::string Combine(std::string path1, std::string path2)
     {
         return std::filesystem::path(path1).append(path2).string();

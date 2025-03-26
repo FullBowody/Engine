@@ -24,8 +24,8 @@ public:
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(Callback<float>* listener) override
+    void onValue(std::function<float> listener) override
     {
-        onValueEvent.attachListener(listener);
+        onValueEvent.addEventListener(listener);
     }
 };

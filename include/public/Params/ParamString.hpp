@@ -24,8 +24,8 @@ public:
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(Callback<std::string>* listener) override
+    void onValue(std::function<std::string> listener) override
     {
-        onValueEvent.attachListener(listener);
+        onValueEvent.addEventListener(listener);
     }
 };

@@ -24,8 +24,8 @@ public:
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(Callback<bool>* listener) override
+    void onValue(std::function<bool> listener) override
     {
-        onValueEvent.attachListener(listener);
+        onValueEvent.addEventListener(listener);
     }
 };

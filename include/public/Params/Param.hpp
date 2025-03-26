@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Event/EventManager.hpp"
+#include "utils.hpp"
 
 enum class ParamType
 {
@@ -39,8 +40,8 @@ public:
     virtual void setValue(std::string value);
 
     // if not overriden, should not be called
-    virtual void onValue(Callback<bool>* listener);
-    virtual void onValue(Callback<int>* listener);
-    virtual void onValue(Callback<float>* listener);
-    virtual void onValue(Callback<std::string>* listener);
+    virtual void onValue(std::function<void(bool)> listener);
+    virtual void onValue(std::function<void(int)> listener);
+    virtual void onValue(std::function<void(float)> listener);
+    virtual void onValue(std::function<void(std::string)> listener);
 };

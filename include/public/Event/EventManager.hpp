@@ -1,12 +1,12 @@
 #pragma once
 #include <vector>
-#include "Structs/Callback.hpp"
+#include <functional>
 
 template <class T>
-class ENGINE_API EventManager
+class EventManager
 {
 private:
-    std::vector<Callback<T>*> listeners;
+    std::vector<std::function<void(T)>> listeners;
 
 public:
     EventManager()
@@ -16,25 +16,23 @@ public:
 
     ~EventManager()
     {
-        for (Callback<T>* listener : listeners)
-            delete listener;
+        listeners.clear();
     }
     
     void dispatchEvent(const T& event)
     {
-        for (Callback<T>* listener : listeners)
+        for (auto& listener : listeners)
         {
-            (*listener)(event);
+            listener(event);
         }
     }
 
-    void attachListener(Callback<T>* listener)
+    void addEventListener(std::function<void(T)> listener)
     {
-        if (listener != nullptr)
-            listeners.push_back(listener);
+        listeners.push_back(listener);
     }
 
-    void detachListener(Callback<T>* listener)
+    void removeEventListener(std::function<void(T)> listener)
     {
         listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
     }
