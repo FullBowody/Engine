@@ -34,6 +34,9 @@ public:
 
     void removeEventListener(std::function<void(const T&)> listener)
     {
-        listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
+        listeners.erase(std::remove_if(listeners.begin(), listeners.end(),
+            [&listener](const std::function<void(const T&)>& l) {
+                return l.target<void(const T&)>() == listener.target<void(const T&)>();
+            }), listeners.end());
     }
 };
