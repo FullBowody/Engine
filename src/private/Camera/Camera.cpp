@@ -50,7 +50,16 @@ Capture* Camera::getCapture() const
 
 void Camera::useCapturePlugin(PluginHandle<Capture>* capturePlugin)
 {
+    if (this->capturePlugin)
+    {
+        this->capturePlugin->getPlugin()->removeEventListener(std::bind(&Camera::onCaptureSkeleton, this, std::placeholders::_1));
+        this->capturePlugin->getPlugin()->removeEventListener(std::bind(&Camera::onImage, this, std::placeholders::_1));
+        delete this->capturePlugin;
+    }
+
     this->capturePlugin = capturePlugin;
+    this->capturePlugin->getPlugin()->addEventListener(std::bind(&Camera::onCaptureSkeleton, this, std::placeholders::_1));
+    this->capturePlugin->getPlugin()->addEventListener(std::bind(&Camera::onImage, this, std::placeholders::_1));
 }
 
 FBError Camera::estimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback)
