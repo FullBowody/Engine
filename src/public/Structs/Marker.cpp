@@ -12,7 +12,12 @@ Marker::Marker(int id)
 }
 
 Marker::Marker(int id, Transform transform)
-    : id(id), transform(transform)
+    : id(id), transform(transform), size(DEFAULT_SIZE)
+{
+}
+
+Marker::Marker(int id, Transform transform, float size)
+    : id(id), transform(transform), size(size)
 {
 }
 
@@ -28,6 +33,16 @@ int Marker::getId() const
 void Marker::setId(int id)
 {
     this->id = id;
+}
+
+float Marker::getSize() const
+{
+    return size;
+}
+
+void Marker::setSize(float size)
+{
+    this->size = size;
 }
 
 const Transform& Marker::getTransform() const
