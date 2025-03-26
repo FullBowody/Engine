@@ -1,5 +1,17 @@
 #include "Camera/Capture.hpp"
 
+void Capture::setPreviewImage(const Image& image)
+{
+    this->image = image;
+    eventManager_image.dispatchEvent(image);
+}
+
+void Capture::setCaptureSkeleton(const CaptureSkeleton& skeleton)
+{
+    this->skeleton = skeleton;
+    eventManager_skeleton.dispatchEvent(skeleton);
+}
+
 Capture::Capture()
     : width(0), height(0), type(""), image(Image()), skeleton(CaptureSkeleton())
 {
@@ -68,4 +80,24 @@ FBError Capture::startPreview()
 FBError Capture::stopPreview()
 {
     return onStopPreview();
+}
+
+void Capture::addEventListener(std::function<void(const CaptureSkeleton&)> callback)
+{
+    eventManager_skeleton.addEventListener(callback);
+}
+
+void Capture::removeEventListener(std::function<void(const CaptureSkeleton&)> callback)
+{
+    eventManager_skeleton.removeEventListener(callback);
+}
+
+void Capture::addEventListener(std::function<void(const Image&)> callback)
+{
+    eventManager_image.addEventListener(callback);
+}
+
+void Capture::removeEventListener(std::function<void(const Image&)> callback)
+{
+    eventManager_image.removeEventListener(callback);
 }

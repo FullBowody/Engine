@@ -6,7 +6,7 @@ template <class T>
 class EventManager
 {
 private:
-    std::vector<std::function<void(T)>> listeners;
+    std::vector<std::function<void(const T&)>> listeners;
 
 public:
     EventManager()
@@ -27,12 +27,12 @@ public:
         }
     }
 
-    void addEventListener(std::function<void(T)> listener)
+    void addEventListener(std::function<void(const T&)> listener)
     {
         listeners.push_back(listener);
     }
 
-    void removeEventListener(std::function<void(T)> listener)
+    void removeEventListener(std::function<void(const T&)> listener)
     {
         listeners.erase(std::remove(listeners.begin(), listeners.end(), listener), listeners.end());
     }

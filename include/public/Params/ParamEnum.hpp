@@ -19,13 +19,13 @@ public:
         return value;
     }
 
-    void setValue(int value) override
+    void setValue(const int& value) override
     {
         this->value = value;
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(std::function<int> listener) override
+    void onValue(std::function<void(const int&)> listener) override
     {
         onValueEvent.addEventListener(listener);
     }

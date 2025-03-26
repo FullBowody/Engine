@@ -13,20 +13,27 @@
 
 class ENGINE_API Capture : public Updatable, public ParamManager
 {
+private:
+    Image image;
+    CaptureSkeleton skeleton;
+    EventManager<CaptureSkeleton> eventManager_skeleton;
+    EventManager<Image> eventManager_image;
+
 protected:
     int width;
     int height;
     std::string type;
     Transform transform;
-    Image image;
     CaptureInfo infos;
-    CaptureSkeleton skeleton;
 
     virtual FBError onStartTracking() = 0;
     virtual FBError onStopTracking() = 0;
     virtual FBError onStartPreview() = 0;
     virtual FBError onStopPreview() = 0;
     virtual FBError onEstimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback) = 0;
+
+    virtual void setPreviewImage(const Image& image);
+    virtual void setCaptureSkeleton(const CaptureSkeleton& skeleton);
 
     Capture();
     Capture(const std::string& type);
@@ -48,4 +55,9 @@ public:
     virtual FBError stopTracking();
     virtual FBError startPreview();
     virtual FBError stopPreview();
+
+    virtual void addEventListener(std::function<void(const CaptureSkeleton&)> callback);
+    virtual void removeEventListener(std::function<void(const CaptureSkeleton&)> callback);
+    virtual void addEventListener(std::function<void(const Image&)> callback);
+    virtual void removeEventListener(std::function<void(const Image&)> callback);
 };

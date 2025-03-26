@@ -18,13 +18,13 @@ public:
         return value;
     }
 
-    void setValue(std::string value) override
+    void setValue(const std::string& value) override
     {
         this->value = value;
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(std::function<std::string> listener) override
+    void onValue(std::function<void(const std::string&)> listener) override
     {
         onValueEvent.addEventListener(listener);
     }

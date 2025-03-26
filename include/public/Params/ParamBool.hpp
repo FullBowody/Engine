@@ -18,13 +18,13 @@ public:
         return value;
     }
 
-    void setValue(bool value) override
+    void setValue(const bool& value) override
     {
         this->value = value;
         onValueEvent.dispatchEvent(value);
     }
 
-    void onValue(std::function<bool> listener) override
+    void onValue(std::function<void(const bool&)> listener) override
     {
         onValueEvent.addEventListener(listener);
     }

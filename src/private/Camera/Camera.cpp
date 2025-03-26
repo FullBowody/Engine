@@ -2,6 +2,16 @@
 #include "Camera/Camera.hpp"
 #include "utils.hpp"
 
+void Camera::onCaptureSkeleton(const CaptureSkeleton& captureSkeleton)
+{
+    eventManager_skeleton.dispatchEvent(captureSkeleton);
+}
+
+void Camera::onImage(const Image& image)
+{
+    eventManager_image.dispatchEvent(image);
+}
+
 Camera::Camera()
 {
     capturePlugin = nullptr;
@@ -96,6 +106,26 @@ FBError Camera::stopPreview()
     }
 
     return capturePlugin->getPlugin()->stopPreview();
+}
+
+void Camera::addEventListener(std::function<void(const CaptureSkeleton&)> callback)
+{
+    eventManager_skeleton.addEventListener(callback);
+}
+
+void Camera::removeEventListener(std::function<void(const CaptureSkeleton&)> callback)
+{
+    eventManager_skeleton.removeEventListener(callback);
+}
+
+void Camera::addEventListener(std::function<void(const Image&)> callback)
+{
+    eventManager_image.addEventListener(callback);
+}
+
+void Camera::removeEventListener(std::function<void(const Image&)> callback)
+{
+    eventManager_image.removeEventListener(callback);
 }
 
 FBError Camera::onUpdate(float dt)

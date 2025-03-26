@@ -26,14 +26,14 @@ float Param::asFloat() const { CHECK_NO_ENTRY(); }
 std::string Param::asString() const { CHECK_NO_ENTRY(); }
 
 // if not overriden, should not be called
-void Param::setValue(bool value) { CHECK_NO_ENTRY(); }
-void Param::setValue(int value) { CHECK_NO_ENTRY(); }
-void Param::setValue(float value) { CHECK_NO_ENTRY(); }
+void Param::setValue(const bool& value) { CHECK_NO_ENTRY(); }
+void Param::setValue(const int& value) { CHECK_NO_ENTRY(); }
+void Param::setValue(const float& value) { CHECK_NO_ENTRY(); }
 void Param::setValue(char* str) { setValue(std::string(str)); }
-void Param::setValue(std::string value) { CHECK_NO_ENTRY(); }
+void Param::setValue(const std::string& value) { CHECK_NO_ENTRY(); }
 
 // if not overriden, should not be called
-void Param::onValue(std::function<void(bool)> listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(std::function<void(int)> listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(std::function<void(float)> listener) { CHECK_NO_ENTRY(); }
-void Param::onValue(std::function<void(std::string)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(const bool&)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(const int&)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(const float&)> listener) { CHECK_NO_ENTRY(); }
+void Param::onValue(std::function<void(const std::string&)> listener) { CHECK_NO_ENTRY(); }

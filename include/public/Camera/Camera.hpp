@@ -8,12 +8,20 @@
 #include "Structs/Scene.hpp"
 #include "Camera/Capture.hpp"
 #include "Plugins/PluginHandle.hpp"
+#include "Event/EventManager.hpp"
+#include "Structs/CaptureSkeleton.hpp"
+#include "Camera/Image.hpp"
 
 class ENGINE_API Camera: public Identifiable, public Updatable
 {
 private:
     std::string name;
     PluginHandle<Capture>* capturePlugin;
+    EventManager<CaptureSkeleton> eventManager_skeleton;
+    EventManager<Image> eventManager_image;
+
+    void onCaptureSkeleton(const CaptureSkeleton& captureSkeleton);
+    void onImage(const Image& image);
 
 public:
     Camera();
@@ -32,9 +40,13 @@ public:
 
     virtual FBError startTracking();
     virtual FBError stopTracking();
-
     virtual FBError startPreview();
     virtual FBError stopPreview();
+
+    virtual void addEventListener(std::function<void(const CaptureSkeleton&)> callback);
+    virtual void removeEventListener(std::function<void(const CaptureSkeleton&)> callback);
+    virtual void addEventListener(std::function<void(const Image&)> callback);
+    virtual void removeEventListener(std::function<void(const Image&)> callback);
 
     virtual FBError onUpdate(float dt);
 };
