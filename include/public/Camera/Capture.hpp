@@ -15,7 +15,7 @@ class ENGINE_API Capture : public Updatable, public ParamManager
 {
 private:
     Image image;
-    CaptureSkeleton skeleton;
+    std::shared_ptr<CaptureSkeleton> skeleton;
     EventManager<CaptureSkeleton> eventManager_skeleton;
     EventManager<Image> eventManager_image;
 
@@ -47,7 +47,7 @@ public:
     virtual int getHeight() const;
     virtual const CaptureInfo& getInfos() const;
     virtual const Image& getImage() const;
-    virtual const CaptureSkeleton& getSkeleton() const;
+    virtual std::shared_ptr<CaptureSkeleton> getSkeleton() const;
     
     virtual FBError estimatePoseFromScene(const Scene& scene, std::function<void(const FBError&)> callback);
 

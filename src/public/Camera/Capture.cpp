@@ -8,17 +8,17 @@ void Capture::setPreviewImage(const Image& image)
 
 void Capture::setCaptureSkeleton(const CaptureSkeleton& skeleton)
 {
-    this->skeleton = skeleton;
+    this->skeleton = std::make_shared<CaptureSkeleton>(skeleton);
     eventManager_skeleton.dispatchEvent(skeleton);
 }
 
 Capture::Capture()
-    : width(0), height(0), type(""), image(Image()), skeleton(CaptureSkeleton())
+    : width(0), height(0), type(""), image(Image())
 {
 }
 
 Capture::Capture(const std::string& type)
-    : width(0), height(0), type(type), image(Image()), skeleton(CaptureSkeleton())
+    : width(0), height(0), type(type), image(Image())
 {
 }
 
@@ -52,7 +52,7 @@ const Image& Capture::getImage() const
     return image;
 }
 
-const CaptureSkeleton& Capture::getSkeleton() const
+std::shared_ptr<CaptureSkeleton> Capture::getSkeleton() const
 {
     return skeleton;
 }

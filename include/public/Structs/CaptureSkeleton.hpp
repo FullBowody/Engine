@@ -8,7 +8,7 @@
 class ENGINE_API CaptureSkeleton
 {
 private:
-    std::array<CaptureJoint, Skeleton::NB_JOINTS> joints;
+    std::array<std::shared_ptr<CaptureJoint>, Skeleton::NB_JOINTS> joints;
 
 public:
     CaptureSkeleton();
@@ -16,8 +16,8 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const CaptureSkeleton& skeleton);
 
-    void setJoint(int id, const CaptureJoint& joint);
-    const std::array<CaptureJoint, Skeleton::NB_JOINTS>& getJoints() const;
-    const CaptureJoint& getJoint(int id) const;
-    const size_t getJointCount() const;
+    virtual void setJoint(int id, std::shared_ptr<CaptureJoint> joint);
+    virtual const std::array<std::shared_ptr<CaptureJoint>, Skeleton::NB_JOINTS>& getJoints() const;
+    virtual std::shared_ptr<CaptureJoint> getJoint(int id) const;
+    virtual const size_t getJointCount() const;
 };
