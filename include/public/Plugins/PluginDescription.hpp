@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <memory>
 #include <ostream>
 #include "utils.hpp"
 #include "Plugins/PluginHandle.hpp"
@@ -23,37 +22,15 @@ private:
     std::string folder;
 
 public:
-    PluginDescription() {}
-    PluginDescription(std::string name, std::string description, std::string author, std::string version, PluginType type, std::string folder)
-        : name(name), description(description), author(author), version(version), type(type), folder(folder) {}
-    PluginDescription(const PluginDescription& other)
-        : name(other.name), description(other.description), author(other.author), version(other.version), type(other.type), folder(other.folder) {}
-    virtual ~PluginDescription() {}
+    PluginDescription();
+    PluginDescription(std::string name, std::string description, std::string author, std::string version, PluginType type, std::string folder);
+    virtual ~PluginDescription();
 
-    virtual std::string getName() const
-    {
-        return this->name;
-    }
-    
-    virtual std::string getDescription() const
-    {
-        return this->description;
-    }
-
-    virtual std::string getAuthor() const
-    {
-        return this->author;
-    }
-
-    virtual std::string getVersion() const
-    {
-        return this->version;
-    }
-
-    virtual PluginType getType() const
-    {
-        return this->type;
-    }
+    virtual std::string getName() const;
+    virtual std::string getDescription() const;
+    virtual std::string getAuthor() const;
+    virtual std::string getVersion() const;
+    virtual PluginType getType() const;
 
     template <typename T>
     PluginHandle<T>* createHandle() const

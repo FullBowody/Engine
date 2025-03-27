@@ -46,40 +46,39 @@ void PluginProvider::refreshPlugins()
             std::string version = json["version"];
             PluginType type = json["type"] == "capture" ? PluginType::CAPTURE : PluginType::UNKNOWN;
 
-            PluginDescription descriptor(name, description, author, version, type, pluginFolder);
-            this->plugins.push_back(descriptor);
+            this->plugins.push_back(std::make_shared<PluginDescription>(name, description, author, version, type, pluginFolder));
         }
     }
 }
 
-std::optional<PluginDescription> PluginProvider::getPlugin(std::string name)
+std::shared_ptr<PluginDescription> PluginProvider::getPlugin(std::string name)
 {
     if (this->plugins.empty()) this->refreshPlugins();
 
     for (auto& plugin : this->plugins)
     {
-        if (plugin.getName() == name)
+        if (plugin->getName() == name)
         {
             return plugin;
         }
     }
-    return std::nullopt;
+    return nullptr;
 }
 
-const std::vector<PluginDescription>& PluginProvider::getPlugins()
+const std::vector<std::shared_ptr<PluginDescription>>& PluginProvider::getPlugins()
 {
     if (this->plugins.empty()) this->refreshPlugins();
     return this->plugins;
 }
 
-std::vector<PluginDescription> PluginProvider::getPlugins(PluginType type)
+std::vector<std::shared_ptr<PluginDescription>> PluginProvider::getPlugins(PluginType type)
 {
     if (this->plugins.empty()) this->refreshPlugins();
 
-    std::vector<PluginDescription> filtered;
+    std::vector<std::shared_ptr<PluginDescription>> filtered;
     for (auto plugin : this->plugins)
     {
-        if (plugin.getType() == type)
+        if (plugin->getType() == type)
         {
             filtered.push_back(plugin);
         }
