@@ -15,16 +15,6 @@ FBError::operator int() const
     return code;
 }
 
-bool FBError::operator==(const FBError& other) const
-{
-    return code == other.code;
-}
-
-bool FBError::operator!=(const FBError& other) const
-{
-    return code != other.code;
-}
-
 std::ostream& operator<<(std::ostream& os, const FBError& e)
 {
     os << e.code;

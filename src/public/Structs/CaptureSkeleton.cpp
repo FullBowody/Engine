@@ -18,16 +18,16 @@ void CaptureSkeleton::setJoint(int id, const CaptureJoint& joint)
 {
     if (id >= 0 && id < joints.size())
     {
-        joints[id] = joint;
+        joints[id] = std::make_shared<CaptureJoint>(joint);
     }
 }
 
-const std::array<CaptureJoint, Skeleton::NB_JOINTS>& CaptureSkeleton::getJoints() const
+const std::array<std::shared_ptr<CaptureJoint>, Skeleton::NB_JOINTS>& CaptureSkeleton::getJoints() const
 {
     return joints;
 }
 
-const CaptureJoint& CaptureSkeleton::getJoint(int id) const
+std::shared_ptr<CaptureJoint> CaptureSkeleton::getJoint(int id) const
 {
     return joints.at(id);
 }

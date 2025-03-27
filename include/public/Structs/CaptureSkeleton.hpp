@@ -16,7 +16,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const CaptureSkeleton& skeleton);
 
-    virtual void setJoint(int id, std::shared_ptr<CaptureJoint> joint);
+    virtual void setJoint(int id, const CaptureJoint& joint);
     virtual const std::array<std::shared_ptr<CaptureJoint>, Skeleton::NB_JOINTS>& getJoints() const;
     virtual std::shared_ptr<CaptureJoint> getJoint(int id) const;
     virtual const size_t getJointCount() const;
