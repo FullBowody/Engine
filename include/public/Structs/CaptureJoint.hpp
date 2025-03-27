@@ -15,13 +15,13 @@ public:
     CaptureJoint(const CaptureJoint& joint);
     virtual ~CaptureJoint();
 
-    CaptureJoint& operator=(const CaptureJoint& other);
-    bool operator==(const CaptureJoint& other) const;
-    bool operator!=(const CaptureJoint& other) const;
+    virtual CaptureJoint& operator=(const CaptureJoint& other);
+    virtual bool operator==(const CaptureJoint& other) const;
+    virtual bool operator!=(const CaptureJoint& other) const;
     friend std::ostream& operator<<(std::ostream& os, const CaptureJoint& joint);
 
-    void setPosition(const glm::vec3& position);
-    void setConfidence(float confidence);
-    glm::vec3 getPosition() const;
-    float getConfidence() const;
+    virtual void setPosition(const glm::vec3& position);
+    virtual void setConfidence(float confidence);
+    virtual glm::vec3 getPosition() const;
+    virtual float getConfidence() const;
 };

@@ -20,7 +20,5 @@ public:
 
     virtual operator int() const;
     
-    virtual bool operator==(const FBError& other) const;
-    virtual bool operator!=(const FBError& other) const;
     friend std::ostream& operator<<(std::ostream& os, const FBError& e);
 };
