@@ -28,7 +28,7 @@ protected:
 
 public:
     Engine();
-    ~Engine();
+    virtual ~Engine();
 
     virtual void setEngineCWD(std::string dirpath);
     virtual PluginProvider& getPluginProvider();
