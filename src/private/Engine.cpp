@@ -1,5 +1,6 @@
 #include "Engine.hpp"
 #include <iostream>
+#include <chrono>
 #include "utils.hpp"
 #include "path.hpp"
 
@@ -146,5 +147,45 @@ FBError Engine::onUpdate(float dt)
         CHECK_ERRORS(camera->update(dt));
     }
 
+    return FBError::OK;
+}
+
+FBError Engine::start()
+{
+    shouldStop = false;
+    // TOOD : Start the listener server here instead of in the constructor
+
+    updateThread = std::thread([this]() {
+        const float TARGET_INTERVAL = 1.0f / 60.0f; // 60 FPS 
+        std::clock_t startTime = std::clock();
+        while (!shouldStop)
+        {
+            std::clock_t currentTime = std::clock();
+            float deltaTime = static_cast<float>(currentTime - startTime) / CLOCKS_PER_SEC;
+            startTime = currentTime;
+
+            if (deltaTime < TARGET_INTERVAL)
+            {
+                std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>((TARGET_INTERVAL - deltaTime) * 1000)));
+                continue;
+            }
+
+            FBError err = onUpdate(deltaTime);
+            if (err)
+            {
+                std::cerr << "Error during update: " << static_cast<int>(err) << std::endl;
+                // shouldStop = true;
+                // break;
+            }
+        }
+    });
+    return FBError::OK;
+}
+
+FBError Engine::stop()
+{
+    shouldStop = true;
+    stopTracking();
+    updateThread.join();
     return FBError::OK;
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <chrono>
 #include <fstream>
 #include "EngineLoader.hpp"
 #include "Plugins/PluginHandle.hpp"
@@ -31,12 +32,16 @@ int main(int argc, char const *argv[])
         ERR("Failed to create Engine!");
         return 1;
     }
+    
+    std::cout << "Starting engine ..." << std::endl;
+    engine->start();
 
-    LOG("Waiting for listener server to stop ...");
-    while (engine->getListenerServer().getState() != ListenerServer::STOPPED)
-    {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
+    std::cout << "Waiting for 10 seconds ..." << std::endl;
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::cout << "Done !" << std::endl;
+
+    std::cout << "Stopping engine ..." << std::endl;
+    engine->stop();
     
     LOG("Destroying Engine ...");
     loader.destroyEngine(engine);

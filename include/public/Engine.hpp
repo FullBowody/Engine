@@ -2,18 +2,18 @@
 
 #include <vector>
 #include <memory>
+#include <thread>
 #include "Camera/Camera.hpp"
 #include "Camera/Capture.hpp"
 #include "Structs/Skeleton.hpp"
 #include "Structs/Marker.hpp"
 #include "Structs/Scene.hpp"
-#include "Updatable.hpp"
 #include "utils.hpp"
 #include "Plugins/PluginProvider.hpp"
 #include "Plugins/PluginHandle.hpp"
 #include "ListenerServer.hpp"
 
-class ENGINE_API Engine: public Updatable
+class ENGINE_API Engine
 {
 protected:
     std::vector<std::shared_ptr<Camera>> cameras;
@@ -21,6 +21,8 @@ protected:
     Scene scene;
     PluginProvider pluginProvider;
     ListenerServer listenerServer;
+    bool shouldStop = false;
+    std::thread updateThread;
     
     virtual FBError onUpdate(float dt);
 
@@ -49,4 +51,7 @@ public:
 
     virtual FBError startTracking();
     virtual FBError stopTracking();
+
+    virtual FBError start();
+    virtual FBError stop();
 };
