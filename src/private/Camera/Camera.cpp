@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Camera/Camera.hpp"
 #include "utils.hpp"
+#include "Structs/FBError.hpp"
 
 void Camera::onCaptureSkeleton(const CaptureSkeleton& captureSkeleton)
 {

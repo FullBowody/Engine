@@ -9,6 +9,8 @@ private:
 public:
     enum ErrorCode {
         OK = 0,
+        ERR,
+        INVALID_INDEX,
         NO_CAPTURE_DEVICE,
         NO_CAMERA,
         NO_MARKER,

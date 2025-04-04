@@ -3,24 +3,27 @@
 #include <vector>
 #include <memory>
 #include <thread>
+#include <future>
 #include "Camera/Camera.hpp"
 #include "Camera/Capture.hpp"
 #include "Structs/Skeleton.hpp"
 #include "Structs/Marker.hpp"
 #include "Structs/Scene.hpp"
+#include "Structs/FBError.hpp"
 #include "utils.hpp"
 #include "Plugins/PluginProvider.hpp"
 #include "Plugins/PluginHandle.hpp"
 #include "ListenerServer.hpp"
+#include "ActionThreadable.hpp"
 
-class ENGINE_API Engine
+class ENGINE_API Engine : public ActionThreadable
 {
 protected:
     std::vector<std::shared_ptr<Camera>> cameras;
     std::shared_ptr<Skeleton> skeleton;
-    Scene scene;
-    PluginProvider pluginProvider;
-    ListenerServer listenerServer;
+    std::shared_ptr<Scene> scene;
+    std::shared_ptr<PluginProvider> pluginProvider;
+    std::shared_ptr<ListenerServer> listenerServer;
     bool shouldStop = false;
     std::thread updateThread;
     
@@ -31,26 +34,20 @@ public:
     virtual ~Engine();
 
     virtual void setEngineCWD(std::string dirpath);
-    virtual PluginProvider& getPluginProvider();
-    virtual ListenerServer& getListenerServer();
+    virtual std::future<std::shared_ptr<PluginProvider>> getPluginProvider();
+    virtual std::future<std::shared_ptr<ListenerServer>> getListenerServer();
 
-    virtual std::weak_ptr<Camera> createCamera();
-    virtual std::weak_ptr<Camera> getCamera(int index);
-    virtual void destroyCamera(int index);
-    virtual void destroyCamera(const Camera& camera);
-    virtual const std::vector<std::shared_ptr<Camera>>& getCameras();
+    virtual std::future<std::weak_ptr<Camera>> createCamera();
+    virtual std::future<std::weak_ptr<Camera>> getCamera(int index);
+    virtual std::future<FBError> destroyCamera(int index);
+    virtual std::future<FBError> destroyCamera(const Camera& camera);
+    virtual std::future<std::reference_wrapper<std::vector<std::shared_ptr<Camera>>>> getCameras();
 
-    virtual std::weak_ptr<Marker> createMarker();
-    virtual std::weak_ptr<Marker> getMarker(int index);
-    virtual void destroyMarker(int index);
-    virtual void destroyMarker(const Marker& marker);
-    virtual const std::vector<std::shared_ptr<Marker>>& getMarkers();
-    virtual const Scene& getScene();
+    virtual std::future<std::shared_ptr<Scene>> getScene();
+    virtual std::future<std::weak_ptr<Skeleton>> getSkeleton();
 
-    virtual std::weak_ptr<Skeleton> getSkeleton();
-
-    virtual FBError startTracking();
-    virtual FBError stopTracking();
+    virtual std::future<FBError> startTracking();
+    virtual std::future<FBError> stopTracking();
 
     virtual FBError start();
     virtual FBError stop();
